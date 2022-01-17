@@ -26,9 +26,9 @@
    * Specify one of: "pnpmVersion", "npmVersion", or "yarnVersion".  See the Rush documentation
    * for details about these alternatives.
    */
-  "pnpmVersion": "6.7.1",
 
-  // "npmVersion": "6.14.15",
+  // "pnpmVersion": "6.7.1",
+  "npmVersion": "8.1.2", 
   // "yarnVersion": "1.9.4",
 
   /**
@@ -124,7 +124,7 @@
    * LTS schedule: https://nodejs.org/en/about/releases/
    * LTS versions: https://nodejs.org/en/download/releases/
    */
-  "nodeSupportedVersionRange": ">=12.13.0 <13.0.0 || >=14.15.0 <15.0.0",
+  "nodeSupportedVersionRange": ">=12.13.0 <13.0.0 || >=14.15.0 <17.0.0",
 
   /**
    * Odd-numbered major versions of Node.js are experimental.  Even-numbered releases
@@ -457,5 +457,13 @@
     //   "projectFolder": "tools/my-toolchain",
     //   "reviewCategory": "tools"
     // }
+    {
+      "packageName": "app-shell",
+      "projectFolder": "packages/app-shell"
+    },
+    {
+      "packageName": "foo-pilet",
+      "projectFolder": "packages/foo-pilet" 
+    }
   ]
 }
