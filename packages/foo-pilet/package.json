@@ -44,5 +44,5 @@
     "comment": "Keep this section to use the Piral CLI.",
     "name": "app-shell"
   },
-  "peerModules": []
+  "peerModules": [] 
 }
