@@ -63,7 +63,7 @@
 /******/
 /******/ 	var hotApplyOnUpdate = true;
 /******/ 	// eslint-disable-next-line no-unused-vars
-/******/ 	var hotCurrentHash = "440a9810735b106e190c";
+/******/ 	var hotCurrentHash = "e8456d7866902c71e437";
 /******/ 	var hotRequestTimeout = 10000;
 /******/ 	var hotCurrentModuleData = {};
 /******/ 	var hotCurrentChildModule;
@@ -26710,7 +26710,7 @@ function installPiralDebug(options) {
             dependencies: "react,react-dom,react-router,react-router-dom,history,tslib,path-to-regexp,@libre/atom,@dbeining/react-atom",
         },
         build: {
-            date: "2022-01-17T10:54:19.628Z",
+            date: "2022-01-17T11:45:46.350Z",
             cli: "0.14.7",
             compat: "0.14",
         },
