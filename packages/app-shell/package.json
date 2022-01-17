@@ -1,0 +1,31 @@
+{
+  "name": "app-shell",
+  "version": "0.0.0",
+  "description": "",
+  "keywords": [
+    "piral"
+  ],
+  "dependencies": {
+    "piral": "0.13.5"
+  },
+  "scripts": {
+    "start": "piral debug",
+    "declaration": "piral declaration",
+    "build": "piral build"
+  },
+  "app": "./src/index.html",
+  "types": "./dist/index.d.ts",
+  "pilets": {
+    "files": [],
+    "externals": [],
+    "scripts": {},
+    "validators": {},
+    "devDependencies": {},
+    "preScaffold": "",
+    "postScaffold": "",
+    "preUpgrade": "",
+    "postUpgrade": "",
+    "packageOverrides": {}
+  },
+  "devDependencies": {}
+}
