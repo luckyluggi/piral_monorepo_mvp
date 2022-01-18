@@ -1,12 +1,12 @@
 {
   "name": "foo-pilet",
-  "version": "1.0.0",
+  "version": "0.0.1",
   "description": "",
   "keywords": [
     "pilet"
   ],
   "devDependencies": {
-    "app-shell": "0.0.0",
+    "app-shell": "0.0.1",
     "@babel/preset-env":"~7.16.8",
     "@babel/preset-react": "~7.16.7",
     "@types/react": "^17",
