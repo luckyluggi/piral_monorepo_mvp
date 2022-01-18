@@ -63,7 +63,7 @@
 /******/
 /******/ 	var hotApplyOnUpdate = true;
 /******/ 	// eslint-disable-next-line no-unused-vars
-/******/ 	var hotCurrentHash = "e8456d7866902c71e437";
+/******/ 	var hotCurrentHash = "9f77ca4d64ecb1d577f5";
 /******/ 	var hotRequestTimeout = 10000;
 /******/ 	var hotCurrentModuleData = {};
 /******/ 	var hotCurrentChildModule;
@@ -21106,244 +21106,6 @@ module.exports = hoistNonReactStatics;
 
 /***/ }),
 
-/***/ "../../common/temp/node_modules/html-entities/lib/index.js":
-/*!******************************************************************************************!*\
-  !*** C:/dev/_try/piral_monorepo_mvp/common/temp/node_modules/html-entities/lib/index.js ***!
-  \******************************************************************************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-var __assign = (this && this.__assign) || function () {
-    __assign = Object.assign || function(t) {
-        for (var s, i = 1, n = arguments.length; i < n; i++) {
-            s = arguments[i];
-            for (var p in s) if (Object.prototype.hasOwnProperty.call(s, p))
-                t[p] = s[p];
-        }
-        return t;
-    };
-    return __assign.apply(this, arguments);
-};
-Object.defineProperty(exports, "__esModule", { value: true });
-var named_references_1 = __webpack_require__(/*! ./named-references */ "../../common/temp/node_modules/html-entities/lib/named-references.js");
-var numeric_unicode_map_1 = __webpack_require__(/*! ./numeric-unicode-map */ "../../common/temp/node_modules/html-entities/lib/numeric-unicode-map.js");
-var surrogate_pairs_1 = __webpack_require__(/*! ./surrogate-pairs */ "../../common/temp/node_modules/html-entities/lib/surrogate-pairs.js");
-var allNamedReferences = __assign(__assign({}, named_references_1.namedReferences), { all: named_references_1.namedReferences.html5 });
-var encodeRegExps = {
-    specialChars: /[<>'"&]/g,
-    nonAscii: /(?:[<>'"&\u0080-\uD7FF\uE000-\uFFFF]|[\uD800-\uDBFF][\uDC00-\uDFFF]|[\uD800-\uDBFF](?![\uDC00-\uDFFF])|(?:[^\uD800-\uDBFF]|^)[\uDC00-\uDFFF])/g,
-    nonAsciiPrintable: /(?:[<>'"&\x01-\x08\x11-\x15\x17-\x1F\x7f-\uD7FF\uE000-\uFFFF]|[\uD800-\uDBFF][\uDC00-\uDFFF]|[\uD800-\uDBFF](?![\uDC00-\uDFFF])|(?:[^\uD800-\uDBFF]|^)[\uDC00-\uDFFF])/g,
-    extensive: /(?:[\x01-\x0c\x0e-\x1f\x21-\x2c\x2e-\x2f\x3a-\x40\x5b-\x60\x7b-\x7d\x7f-\uD7FF\uE000-\uFFFF]|[\uD800-\uDBFF][\uDC00-\uDFFF]|[\uD800-\uDBFF](?![\uDC00-\uDFFF])|(?:[^\uD800-\uDBFF]|^)[\uDC00-\uDFFF])/g
-};
-var defaultEncodeOptions = {
-    mode: 'specialChars',
-    level: 'all',
-    numeric: 'decimal'
-};
-/** Encodes all the necessary (specified by `level`) characters in the text */
-function encode(text, _a) {
-    var _b = _a === void 0 ? defaultEncodeOptions : _a, _c = _b.mode, mode = _c === void 0 ? 'specialChars' : _c, _d = _b.numeric, numeric = _d === void 0 ? 'decimal' : _d, _e = _b.level, level = _e === void 0 ? 'all' : _e;
-    if (!text) {
-        return '';
-    }
-    var encodeRegExp = encodeRegExps[mode];
-    var references = allNamedReferences[level].characters;
-    var isHex = numeric === 'hexadecimal';
-    encodeRegExp.lastIndex = 0;
-    var _b = encodeRegExp.exec(text);
-    var _c;
-    if (_b) {
-        _c = '';
-        var _d = 0;
-        do {
-            if (_d !== _b.index) {
-                _c += text.substring(_d, _b.index);
-            }
-            var _e = _b[0];
-            var result_1 = references[_e];
-            if (!result_1) {
-                var code_1 = _e.length > 1 ? surrogate_pairs_1.getCodePoint(_e, 0) : _e.charCodeAt(0);
-                result_1 = (isHex ? '&#x' + code_1.toString(16) : '&#' + code_1) + ';';
-            }
-            _c += result_1;
-            _d = _b.index + _e.length;
-        } while ((_b = encodeRegExp.exec(text)));
-        if (_d !== text.length) {
-            _c += text.substring(_d);
-        }
-    }
-    else {
-        _c =
-            text;
-    }
-    return _c;
-}
-exports.encode = encode;
-var defaultDecodeOptions = {
-    scope: 'body',
-    level: 'all'
-};
-var strict = /&(?:#\d+|#[xX][\da-fA-F]+|[0-9a-zA-Z]+);/g;
-var attribute = /&(?:#\d+|#[xX][\da-fA-F]+|[0-9a-zA-Z]+)[;=]?/g;
-var baseDecodeRegExps = {
-    xml: {
-        strict: strict,
-        attribute: attribute,
-        body: named_references_1.bodyRegExps.xml
-    },
-    html4: {
-        strict: strict,
-        attribute: attribute,
-        body: named_references_1.bodyRegExps.html4
-    },
-    html5: {
-        strict: strict,
-        attribute: attribute,
-        body: named_references_1.bodyRegExps.html5
-    }
-};
-var decodeRegExps = __assign(__assign({}, baseDecodeRegExps), { all: baseDecodeRegExps.html5 });
-var fromCharCode = String.fromCharCode;
-var outOfBoundsChar = fromCharCode(65533);
-var defaultDecodeEntityOptions = {
-    level: 'all'
-};
-/** Decodes a single entity */
-function decodeEntity(entity, _a) {
-    var _b = (_a === void 0 ? defaultDecodeEntityOptions : _a).level, level = _b === void 0 ? 'all' : _b;
-    if (!entity) {
-        return '';
-    }
-    var _b = entity;
-    var decodeEntityLastChar_1 = entity[entity.length - 1];
-    if (false) {}
-    else if (false) {}
-    else {
-        var decodeResultByReference_1 = allNamedReferences[level].entities[entity];
-        if (decodeResultByReference_1) {
-            _b = decodeResultByReference_1;
-        }
-        else if (entity[0] === '&' && entity[1] === '#') {
-            var decodeSecondChar_1 = entity[2];
-            var decodeCode_1 = decodeSecondChar_1 == 'x' || decodeSecondChar_1 == 'X'
-                ? parseInt(entity.substr(3), 16)
-                : parseInt(entity.substr(2));
-            _b =
-                decodeCode_1 >= 0x10ffff
-                    ? outOfBoundsChar
-                    : decodeCode_1 > 65535
-                        ? surrogate_pairs_1.fromCodePoint(decodeCode_1)
-                        : fromCharCode(numeric_unicode_map_1.numericUnicodeMap[decodeCode_1] || decodeCode_1);
-        }
-    }
-    return _b;
-}
-exports.decodeEntity = decodeEntity;
-/** Decodes all entities in the text */
-function decode(text, _a) {
-    var decodeSecondChar_1 = _a === void 0 ? defaultDecodeOptions : _a, decodeCode_1 = decodeSecondChar_1.level, level = decodeCode_1 === void 0 ? 'all' : decodeCode_1, _b = decodeSecondChar_1.scope, scope = _b === void 0 ? level === 'xml' ? 'strict' : 'body' : _b;
-    if (!text) {
-        return '';
-    }
-    var decodeRegExp = decodeRegExps[level][scope];
-    var references = allNamedReferences[level].entities;
-    var isAttribute = scope === 'attribute';
-    var isStrict = scope === 'strict';
-    decodeRegExp.lastIndex = 0;
-    var replaceMatch_1 = decodeRegExp.exec(text);
-    var replaceResult_1;
-    if (replaceMatch_1) {
-        replaceResult_1 = '';
-        var replaceLastIndex_1 = 0;
-        do {
-            if (replaceLastIndex_1 !== replaceMatch_1.index) {
-                replaceResult_1 += text.substring(replaceLastIndex_1, replaceMatch_1.index);
-            }
-            var replaceInput_1 = replaceMatch_1[0];
-            var decodeResult_1 = replaceInput_1;
-            var decodeEntityLastChar_2 = replaceInput_1[replaceInput_1.length - 1];
-            if (isAttribute
-                && decodeEntityLastChar_2 === '=') {
-                decodeResult_1 = replaceInput_1;
-            }
-            else if (isStrict
-                && decodeEntityLastChar_2 !== ';') {
-                decodeResult_1 = replaceInput_1;
-            }
-            else {
-                var decodeResultByReference_2 = references[replaceInput_1];
-                if (decodeResultByReference_2) {
-                    decodeResult_1 = decodeResultByReference_2;
-                }
-                else if (replaceInput_1[0] === '&' && replaceInput_1[1] === '#') {
-                    var decodeSecondChar_2 = replaceInput_1[2];
-                    var decodeCode_2 = decodeSecondChar_2 == 'x' || decodeSecondChar_2 == 'X'
-                        ? parseInt(replaceInput_1.substr(3), 16)
-                        : parseInt(replaceInput_1.substr(2));
-                    decodeResult_1 =
-                        decodeCode_2 >= 0x10ffff
-                            ? outOfBoundsChar
-                            : decodeCode_2 > 65535
-                                ? surrogate_pairs_1.fromCodePoint(decodeCode_2)
-                                : fromCharCode(numeric_unicode_map_1.numericUnicodeMap[decodeCode_2] || decodeCode_2);
-                }
-            }
-            replaceResult_1 += decodeResult_1;
-            replaceLastIndex_1 = replaceMatch_1.index + replaceInput_1.length;
-        } while ((replaceMatch_1 = decodeRegExp.exec(text)));
-        if (replaceLastIndex_1 !== text.length) {
-            replaceResult_1 += text.substring(replaceLastIndex_1);
-        }
-    }
-    else {
-        replaceResult_1 =
-            text;
-    }
-    return replaceResult_1;
-}
-exports.decode = decode;
-
-
-/***/ }),
-
-/***/ "../../common/temp/node_modules/html-entities/lib/named-references.js":
-/*!*****************************************************************************************************!*\
-  !*** C:/dev/_try/piral_monorepo_mvp/common/temp/node_modules/html-entities/lib/named-references.js ***!
-  \*****************************************************************************************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-Object.defineProperty(exports,"__esModule",{value:true});exports.bodyRegExps={xml:/&(?:#\d+|#[xX][\da-fA-F]+|[0-9a-zA-Z]+);?/g,html4:/&(?:nbsp|iexcl|cent|pound|curren|yen|brvbar|sect|uml|copy|ordf|laquo|not|shy|reg|macr|deg|plusmn|sup2|sup3|acute|micro|para|middot|cedil|sup1|ordm|raquo|frac14|frac12|frac34|iquest|Agrave|Aacute|Acirc|Atilde|Auml|Aring|AElig|Ccedil|Egrave|Eacute|Ecirc|Euml|Igrave|Iacute|Icirc|Iuml|ETH|Ntilde|Ograve|Oacute|Ocirc|Otilde|Ouml|times|Oslash|Ugrave|Uacute|Ucirc|Uuml|Yacute|THORN|szlig|agrave|aacute|acirc|atilde|auml|aring|aelig|ccedil|egrave|eacute|ecirc|euml|igrave|iacute|icirc|iuml|eth|ntilde|ograve|oacute|ocirc|otilde|ouml|divide|oslash|ugrave|uacute|ucirc|uuml|yacute|thorn|yuml|quot|amp|lt|gt|#\d+|#[xX][\da-fA-F]+|[0-9a-zA-Z]+);?/g,html5:/&(?:AElig|AMP|Aacute|Acirc|Agrave|Aring|Atilde|Auml|COPY|Ccedil|ETH|Eacute|Ecirc|Egrave|Euml|GT|Iacute|Icirc|Igrave|Iuml|LT|Ntilde|Oacute|Ocirc|Ograve|Oslash|Otilde|Ouml|QUOT|REG|THORN|Uacute|Ucirc|Ugrave|Uuml|Yacute|aacute|acirc|acute|aelig|agrave|amp|aring|atilde|auml|brvbar|ccedil|cedil|cent|copy|curren|deg|divide|eacute|ecirc|egrave|eth|euml|frac12|frac14|frac34|gt|iacute|icirc|iexcl|igrave|iquest|iuml|laquo|lt|macr|micro|middot|nbsp|not|ntilde|oacute|ocirc|ograve|ordf|ordm|oslash|otilde|ouml|para|plusmn|pound|quot|raquo|reg|sect|shy|sup1|sup2|sup3|szlig|thorn|times|uacute|ucirc|ugrave|uml|uuml|yacute|yen|yuml|#\d+|#[xX][\da-fA-F]+|[0-9a-zA-Z]+);?/g};exports.namedReferences={xml:{entities:{"&lt;":"<","&gt;":">","&quot;":'"',"&apos;":"'","&amp;":"&"},characters:{"<":"&lt;",">":"&gt;",'"':"&quot;","'":"&apos;","&":"&amp;"}},html4:{entities:{"&apos;":"'","&nbsp":" ","&nbsp;":" ","&iexcl":"¡","&iexcl;":"¡","&cent":"¢","&cent;":"¢","&pound":"£","&pound;":"£","&curren":"¤","&curren;":"¤","&yen":"¥","&yen;":"¥","&brvbar":"¦","&brvbar;":"¦","&sect":"§","&sect;":"§","&uml":"¨","&uml;":"¨","&copy":"©","&copy;":"©","&ordf":"ª","&ordf;":"ª","&laquo":"«","&laquo;":"«","&not":"¬","&not;":"¬","&shy":"­","&shy;":"­","&reg":"®","&reg;":"®","&macr":"¯","&macr;":"¯","&deg":"°","&deg;":"°","&plusmn":"±","&plusmn;":"±","&sup2":"²","&sup2;":"²","&sup3":"³","&sup3;":"³","&acute":"´","&acute;":"´","&micro":"µ","&micro;":"µ","&para":"¶","&para;":"¶","&middot":"·","&middot;":"·","&cedil":"¸","&cedil;":"¸","&sup1":"¹","&sup1;":"¹","&ordm":"º","&ordm;":"º","&raquo":"»","&raquo;":"»","&frac14":"¼","&frac14;":"¼","&frac12":"½","&frac12;":"½","&frac34":"¾","&frac34;":"¾","&iquest":"¿","&iquest;":"¿","&Agrave":"À","&Agrave;":"À","&Aacute":"Á","&Aacute;":"Á","&Acirc":"Â","&Acirc;":"Â","&Atilde":"Ã","&Atilde;":"Ã","&Auml":"Ä","&Auml;":"Ä","&Aring":"Å","&Aring;":"Å","&AElig":"Æ","&AElig;":"Æ","&Ccedil":"Ç","&Ccedil;":"Ç","&Egrave":"È","&Egrave;":"È","&Eacute":"É","&Eacute;":"É","&Ecirc":"Ê","&Ecirc;":"Ê","&Euml":"Ë","&Euml;":"Ë","&Igrave":"Ì","&Igrave;":"Ì","&Iacute":"Í","&Iacute;":"Í","&Icirc":"Î","&Icirc;":"Î","&Iuml":"Ï","&Iuml;":"Ï","&ETH":"Ð","&ETH;":"Ð","&Ntilde":"Ñ","&Ntilde;":"Ñ","&Ograve":"Ò","&Ograve;":"Ò","&Oacute":"Ó","&Oacute;":"Ó","&Ocirc":"Ô","&Ocirc;":"Ô","&Otilde":"Õ","&Otilde;":"Õ","&Ouml":"Ö","&Ouml;":"Ö","&times":"×","&times;":"×","&Oslash":"Ø","&Oslash;":"Ø","&Ugrave":"Ù","&Ugrave;":"Ù","&Uacute":"Ú","&Uacute;":"Ú","&Ucirc":"Û","&Ucirc;":"Û","&Uuml":"Ü","&Uuml;":"Ü","&Yacute":"Ý","&Yacute;":"Ý","&THORN":"Þ","&THORN;":"Þ","&szlig":"ß","&szlig;":"ß","&agrave":"à","&agrave;":"à","&aacute":"á","&aacute;":"á","&acirc":"â","&acirc;":"â","&atilde":"ã","&atilde;":"ã","&auml":"ä","&auml;":"ä","&aring":"å","&aring;":"å","&aelig":"æ","&aelig;":"æ","&ccedil":"ç","&ccedil;":"ç","&egrave":"è","&egrave;":"è","&eacute":"é","&eacute;":"é","&ecirc":"ê","&ecirc;":"ê","&euml":"ë","&euml;":"ë","&igrave":"ì","&igrave;":"ì","&iacute":"í","&iacute;":"í","&icirc":"î","&icirc;":"î","&iuml":"ï","&iuml;":"ï","&eth":"ð","&eth;":"ð","&ntilde":"ñ","&ntilde;":"ñ","&ograve":"ò","&ograve;":"ò","&oacute":"ó","&oacute;":"ó","&ocirc":"ô","&ocirc;":"ô","&otilde":"õ","&otilde;":"õ","&ouml":"ö","&ouml;":"ö","&divide":"÷","&divide;":"÷","&oslash":"ø","&oslash;":"ø","&ugrave":"ù","&ugrave;":"ù","&uacute":"ú","&uacute;":"ú","&ucirc":"û","&ucirc;":"û","&uuml":"ü","&uuml;":"ü","&yacute":"ý","&yacute;":"ý","&thorn":"þ","&thorn;":"þ","&yuml":"ÿ","&yuml;":"ÿ","&quot":'"',"&quot;":'"',"&amp":"&","&amp;":"&","&lt":"<","&lt;":"<","&gt":">","&gt;":">","&OElig;":"Œ","&oelig;":"œ","&Scaron;":"Š","&scaron;":"š","&Yuml;":"Ÿ","&circ;":"ˆ","&tilde;":"˜","&ensp;":" ","&emsp;":" ","&thinsp;":" ","&zwnj;":"‌","&zwj;":"‍","&lrm;":"‎","&rlm;":"‏","&ndash;":"–","&mdash;":"—","&lsquo;":"‘","&rsquo;":"’","&sbquo;":"‚","&ldquo;":"“","&rdquo;":"”","&bdquo;":"„","&dagger;":"†","&Dagger;":"‡","&permil;":"‰","&lsaquo;":"‹","&rsaquo;":"›","&euro;":"€","&fnof;":"ƒ","&Alpha;":"Α","&Beta;":"Β","&Gamma;":"Γ","&Delta;":"Δ","&Epsilon;":"Ε","&Zeta;":"Ζ","&Eta;":"Η","&Theta;":"Θ","&Iota;":"Ι","&Kappa;":"Κ","&Lambda;":"Λ","&Mu;":"Μ","&Nu;":"Ν","&Xi;":"Ξ","&Omicron;":"Ο","&Pi;":"Π","&Rho;":"Ρ","&Sigma;":"Σ","&Tau;":"Τ","&Upsilon;":"Υ","&Phi;":"Φ","&Chi;":"Χ","&Psi;":"Ψ","&Omega;":"Ω","&alpha;":"α","&beta;":"β","&gamma;":"γ","&delta;":"δ","&epsilon;":"ε","&zeta;":"ζ","&eta;":"η","&theta;":"θ","&iota;":"ι","&kappa;":"κ","&lambda;":"λ","&mu;":"μ","&nu;":"ν","&xi;":"ξ","&omicron;":"ο","&pi;":"π","&rho;":"ρ","&sigmaf;":"ς","&sigma;":"σ","&tau;":"τ","&upsilon;":"υ","&phi;":"φ","&chi;":"χ","&psi;":"ψ","&omega;":"ω","&thetasym;":"ϑ","&upsih;":"ϒ","&piv;":"ϖ","&bull;":"•","&hellip;":"…","&prime;":"′","&Prime;":"″","&oline;":"‾","&frasl;":"⁄","&weierp;":"℘","&image;":"ℑ","&real;":"ℜ","&trade;":"™","&alefsym;":"ℵ","&larr;":"←","&uarr;":"↑","&rarr;":"→","&darr;":"↓","&harr;":"↔","&crarr;":"↵","&lArr;":"⇐","&uArr;":"⇑","&rArr;":"⇒","&dArr;":"⇓","&hArr;":"⇔","&forall;":"∀","&part;":"∂","&exist;":"∃","&empty;":"∅","&nabla;":"∇","&isin;":"∈","&notin;":"∉","&ni;":"∋","&prod;":"∏","&sum;":"∑","&minus;":"−","&lowast;":"∗","&radic;":"√","&prop;":"∝","&infin;":"∞","&ang;":"∠","&and;":"∧","&or;":"∨","&cap;":"∩","&cup;":"∪","&int;":"∫","&there4;":"∴","&sim;":"∼","&cong;":"≅","&asymp;":"≈","&ne;":"≠","&equiv;":"≡","&le;":"≤","&ge;":"≥","&sub;":"⊂","&sup;":"⊃","&nsub;":"⊄","&sube;":"⊆","&supe;":"⊇","&oplus;":"⊕","&otimes;":"⊗","&perp;":"⊥","&sdot;":"⋅","&lceil;":"⌈","&rceil;":"⌉","&lfloor;":"⌊","&rfloor;":"⌋","&lang;":"〈","&rang;":"〉","&loz;":"◊","&spades;":"♠","&clubs;":"♣","&hearts;":"♥","&diams;":"♦"},characters:{"'":"&apos;"," ":"&nbsp;","¡":"&iexcl;","¢":"&cent;","£":"&pound;","¤":"&curren;","¥":"&yen;","¦":"&brvbar;","§":"&sect;","¨":"&uml;","©":"&copy;","ª":"&ordf;","«":"&laquo;","¬":"&not;","­":"&shy;","®":"&reg;","¯":"&macr;","°":"&deg;","±":"&plusmn;","²":"&sup2;","³":"&sup3;","´":"&acute;","µ":"&micro;","¶":"&para;","·":"&middot;","¸":"&cedil;","¹":"&sup1;","º":"&ordm;","»":"&raquo;","¼":"&frac14;","½":"&frac12;","¾":"&frac34;","¿":"&iquest;","À":"&Agrave;","Á":"&Aacute;","Â":"&Acirc;","Ã":"&Atilde;","Ä":"&Auml;","Å":"&Aring;","Æ":"&AElig;","Ç":"&Ccedil;","È":"&Egrave;","É":"&Eacute;","Ê":"&Ecirc;","Ë":"&Euml;","Ì":"&Igrave;","Í":"&Iacute;","Î":"&Icirc;","Ï":"&Iuml;","Ð":"&ETH;","Ñ":"&Ntilde;","Ò":"&Ograve;","Ó":"&Oacute;","Ô":"&Ocirc;","Õ":"&Otilde;","Ö":"&Ouml;","×":"&times;","Ø":"&Oslash;","Ù":"&Ugrave;","Ú":"&Uacute;","Û":"&Ucirc;","Ü":"&Uuml;","Ý":"&Yacute;","Þ":"&THORN;","ß":"&szlig;","à":"&agrave;","á":"&aacute;","â":"&acirc;","ã":"&atilde;","ä":"&auml;","å":"&aring;","æ":"&aelig;","ç":"&ccedil;","è":"&egrave;","é":"&eacute;","ê":"&ecirc;","ë":"&euml;","ì":"&igrave;","í":"&iacute;","î":"&icirc;","ï":"&iuml;","ð":"&eth;","ñ":"&ntilde;","ò":"&ograve;","ó":"&oacute;","ô":"&ocirc;","õ":"&otilde;","ö":"&ouml;","÷":"&divide;","ø":"&oslash;","ù":"&ugrave;","ú":"&uacute;","û":"&ucirc;","ü":"&uuml;","ý":"&yacute;","þ":"&thorn;","ÿ":"&yuml;",'"':"&quot;","&":"&amp;","<":"&lt;",">":"&gt;","Œ":"&OElig;","œ":"&oelig;","Š":"&Scaron;","š":"&scaron;","Ÿ":"&Yuml;","ˆ":"&circ;","˜":"&tilde;"," ":"&ensp;"," ":"&emsp;"," ":"&thinsp;","‌":"&zwnj;","‍":"&zwj;","‎":"&lrm;","‏":"&rlm;","–":"&ndash;","—":"&mdash;","‘":"&lsquo;","’":"&rsquo;","‚":"&sbquo;","“":"&ldquo;","”":"&rdquo;","„":"&bdquo;","†":"&dagger;","‡":"&Dagger;","‰":"&permil;","‹":"&lsaquo;","›":"&rsaquo;","€":"&euro;","ƒ":"&fnof;","Α":"&Alpha;","Β":"&Beta;","Γ":"&Gamma;","Δ":"&Delta;","Ε":"&Epsilon;","Ζ":"&Zeta;","Η":"&Eta;","Θ":"&Theta;","Ι":"&Iota;","Κ":"&Kappa;","Λ":"&Lambda;","Μ":"&Mu;","Ν":"&Nu;","Ξ":"&Xi;","Ο":"&Omicron;","Π":"&Pi;","Ρ":"&Rho;","Σ":"&Sigma;","Τ":"&Tau;","Υ":"&Upsilon;","Φ":"&Phi;","Χ":"&Chi;","Ψ":"&Psi;","Ω":"&Omega;","α":"&alpha;","β":"&beta;","γ":"&gamma;","δ":"&delta;","ε":"&epsilon;","ζ":"&zeta;","η":"&eta;","θ":"&theta;","ι":"&iota;","κ":"&kappa;","λ":"&lambda;","μ":"&mu;","ν":"&nu;","ξ":"&xi;","ο":"&omicron;","π":"&pi;","ρ":"&rho;","ς":"&sigmaf;","σ":"&sigma;","τ":"&tau;","υ":"&upsilon;","φ":"&phi;","χ":"&chi;","ψ":"&psi;","ω":"&omega;","ϑ":"&thetasym;","ϒ":"&upsih;","ϖ":"&piv;","•":"&bull;","…":"&hellip;","′":"&prime;","″":"&Prime;","‾":"&oline;","⁄":"&frasl;","℘":"&weierp;","ℑ":"&image;","ℜ":"&real;","™":"&trade;","ℵ":"&alefsym;","←":"&larr;","↑":"&uarr;","→":"&rarr;","↓":"&darr;","↔":"&harr;","↵":"&crarr;","⇐":"&lArr;","⇑":"&uArr;","⇒":"&rArr;","⇓":"&dArr;","⇔":"&hArr;","∀":"&forall;","∂":"&part;","∃":"&exist;","∅":"&empty;","∇":"&nabla;","∈":"&isin;","∉":"&notin;","∋":"&ni;","∏":"&prod;","∑":"&sum;","−":"&minus;","∗":"&lowast;","√":"&radic;","∝":"&prop;","∞":"&infin;","∠":"&ang;","∧":"&and;","∨":"&or;","∩":"&cap;","∪":"&cup;","∫":"&int;","∴":"&there4;","∼":"&sim;","≅":"&cong;","≈":"&asymp;","≠":"&ne;","≡":"&equiv;","≤":"&le;","≥":"&ge;","⊂":"&sub;","⊃":"&sup;","⊄":"&nsub;","⊆":"&sube;","⊇":"&supe;","⊕":"&oplus;","⊗":"&otimes;","⊥":"&perp;","⋅":"&sdot;","⌈":"&lceil;","⌉":"&rceil;","⌊":"&lfloor;","⌋":"&rfloor;","〈":"&lang;","〉":"&rang;","◊":"&loz;","♠":"&spades;","♣":"&clubs;","♥":"&hearts;","♦":"&diams;"}},html5:{entities:{"&AElig":"Æ","&AElig;":"Æ","&AMP":"&","&AMP;":"&","&Aacute":"Á","&Aacute;":"Á","&Abreve;":"Ă","&Acirc":"Â","&Acirc;":"Â","&Acy;":"А","&Afr;":"𝔄","&Agrave":"À","&Agrave;":"À","&Alpha;":"Α","&Amacr;":"Ā","&And;":"⩓","&Aogon;":"Ą","&Aopf;":"𝔸","&ApplyFunction;":"⁡","&Aring":"Å","&Aring;":"Å","&Ascr;":"𝒜","&Assign;":"≔","&Atilde":"Ã","&Atilde;":"Ã","&Auml":"Ä","&Auml;":"Ä","&Backslash;":"∖","&Barv;":"⫧","&Barwed;":"⌆","&Bcy;":"Б","&Because;":"∵","&Bernoullis;":"ℬ","&Beta;":"Β","&Bfr;":"𝔅","&Bopf;":"𝔹","&Breve;":"˘","&Bscr;":"ℬ","&Bumpeq;":"≎","&CHcy;":"Ч","&COPY":"©","&COPY;":"©","&Cacute;":"Ć","&Cap;":"⋒","&CapitalDifferentialD;":"ⅅ","&Cayleys;":"ℭ","&Ccaron;":"Č","&Ccedil":"Ç","&Ccedil;":"Ç","&Ccirc;":"Ĉ","&Cconint;":"∰","&Cdot;":"Ċ","&Cedilla;":"¸","&CenterDot;":"·","&Cfr;":"ℭ","&Chi;":"Χ","&CircleDot;":"⊙","&CircleMinus;":"⊖","&CirclePlus;":"⊕","&CircleTimes;":"⊗","&ClockwiseContourIntegral;":"∲","&CloseCurlyDoubleQuote;":"”","&CloseCurlyQuote;":"’","&Colon;":"∷","&Colone;":"⩴","&Congruent;":"≡","&Conint;":"∯","&ContourIntegral;":"∮","&Copf;":"ℂ","&Coproduct;":"∐","&CounterClockwiseContourIntegral;":"∳","&Cross;":"⨯","&Cscr;":"𝒞","&Cup;":"⋓","&CupCap;":"≍","&DD;":"ⅅ","&DDotrahd;":"⤑","&DJcy;":"Ђ","&DScy;":"Ѕ","&DZcy;":"Џ","&Dagger;":"‡","&Darr;":"↡","&Dashv;":"⫤","&Dcaron;":"Ď","&Dcy;":"Д","&Del;":"∇","&Delta;":"Δ","&Dfr;":"𝔇","&DiacriticalAcute;":"´","&DiacriticalDot;":"˙","&DiacriticalDoubleAcute;":"˝","&DiacriticalGrave;":"`","&DiacriticalTilde;":"˜","&Diamond;":"⋄","&DifferentialD;":"ⅆ","&Dopf;":"𝔻","&Dot;":"¨","&DotDot;":"⃜","&DotEqual;":"≐","&DoubleContourIntegral;":"∯","&DoubleDot;":"¨","&DoubleDownArrow;":"⇓","&DoubleLeftArrow;":"⇐","&DoubleLeftRightArrow;":"⇔","&DoubleLeftTee;":"⫤","&DoubleLongLeftArrow;":"⟸","&DoubleLongLeftRightArrow;":"⟺","&DoubleLongRightArrow;":"⟹","&DoubleRightArrow;":"⇒","&DoubleRightTee;":"⊨","&DoubleUpArrow;":"⇑","&DoubleUpDownArrow;":"⇕","&DoubleVerticalBar;":"∥","&DownArrow;":"↓","&DownArrowBar;":"⤓","&DownArrowUpArrow;":"⇵","&DownBreve;":"̑","&DownLeftRightVector;":"⥐","&DownLeftTeeVector;":"⥞","&DownLeftVector;":"↽","&DownLeftVectorBar;":"⥖","&DownRightTeeVector;":"⥟","&DownRightVector;":"⇁","&DownRightVectorBar;":"⥗","&DownTee;":"⊤","&DownTeeArrow;":"↧","&Downarrow;":"⇓","&Dscr;":"𝒟","&Dstrok;":"Đ","&ENG;":"Ŋ","&ETH":"Ð","&ETH;":"Ð","&Eacute":"É","&Eacute;":"É","&Ecaron;":"Ě","&Ecirc":"Ê","&Ecirc;":"Ê","&Ecy;":"Э","&Edot;":"Ė","&Efr;":"𝔈","&Egrave":"È","&Egrave;":"È","&Element;":"∈","&Emacr;":"Ē","&EmptySmallSquare;":"◻","&EmptyVerySmallSquare;":"▫","&Eogon;":"Ę","&Eopf;":"𝔼","&Epsilon;":"Ε","&Equal;":"⩵","&EqualTilde;":"≂","&Equilibrium;":"⇌","&Escr;":"ℰ","&Esim;":"⩳","&Eta;":"Η","&Euml":"Ë","&Euml;":"Ë","&Exists;":"∃","&ExponentialE;":"ⅇ","&Fcy;":"Ф","&Ffr;":"𝔉","&FilledSmallSquare;":"◼","&FilledVerySmallSquare;":"▪","&Fopf;":"𝔽","&ForAll;":"∀","&Fouriertrf;":"ℱ","&Fscr;":"ℱ","&GJcy;":"Ѓ","&GT":">","&GT;":">","&Gamma;":"Γ","&Gammad;":"Ϝ","&Gbreve;":"Ğ","&Gcedil;":"Ģ","&Gcirc;":"Ĝ","&Gcy;":"Г","&Gdot;":"Ġ","&Gfr;":"𝔊","&Gg;":"⋙","&Gopf;":"𝔾","&GreaterEqual;":"≥","&GreaterEqualLess;":"⋛","&GreaterFullEqual;":"≧","&GreaterGreater;":"⪢","&GreaterLess;":"≷","&GreaterSlantEqual;":"⩾","&GreaterTilde;":"≳","&Gscr;":"𝒢","&Gt;":"≫","&HARDcy;":"Ъ","&Hacek;":"ˇ","&Hat;":"^","&Hcirc;":"Ĥ","&Hfr;":"ℌ","&HilbertSpace;":"ℋ","&Hopf;":"ℍ","&HorizontalLine;":"─","&Hscr;":"ℋ","&Hstrok;":"Ħ","&HumpDownHump;":"≎","&HumpEqual;":"≏","&IEcy;":"Е","&IJlig;":"Ĳ","&IOcy;":"Ё","&Iacute":"Í","&Iacute;":"Í","&Icirc":"Î","&Icirc;":"Î","&Icy;":"И","&Idot;":"İ","&Ifr;":"ℑ","&Igrave":"Ì","&Igrave;":"Ì","&Im;":"ℑ","&Imacr;":"Ī","&ImaginaryI;":"ⅈ","&Implies;":"⇒","&Int;":"∬","&Integral;":"∫","&Intersection;":"⋂","&InvisibleComma;":"⁣","&InvisibleTimes;":"⁢","&Iogon;":"Į","&Iopf;":"𝕀","&Iota;":"Ι","&Iscr;":"ℐ","&Itilde;":"Ĩ","&Iukcy;":"І","&Iuml":"Ï","&Iuml;":"Ï","&Jcirc;":"Ĵ","&Jcy;":"Й","&Jfr;":"𝔍","&Jopf;":"𝕁","&Jscr;":"𝒥","&Jsercy;":"Ј","&Jukcy;":"Є","&KHcy;":"Х","&KJcy;":"Ќ","&Kappa;":"Κ","&Kcedil;":"Ķ","&Kcy;":"К","&Kfr;":"𝔎","&Kopf;":"𝕂","&Kscr;":"𝒦","&LJcy;":"Љ","&LT":"<","&LT;":"<","&Lacute;":"Ĺ","&Lambda;":"Λ","&Lang;":"⟪","&Laplacetrf;":"ℒ","&Larr;":"↞","&Lcaron;":"Ľ","&Lcedil;":"Ļ","&Lcy;":"Л","&LeftAngleBracket;":"⟨","&LeftArrow;":"←","&LeftArrowBar;":"⇤","&LeftArrowRightArrow;":"⇆","&LeftCeiling;":"⌈","&LeftDoubleBracket;":"⟦","&LeftDownTeeVector;":"⥡","&LeftDownVector;":"⇃","&LeftDownVectorBar;":"⥙","&LeftFloor;":"⌊","&LeftRightArrow;":"↔","&LeftRightVector;":"⥎","&LeftTee;":"⊣","&LeftTeeArrow;":"↤","&LeftTeeVector;":"⥚","&LeftTriangle;":"⊲","&LeftTriangleBar;":"⧏","&LeftTriangleEqual;":"⊴","&LeftUpDownVector;":"⥑","&LeftUpTeeVector;":"⥠","&LeftUpVector;":"↿","&LeftUpVectorBar;":"⥘","&LeftVector;":"↼","&LeftVectorBar;":"⥒","&Leftarrow;":"⇐","&Leftrightarrow;":"⇔","&LessEqualGreater;":"⋚","&LessFullEqual;":"≦","&LessGreater;":"≶","&LessLess;":"⪡","&LessSlantEqual;":"⩽","&LessTilde;":"≲","&Lfr;":"𝔏","&Ll;":"⋘","&Lleftarrow;":"⇚","&Lmidot;":"Ŀ","&LongLeftArrow;":"⟵","&LongLeftRightArrow;":"⟷","&LongRightArrow;":"⟶","&Longleftarrow;":"⟸","&Longleftrightarrow;":"⟺","&Longrightarrow;":"⟹","&Lopf;":"𝕃","&LowerLeftArrow;":"↙","&LowerRightArrow;":"↘","&Lscr;":"ℒ","&Lsh;":"↰","&Lstrok;":"Ł","&Lt;":"≪","&Map;":"⤅","&Mcy;":"М","&MediumSpace;":" ","&Mellintrf;":"ℳ","&Mfr;":"𝔐","&MinusPlus;":"∓","&Mopf;":"𝕄","&Mscr;":"ℳ","&Mu;":"Μ","&NJcy;":"Њ","&Nacute;":"Ń","&Ncaron;":"Ň","&Ncedil;":"Ņ","&Ncy;":"Н","&NegativeMediumSpace;":"​","&NegativeThickSpace;":"​","&NegativeThinSpace;":"​","&NegativeVeryThinSpace;":"​","&NestedGreaterGreater;":"≫","&NestedLessLess;":"≪","&NewLine;":"\n","&Nfr;":"𝔑","&NoBreak;":"⁠","&NonBreakingSpace;":" ","&Nopf;":"ℕ","&Not;":"⫬","&NotCongruent;":"≢","&NotCupCap;":"≭","&NotDoubleVerticalBar;":"∦","&NotElement;":"∉","&NotEqual;":"≠","&NotEqualTilde;":"≂̸","&NotExists;":"∄","&NotGreater;":"≯","&NotGreaterEqual;":"≱","&NotGreaterFullEqual;":"≧̸","&NotGreaterGreater;":"≫̸","&NotGreaterLess;":"≹","&NotGreaterSlantEqual;":"⩾̸","&NotGreaterTilde;":"≵","&NotHumpDownHump;":"≎̸","&NotHumpEqual;":"≏̸","&NotLeftTriangle;":"⋪","&NotLeftTriangleBar;":"⧏̸","&NotLeftTriangleEqual;":"⋬","&NotLess;":"≮","&NotLessEqual;":"≰","&NotLessGreater;":"≸","&NotLessLess;":"≪̸","&NotLessSlantEqual;":"⩽̸","&NotLessTilde;":"≴","&NotNestedGreaterGreater;":"⪢̸","&NotNestedLessLess;":"⪡̸","&NotPrecedes;":"⊀","&NotPrecedesEqual;":"⪯̸","&NotPrecedesSlantEqual;":"⋠","&NotReverseElement;":"∌","&NotRightTriangle;":"⋫","&NotRightTriangleBar;":"⧐̸","&NotRightTriangleEqual;":"⋭","&NotSquareSubset;":"⊏̸","&NotSquareSubsetEqual;":"⋢","&NotSquareSuperset;":"⊐̸","&NotSquareSupersetEqual;":"⋣","&NotSubset;":"⊂⃒","&NotSubsetEqual;":"⊈","&NotSucceeds;":"⊁","&NotSucceedsEqual;":"⪰̸","&NotSucceedsSlantEqual;":"⋡","&NotSucceedsTilde;":"≿̸","&NotSuperset;":"⊃⃒","&NotSupersetEqual;":"⊉","&NotTilde;":"≁","&NotTildeEqual;":"≄","&NotTildeFullEqual;":"≇","&NotTildeTilde;":"≉","&NotVerticalBar;":"∤","&Nscr;":"𝒩","&Ntilde":"Ñ","&Ntilde;":"Ñ","&Nu;":"Ν","&OElig;":"Œ","&Oacute":"Ó","&Oacute;":"Ó","&Ocirc":"Ô","&Ocirc;":"Ô","&Ocy;":"О","&Odblac;":"Ő","&Ofr;":"𝔒","&Ograve":"Ò","&Ograve;":"Ò","&Omacr;":"Ō","&Omega;":"Ω","&Omicron;":"Ο","&Oopf;":"𝕆","&OpenCurlyDoubleQuote;":"“","&OpenCurlyQuote;":"‘","&Or;":"⩔","&Oscr;":"𝒪","&Oslash":"Ø","&Oslash;":"Ø","&Otilde":"Õ","&Otilde;":"Õ","&Otimes;":"⨷","&Ouml":"Ö","&Ouml;":"Ö","&OverBar;":"‾","&OverBrace;":"⏞","&OverBracket;":"⎴","&OverParenthesis;":"⏜","&PartialD;":"∂","&Pcy;":"П","&Pfr;":"𝔓","&Phi;":"Φ","&Pi;":"Π","&PlusMinus;":"±","&Poincareplane;":"ℌ","&Popf;":"ℙ","&Pr;":"⪻","&Precedes;":"≺","&PrecedesEqual;":"⪯","&PrecedesSlantEqual;":"≼","&PrecedesTilde;":"≾","&Prime;":"″","&Product;":"∏","&Proportion;":"∷","&Proportional;":"∝","&Pscr;":"𝒫","&Psi;":"Ψ","&QUOT":'"',"&QUOT;":'"',"&Qfr;":"𝔔","&Qopf;":"ℚ","&Qscr;":"𝒬","&RBarr;":"⤐","&REG":"®","&REG;":"®","&Racute;":"Ŕ","&Rang;":"⟫","&Rarr;":"↠","&Rarrtl;":"⤖","&Rcaron;":"Ř","&Rcedil;":"Ŗ","&Rcy;":"Р","&Re;":"ℜ","&ReverseElement;":"∋","&ReverseEquilibrium;":"⇋","&ReverseUpEquilibrium;":"⥯","&Rfr;":"ℜ","&Rho;":"Ρ","&RightAngleBracket;":"⟩","&RightArrow;":"→","&RightArrowBar;":"⇥","&RightArrowLeftArrow;":"⇄","&RightCeiling;":"⌉","&RightDoubleBracket;":"⟧","&RightDownTeeVector;":"⥝","&RightDownVector;":"⇂","&RightDownVectorBar;":"⥕","&RightFloor;":"⌋","&RightTee;":"⊢","&RightTeeArrow;":"↦","&RightTeeVector;":"⥛","&RightTriangle;":"⊳","&RightTriangleBar;":"⧐","&RightTriangleEqual;":"⊵","&RightUpDownVector;":"⥏","&RightUpTeeVector;":"⥜","&RightUpVector;":"↾","&RightUpVectorBar;":"⥔","&RightVector;":"⇀","&RightVectorBar;":"⥓","&Rightarrow;":"⇒","&Ropf;":"ℝ","&RoundImplies;":"⥰","&Rrightarrow;":"⇛","&Rscr;":"ℛ","&Rsh;":"↱","&RuleDelayed;":"⧴","&SHCHcy;":"Щ","&SHcy;":"Ш","&SOFTcy;":"Ь","&Sacute;":"Ś","&Sc;":"⪼","&Scaron;":"Š","&Scedil;":"Ş","&Scirc;":"Ŝ","&Scy;":"С","&Sfr;":"𝔖","&ShortDownArrow;":"↓","&ShortLeftArrow;":"←","&ShortRightArrow;":"→","&ShortUpArrow;":"↑","&Sigma;":"Σ","&SmallCircle;":"∘","&Sopf;":"𝕊","&Sqrt;":"√","&Square;":"□","&SquareIntersection;":"⊓","&SquareSubset;":"⊏","&SquareSubsetEqual;":"⊑","&SquareSuperset;":"⊐","&SquareSupersetEqual;":"⊒","&SquareUnion;":"⊔","&Sscr;":"𝒮","&Star;":"⋆","&Sub;":"⋐","&Subset;":"⋐","&SubsetEqual;":"⊆","&Succeeds;":"≻","&SucceedsEqual;":"⪰","&SucceedsSlantEqual;":"≽","&SucceedsTilde;":"≿","&SuchThat;":"∋","&Sum;":"∑","&Sup;":"⋑","&Superset;":"⊃","&SupersetEqual;":"⊇","&Supset;":"⋑","&THORN":"Þ","&THORN;":"Þ","&TRADE;":"™","&TSHcy;":"Ћ","&TScy;":"Ц","&Tab;":"\t","&Tau;":"Τ","&Tcaron;":"Ť","&Tcedil;":"Ţ","&Tcy;":"Т","&Tfr;":"𝔗","&Therefore;":"∴","&Theta;":"Θ","&ThickSpace;":"  ","&ThinSpace;":" ","&Tilde;":"∼","&TildeEqual;":"≃","&TildeFullEqual;":"≅","&TildeTilde;":"≈","&Topf;":"𝕋","&TripleDot;":"⃛","&Tscr;":"𝒯","&Tstrok;":"Ŧ","&Uacute":"Ú","&Uacute;":"Ú","&Uarr;":"↟","&Uarrocir;":"⥉","&Ubrcy;":"Ў","&Ubreve;":"Ŭ","&Ucirc":"Û","&Ucirc;":"Û","&Ucy;":"У","&Udblac;":"Ű","&Ufr;":"𝔘","&Ugrave":"Ù","&Ugrave;":"Ù","&Umacr;":"Ū","&UnderBar;":"_","&UnderBrace;":"⏟","&UnderBracket;":"⎵","&UnderParenthesis;":"⏝","&Union;":"⋃","&UnionPlus;":"⊎","&Uogon;":"Ų","&Uopf;":"𝕌","&UpArrow;":"↑","&UpArrowBar;":"⤒","&UpArrowDownArrow;":"⇅","&UpDownArrow;":"↕","&UpEquilibrium;":"⥮","&UpTee;":"⊥","&UpTeeArrow;":"↥","&Uparrow;":"⇑","&Updownarrow;":"⇕","&UpperLeftArrow;":"↖","&UpperRightArrow;":"↗","&Upsi;":"ϒ","&Upsilon;":"Υ","&Uring;":"Ů","&Uscr;":"𝒰","&Utilde;":"Ũ","&Uuml":"Ü","&Uuml;":"Ü","&VDash;":"⊫","&Vbar;":"⫫","&Vcy;":"В","&Vdash;":"⊩","&Vdashl;":"⫦","&Vee;":"⋁","&Verbar;":"‖","&Vert;":"‖","&VerticalBar;":"∣","&VerticalLine;":"|","&VerticalSeparator;":"❘","&VerticalTilde;":"≀","&VeryThinSpace;":" ","&Vfr;":"𝔙","&Vopf;":"𝕍","&Vscr;":"𝒱","&Vvdash;":"⊪","&Wcirc;":"Ŵ","&Wedge;":"⋀","&Wfr;":"𝔚","&Wopf;":"𝕎","&Wscr;":"𝒲","&Xfr;":"𝔛","&Xi;":"Ξ","&Xopf;":"𝕏","&Xscr;":"𝒳","&YAcy;":"Я","&YIcy;":"Ї","&YUcy;":"Ю","&Yacute":"Ý","&Yacute;":"Ý","&Ycirc;":"Ŷ","&Ycy;":"Ы","&Yfr;":"𝔜","&Yopf;":"𝕐","&Yscr;":"𝒴","&Yuml;":"Ÿ","&ZHcy;":"Ж","&Zacute;":"Ź","&Zcaron;":"Ž","&Zcy;":"З","&Zdot;":"Ż","&ZeroWidthSpace;":"​","&Zeta;":"Ζ","&Zfr;":"ℨ","&Zopf;":"ℤ","&Zscr;":"𝒵","&aacute":"á","&aacute;":"á","&abreve;":"ă","&ac;":"∾","&acE;":"∾̳","&acd;":"∿","&acirc":"â","&acirc;":"â","&acute":"´","&acute;":"´","&acy;":"а","&aelig":"æ","&aelig;":"æ","&af;":"⁡","&afr;":"𝔞","&agrave":"à","&agrave;":"à","&alefsym;":"ℵ","&aleph;":"ℵ","&alpha;":"α","&amacr;":"ā","&amalg;":"⨿","&amp":"&","&amp;":"&","&and;":"∧","&andand;":"⩕","&andd;":"⩜","&andslope;":"⩘","&andv;":"⩚","&ang;":"∠","&ange;":"⦤","&angle;":"∠","&angmsd;":"∡","&angmsdaa;":"⦨","&angmsdab;":"⦩","&angmsdac;":"⦪","&angmsdad;":"⦫","&angmsdae;":"⦬","&angmsdaf;":"⦭","&angmsdag;":"⦮","&angmsdah;":"⦯","&angrt;":"∟","&angrtvb;":"⊾","&angrtvbd;":"⦝","&angsph;":"∢","&angst;":"Å","&angzarr;":"⍼","&aogon;":"ą","&aopf;":"𝕒","&ap;":"≈","&apE;":"⩰","&apacir;":"⩯","&ape;":"≊","&apid;":"≋","&apos;":"'","&approx;":"≈","&approxeq;":"≊","&aring":"å","&aring;":"å","&ascr;":"𝒶","&ast;":"*","&asymp;":"≈","&asympeq;":"≍","&atilde":"ã","&atilde;":"ã","&auml":"ä","&auml;":"ä","&awconint;":"∳","&awint;":"⨑","&bNot;":"⫭","&backcong;":"≌","&backepsilon;":"϶","&backprime;":"‵","&backsim;":"∽","&backsimeq;":"⋍","&barvee;":"⊽","&barwed;":"⌅","&barwedge;":"⌅","&bbrk;":"⎵","&bbrktbrk;":"⎶","&bcong;":"≌","&bcy;":"б","&bdquo;":"„","&becaus;":"∵","&because;":"∵","&bemptyv;":"⦰","&bepsi;":"϶","&bernou;":"ℬ","&beta;":"β","&beth;":"ℶ","&between;":"≬","&bfr;":"𝔟","&bigcap;":"⋂","&bigcirc;":"◯","&bigcup;":"⋃","&bigodot;":"⨀","&bigoplus;":"⨁","&bigotimes;":"⨂","&bigsqcup;":"⨆","&bigstar;":"★","&bigtriangledown;":"▽","&bigtriangleup;":"△","&biguplus;":"⨄","&bigvee;":"⋁","&bigwedge;":"⋀","&bkarow;":"⤍","&blacklozenge;":"⧫","&blacksquare;":"▪","&blacktriangle;":"▴","&blacktriangledown;":"▾","&blacktriangleleft;":"◂","&blacktriangleright;":"▸","&blank;":"␣","&blk12;":"▒","&blk14;":"░","&blk34;":"▓","&block;":"█","&bne;":"=⃥","&bnequiv;":"≡⃥","&bnot;":"⌐","&bopf;":"𝕓","&bot;":"⊥","&bottom;":"⊥","&bowtie;":"⋈","&boxDL;":"╗","&boxDR;":"╔","&boxDl;":"╖","&boxDr;":"╓","&boxH;":"═","&boxHD;":"╦","&boxHU;":"╩","&boxHd;":"╤","&boxHu;":"╧","&boxUL;":"╝","&boxUR;":"╚","&boxUl;":"╜","&boxUr;":"╙","&boxV;":"║","&boxVH;":"╬","&boxVL;":"╣","&boxVR;":"╠","&boxVh;":"╫","&boxVl;":"╢","&boxVr;":"╟","&boxbox;":"⧉","&boxdL;":"╕","&boxdR;":"╒","&boxdl;":"┐","&boxdr;":"┌","&boxh;":"─","&boxhD;":"╥","&boxhU;":"╨","&boxhd;":"┬","&boxhu;":"┴","&boxminus;":"⊟","&boxplus;":"⊞","&boxtimes;":"⊠","&boxuL;":"╛","&boxuR;":"╘","&boxul;":"┘","&boxur;":"└","&boxv;":"│","&boxvH;":"╪","&boxvL;":"╡","&boxvR;":"╞","&boxvh;":"┼","&boxvl;":"┤","&boxvr;":"├","&bprime;":"‵","&breve;":"˘","&brvbar":"¦","&brvbar;":"¦","&bscr;":"𝒷","&bsemi;":"⁏","&bsim;":"∽","&bsime;":"⋍","&bsol;":"\\","&bsolb;":"⧅","&bsolhsub;":"⟈","&bull;":"•","&bullet;":"•","&bump;":"≎","&bumpE;":"⪮","&bumpe;":"≏","&bumpeq;":"≏","&cacute;":"ć","&cap;":"∩","&capand;":"⩄","&capbrcup;":"⩉","&capcap;":"⩋","&capcup;":"⩇","&capdot;":"⩀","&caps;":"∩︀","&caret;":"⁁","&caron;":"ˇ","&ccaps;":"⩍","&ccaron;":"č","&ccedil":"ç","&ccedil;":"ç","&ccirc;":"ĉ","&ccups;":"⩌","&ccupssm;":"⩐","&cdot;":"ċ","&cedil":"¸","&cedil;":"¸","&cemptyv;":"⦲","&cent":"¢","&cent;":"¢","&centerdot;":"·","&cfr;":"𝔠","&chcy;":"ч","&check;":"✓","&checkmark;":"✓","&chi;":"χ","&cir;":"○","&cirE;":"⧃","&circ;":"ˆ","&circeq;":"≗","&circlearrowleft;":"↺","&circlearrowright;":"↻","&circledR;":"®","&circledS;":"Ⓢ","&circledast;":"⊛","&circledcirc;":"⊚","&circleddash;":"⊝","&cire;":"≗","&cirfnint;":"⨐","&cirmid;":"⫯","&cirscir;":"⧂","&clubs;":"♣","&clubsuit;":"♣","&colon;":":","&colone;":"≔","&coloneq;":"≔","&comma;":",","&commat;":"@","&comp;":"∁","&compfn;":"∘","&complement;":"∁","&complexes;":"ℂ","&cong;":"≅","&congdot;":"⩭","&conint;":"∮","&copf;":"𝕔","&coprod;":"∐","&copy":"©","&copy;":"©","&copysr;":"℗","&crarr;":"↵","&cross;":"✗","&cscr;":"𝒸","&csub;":"⫏","&csube;":"⫑","&csup;":"⫐","&csupe;":"⫒","&ctdot;":"⋯","&cudarrl;":"⤸","&cudarrr;":"⤵","&cuepr;":"⋞","&cuesc;":"⋟","&cularr;":"↶","&cularrp;":"⤽","&cup;":"∪","&cupbrcap;":"⩈","&cupcap;":"⩆","&cupcup;":"⩊","&cupdot;":"⊍","&cupor;":"⩅","&cups;":"∪︀","&curarr;":"↷","&curarrm;":"⤼","&curlyeqprec;":"⋞","&curlyeqsucc;":"⋟","&curlyvee;":"⋎","&curlywedge;":"⋏","&curren":"¤","&curren;":"¤","&curvearrowleft;":"↶","&curvearrowright;":"↷","&cuvee;":"⋎","&cuwed;":"⋏","&cwconint;":"∲","&cwint;":"∱","&cylcty;":"⌭","&dArr;":"⇓","&dHar;":"⥥","&dagger;":"†","&daleth;":"ℸ","&darr;":"↓","&dash;":"‐","&dashv;":"⊣","&dbkarow;":"⤏","&dblac;":"˝","&dcaron;":"ď","&dcy;":"д","&dd;":"ⅆ","&ddagger;":"‡","&ddarr;":"⇊","&ddotseq;":"⩷","&deg":"°","&deg;":"°","&delta;":"δ","&demptyv;":"⦱","&dfisht;":"⥿","&dfr;":"𝔡","&dharl;":"⇃","&dharr;":"⇂","&diam;":"⋄","&diamond;":"⋄","&diamondsuit;":"♦","&diams;":"♦","&die;":"¨","&digamma;":"ϝ","&disin;":"⋲","&div;":"÷","&divide":"÷","&divide;":"÷","&divideontimes;":"⋇","&divonx;":"⋇","&djcy;":"ђ","&dlcorn;":"⌞","&dlcrop;":"⌍","&dollar;":"$","&dopf;":"𝕕","&dot;":"˙","&doteq;":"≐","&doteqdot;":"≑","&dotminus;":"∸","&dotplus;":"∔","&dotsquare;":"⊡","&doublebarwedge;":"⌆","&downarrow;":"↓","&downdownarrows;":"⇊","&downharpoonleft;":"⇃","&downharpoonright;":"⇂","&drbkarow;":"⤐","&drcorn;":"⌟","&drcrop;":"⌌","&dscr;":"𝒹","&dscy;":"ѕ","&dsol;":"⧶","&dstrok;":"đ","&dtdot;":"⋱","&dtri;":"▿","&dtrif;":"▾","&duarr;":"⇵","&duhar;":"⥯","&dwangle;":"⦦","&dzcy;":"џ","&dzigrarr;":"⟿","&eDDot;":"⩷","&eDot;":"≑","&eacute":"é","&eacute;":"é","&easter;":"⩮","&ecaron;":"ě","&ecir;":"≖","&ecirc":"ê","&ecirc;":"ê","&ecolon;":"≕","&ecy;":"э","&edot;":"ė","&ee;":"ⅇ","&efDot;":"≒","&efr;":"𝔢","&eg;":"⪚","&egrave":"è","&egrave;":"è","&egs;":"⪖","&egsdot;":"⪘","&el;":"⪙","&elinters;":"⏧","&ell;":"ℓ","&els;":"⪕","&elsdot;":"⪗","&emacr;":"ē","&empty;":"∅","&emptyset;":"∅","&emptyv;":"∅","&emsp13;":" ","&emsp14;":" ","&emsp;":" ","&eng;":"ŋ","&ensp;":" ","&eogon;":"ę","&eopf;":"𝕖","&epar;":"⋕","&eparsl;":"⧣","&eplus;":"⩱","&epsi;":"ε","&epsilon;":"ε","&epsiv;":"ϵ","&eqcirc;":"≖","&eqcolon;":"≕","&eqsim;":"≂","&eqslantgtr;":"⪖","&eqslantless;":"⪕","&equals;":"=","&equest;":"≟","&equiv;":"≡","&equivDD;":"⩸","&eqvparsl;":"⧥","&erDot;":"≓","&erarr;":"⥱","&escr;":"ℯ","&esdot;":"≐","&esim;":"≂","&eta;":"η","&eth":"ð","&eth;":"ð","&euml":"ë","&euml;":"ë","&euro;":"€","&excl;":"!","&exist;":"∃","&expectation;":"ℰ","&exponentiale;":"ⅇ","&fallingdotseq;":"≒","&fcy;":"ф","&female;":"♀","&ffilig;":"ﬃ","&fflig;":"ﬀ","&ffllig;":"ﬄ","&ffr;":"𝔣","&filig;":"ﬁ","&fjlig;":"fj","&flat;":"♭","&fllig;":"ﬂ","&fltns;":"▱","&fnof;":"ƒ","&fopf;":"𝕗","&forall;":"∀","&fork;":"⋔","&forkv;":"⫙","&fpartint;":"⨍","&frac12":"½","&frac12;":"½","&frac13;":"⅓","&frac14":"¼","&frac14;":"¼","&frac15;":"⅕","&frac16;":"⅙","&frac18;":"⅛","&frac23;":"⅔","&frac25;":"⅖","&frac34":"¾","&frac34;":"¾","&frac35;":"⅗","&frac38;":"⅜","&frac45;":"⅘","&frac56;":"⅚","&frac58;":"⅝","&frac78;":"⅞","&frasl;":"⁄","&frown;":"⌢","&fscr;":"𝒻","&gE;":"≧","&gEl;":"⪌","&gacute;":"ǵ","&gamma;":"γ","&gammad;":"ϝ","&gap;":"⪆","&gbreve;":"ğ","&gcirc;":"ĝ","&gcy;":"г","&gdot;":"ġ","&ge;":"≥","&gel;":"⋛","&geq;":"≥","&geqq;":"≧","&geqslant;":"⩾","&ges;":"⩾","&gescc;":"⪩","&gesdot;":"⪀","&gesdoto;":"⪂","&gesdotol;":"⪄","&gesl;":"⋛︀","&gesles;":"⪔","&gfr;":"𝔤","&gg;":"≫","&ggg;":"⋙","&gimel;":"ℷ","&gjcy;":"ѓ","&gl;":"≷","&glE;":"⪒","&gla;":"⪥","&glj;":"⪤","&gnE;":"≩","&gnap;":"⪊","&gnapprox;":"⪊","&gne;":"⪈","&gneq;":"⪈","&gneqq;":"≩","&gnsim;":"⋧","&gopf;":"𝕘","&grave;":"`","&gscr;":"ℊ","&gsim;":"≳","&gsime;":"⪎","&gsiml;":"⪐","&gt":">","&gt;":">","&gtcc;":"⪧","&gtcir;":"⩺","&gtdot;":"⋗","&gtlPar;":"⦕","&gtquest;":"⩼","&gtrapprox;":"⪆","&gtrarr;":"⥸","&gtrdot;":"⋗","&gtreqless;":"⋛","&gtreqqless;":"⪌","&gtrless;":"≷","&gtrsim;":"≳","&gvertneqq;":"≩︀","&gvnE;":"≩︀","&hArr;":"⇔","&hairsp;":" ","&half;":"½","&hamilt;":"ℋ","&hardcy;":"ъ","&harr;":"↔","&harrcir;":"⥈","&harrw;":"↭","&hbar;":"ℏ","&hcirc;":"ĥ","&hearts;":"♥","&heartsuit;":"♥","&hellip;":"…","&hercon;":"⊹","&hfr;":"𝔥","&hksearow;":"⤥","&hkswarow;":"⤦","&hoarr;":"⇿","&homtht;":"∻","&hookleftarrow;":"↩","&hookrightarrow;":"↪","&hopf;":"𝕙","&horbar;":"―","&hscr;":"𝒽","&hslash;":"ℏ","&hstrok;":"ħ","&hybull;":"⁃","&hyphen;":"‐","&iacute":"í","&iacute;":"í","&ic;":"⁣","&icirc":"î","&icirc;":"î","&icy;":"и","&iecy;":"е","&iexcl":"¡","&iexcl;":"¡","&iff;":"⇔","&ifr;":"𝔦","&igrave":"ì","&igrave;":"ì","&ii;":"ⅈ","&iiiint;":"⨌","&iiint;":"∭","&iinfin;":"⧜","&iiota;":"℩","&ijlig;":"ĳ","&imacr;":"ī","&image;":"ℑ","&imagline;":"ℐ","&imagpart;":"ℑ","&imath;":"ı","&imof;":"⊷","&imped;":"Ƶ","&in;":"∈","&incare;":"℅","&infin;":"∞","&infintie;":"⧝","&inodot;":"ı","&int;":"∫","&intcal;":"⊺","&integers;":"ℤ","&intercal;":"⊺","&intlarhk;":"⨗","&intprod;":"⨼","&iocy;":"ё","&iogon;":"į","&iopf;":"𝕚","&iota;":"ι","&iprod;":"⨼","&iquest":"¿","&iquest;":"¿","&iscr;":"𝒾","&isin;":"∈","&isinE;":"⋹","&isindot;":"⋵","&isins;":"⋴","&isinsv;":"⋳","&isinv;":"∈","&it;":"⁢","&itilde;":"ĩ","&iukcy;":"і","&iuml":"ï","&iuml;":"ï","&jcirc;":"ĵ","&jcy;":"й","&jfr;":"𝔧","&jmath;":"ȷ","&jopf;":"𝕛","&jscr;":"𝒿","&jsercy;":"ј","&jukcy;":"є","&kappa;":"κ","&kappav;":"ϰ","&kcedil;":"ķ","&kcy;":"к","&kfr;":"𝔨","&kgreen;":"ĸ","&khcy;":"х","&kjcy;":"ќ","&kopf;":"𝕜","&kscr;":"𝓀","&lAarr;":"⇚","&lArr;":"⇐","&lAtail;":"⤛","&lBarr;":"⤎","&lE;":"≦","&lEg;":"⪋","&lHar;":"⥢","&lacute;":"ĺ","&laemptyv;":"⦴","&lagran;":"ℒ","&lambda;":"λ","&lang;":"⟨","&langd;":"⦑","&langle;":"⟨","&lap;":"⪅","&laquo":"«","&laquo;":"«","&larr;":"←","&larrb;":"⇤","&larrbfs;":"⤟","&larrfs;":"⤝","&larrhk;":"↩","&larrlp;":"↫","&larrpl;":"⤹","&larrsim;":"⥳","&larrtl;":"↢","&lat;":"⪫","&latail;":"⤙","&late;":"⪭","&lates;":"⪭︀","&lbarr;":"⤌","&lbbrk;":"❲","&lbrace;":"{","&lbrack;":"[","&lbrke;":"⦋","&lbrksld;":"⦏","&lbrkslu;":"⦍","&lcaron;":"ľ","&lcedil;":"ļ","&lceil;":"⌈","&lcub;":"{","&lcy;":"л","&ldca;":"⤶","&ldquo;":"“","&ldquor;":"„","&ldrdhar;":"⥧","&ldrushar;":"⥋","&ldsh;":"↲","&le;":"≤","&leftarrow;":"←","&leftarrowtail;":"↢","&leftharpoondown;":"↽","&leftharpoonup;":"↼","&leftleftarrows;":"⇇","&leftrightarrow;":"↔","&leftrightarrows;":"⇆","&leftrightharpoons;":"⇋","&leftrightsquigarrow;":"↭","&leftthreetimes;":"⋋","&leg;":"⋚","&leq;":"≤","&leqq;":"≦","&leqslant;":"⩽","&les;":"⩽","&lescc;":"⪨","&lesdot;":"⩿","&lesdoto;":"⪁","&lesdotor;":"⪃","&lesg;":"⋚︀","&lesges;":"⪓","&lessapprox;":"⪅","&lessdot;":"⋖","&lesseqgtr;":"⋚","&lesseqqgtr;":"⪋","&lessgtr;":"≶","&lesssim;":"≲","&lfisht;":"⥼","&lfloor;":"⌊","&lfr;":"𝔩","&lg;":"≶","&lgE;":"⪑","&lhard;":"↽","&lharu;":"↼","&lharul;":"⥪","&lhblk;":"▄","&ljcy;":"љ","&ll;":"≪","&llarr;":"⇇","&llcorner;":"⌞","&llhard;":"⥫","&lltri;":"◺","&lmidot;":"ŀ","&lmoust;":"⎰","&lmoustache;":"⎰","&lnE;":"≨","&lnap;":"⪉","&lnapprox;":"⪉","&lne;":"⪇","&lneq;":"⪇","&lneqq;":"≨","&lnsim;":"⋦","&loang;":"⟬","&loarr;":"⇽","&lobrk;":"⟦","&longleftarrow;":"⟵","&longleftrightarrow;":"⟷","&longmapsto;":"⟼","&longrightarrow;":"⟶","&looparrowleft;":"↫","&looparrowright;":"↬","&lopar;":"⦅","&lopf;":"𝕝","&loplus;":"⨭","&lotimes;":"⨴","&lowast;":"∗","&lowbar;":"_","&loz;":"◊","&lozenge;":"◊","&lozf;":"⧫","&lpar;":"(","&lparlt;":"⦓","&lrarr;":"⇆","&lrcorner;":"⌟","&lrhar;":"⇋","&lrhard;":"⥭","&lrm;":"‎","&lrtri;":"⊿","&lsaquo;":"‹","&lscr;":"𝓁","&lsh;":"↰","&lsim;":"≲","&lsime;":"⪍","&lsimg;":"⪏","&lsqb;":"[","&lsquo;":"‘","&lsquor;":"‚","&lstrok;":"ł","&lt":"<","&lt;":"<","&ltcc;":"⪦","&ltcir;":"⩹","&ltdot;":"⋖","&lthree;":"⋋","&ltimes;":"⋉","&ltlarr;":"⥶","&ltquest;":"⩻","&ltrPar;":"⦖","&ltri;":"◃","&ltrie;":"⊴","&ltrif;":"◂","&lurdshar;":"⥊","&luruhar;":"⥦","&lvertneqq;":"≨︀","&lvnE;":"≨︀","&mDDot;":"∺","&macr":"¯","&macr;":"¯","&male;":"♂","&malt;":"✠","&maltese;":"✠","&map;":"↦","&mapsto;":"↦","&mapstodown;":"↧","&mapstoleft;":"↤","&mapstoup;":"↥","&marker;":"▮","&mcomma;":"⨩","&mcy;":"м","&mdash;":"—","&measuredangle;":"∡","&mfr;":"𝔪","&mho;":"℧","&micro":"µ","&micro;":"µ","&mid;":"∣","&midast;":"*","&midcir;":"⫰","&middot":"·","&middot;":"·","&minus;":"−","&minusb;":"⊟","&minusd;":"∸","&minusdu;":"⨪","&mlcp;":"⫛","&mldr;":"…","&mnplus;":"∓","&models;":"⊧","&mopf;":"𝕞","&mp;":"∓","&mscr;":"𝓂","&mstpos;":"∾","&mu;":"μ","&multimap;":"⊸","&mumap;":"⊸","&nGg;":"⋙̸","&nGt;":"≫⃒","&nGtv;":"≫̸","&nLeftarrow;":"⇍","&nLeftrightarrow;":"⇎","&nLl;":"⋘̸","&nLt;":"≪⃒","&nLtv;":"≪̸","&nRightarrow;":"⇏","&nVDash;":"⊯","&nVdash;":"⊮","&nabla;":"∇","&nacute;":"ń","&nang;":"∠⃒","&nap;":"≉","&napE;":"⩰̸","&napid;":"≋̸","&napos;":"ŉ","&napprox;":"≉","&natur;":"♮","&natural;":"♮","&naturals;":"ℕ","&nbsp":" ","&nbsp;":" ","&nbump;":"≎̸","&nbumpe;":"≏̸","&ncap;":"⩃","&ncaron;":"ň","&ncedil;":"ņ","&ncong;":"≇","&ncongdot;":"⩭̸","&ncup;":"⩂","&ncy;":"н","&ndash;":"–","&ne;":"≠","&neArr;":"⇗","&nearhk;":"⤤","&nearr;":"↗","&nearrow;":"↗","&nedot;":"≐̸","&nequiv;":"≢","&nesear;":"⤨","&nesim;":"≂̸","&nexist;":"∄","&nexists;":"∄","&nfr;":"𝔫","&ngE;":"≧̸","&nge;":"≱","&ngeq;":"≱","&ngeqq;":"≧̸","&ngeqslant;":"⩾̸","&nges;":"⩾̸","&ngsim;":"≵","&ngt;":"≯","&ngtr;":"≯","&nhArr;":"⇎","&nharr;":"↮","&nhpar;":"⫲","&ni;":"∋","&nis;":"⋼","&nisd;":"⋺","&niv;":"∋","&njcy;":"њ","&nlArr;":"⇍","&nlE;":"≦̸","&nlarr;":"↚","&nldr;":"‥","&nle;":"≰","&nleftarrow;":"↚","&nleftrightarrow;":"↮","&nleq;":"≰","&nleqq;":"≦̸","&nleqslant;":"⩽̸","&nles;":"⩽̸","&nless;":"≮","&nlsim;":"≴","&nlt;":"≮","&nltri;":"⋪","&nltrie;":"⋬","&nmid;":"∤","&nopf;":"𝕟","&not":"¬","&not;":"¬","&notin;":"∉","&notinE;":"⋹̸","&notindot;":"⋵̸","&notinva;":"∉","&notinvb;":"⋷","&notinvc;":"⋶","&notni;":"∌","&notniva;":"∌","&notnivb;":"⋾","&notnivc;":"⋽","&npar;":"∦","&nparallel;":"∦","&nparsl;":"⫽⃥","&npart;":"∂̸","&npolint;":"⨔","&npr;":"⊀","&nprcue;":"⋠","&npre;":"⪯̸","&nprec;":"⊀","&npreceq;":"⪯̸","&nrArr;":"⇏","&nrarr;":"↛","&nrarrc;":"⤳̸","&nrarrw;":"↝̸","&nrightarrow;":"↛","&nrtri;":"⋫","&nrtrie;":"⋭","&nsc;":"⊁","&nsccue;":"⋡","&nsce;":"⪰̸","&nscr;":"𝓃","&nshortmid;":"∤","&nshortparallel;":"∦","&nsim;":"≁","&nsime;":"≄","&nsimeq;":"≄","&nsmid;":"∤","&nspar;":"∦","&nsqsube;":"⋢","&nsqsupe;":"⋣","&nsub;":"⊄","&nsubE;":"⫅̸","&nsube;":"⊈","&nsubset;":"⊂⃒","&nsubseteq;":"⊈","&nsubseteqq;":"⫅̸","&nsucc;":"⊁","&nsucceq;":"⪰̸","&nsup;":"⊅","&nsupE;":"⫆̸","&nsupe;":"⊉","&nsupset;":"⊃⃒","&nsupseteq;":"⊉","&nsupseteqq;":"⫆̸","&ntgl;":"≹","&ntilde":"ñ","&ntilde;":"ñ","&ntlg;":"≸","&ntriangleleft;":"⋪","&ntrianglelefteq;":"⋬","&ntriangleright;":"⋫","&ntrianglerighteq;":"⋭","&nu;":"ν","&num;":"#","&numero;":"№","&numsp;":" ","&nvDash;":"⊭","&nvHarr;":"⤄","&nvap;":"≍⃒","&nvdash;":"⊬","&nvge;":"≥⃒","&nvgt;":">⃒","&nvinfin;":"⧞","&nvlArr;":"⤂","&nvle;":"≤⃒","&nvlt;":"<⃒","&nvltrie;":"⊴⃒","&nvrArr;":"⤃","&nvrtrie;":"⊵⃒","&nvsim;":"∼⃒","&nwArr;":"⇖","&nwarhk;":"⤣","&nwarr;":"↖","&nwarrow;":"↖","&nwnear;":"⤧","&oS;":"Ⓢ","&oacute":"ó","&oacute;":"ó","&oast;":"⊛","&ocir;":"⊚","&ocirc":"ô","&ocirc;":"ô","&ocy;":"о","&odash;":"⊝","&odblac;":"ő","&odiv;":"⨸","&odot;":"⊙","&odsold;":"⦼","&oelig;":"œ","&ofcir;":"⦿","&ofr;":"𝔬","&ogon;":"˛","&ograve":"ò","&ograve;":"ò","&ogt;":"⧁","&ohbar;":"⦵","&ohm;":"Ω","&oint;":"∮","&olarr;":"↺","&olcir;":"⦾","&olcross;":"⦻","&oline;":"‾","&olt;":"⧀","&omacr;":"ō","&omega;":"ω","&omicron;":"ο","&omid;":"⦶","&ominus;":"⊖","&oopf;":"𝕠","&opar;":"⦷","&operp;":"⦹","&oplus;":"⊕","&or;":"∨","&orarr;":"↻","&ord;":"⩝","&order;":"ℴ","&orderof;":"ℴ","&ordf":"ª","&ordf;":"ª","&ordm":"º","&ordm;":"º","&origof;":"⊶","&oror;":"⩖","&orslope;":"⩗","&orv;":"⩛","&oscr;":"ℴ","&oslash":"ø","&oslash;":"ø","&osol;":"⊘","&otilde":"õ","&otilde;":"õ","&otimes;":"⊗","&otimesas;":"⨶","&ouml":"ö","&ouml;":"ö","&ovbar;":"⌽","&par;":"∥","&para":"¶","&para;":"¶","&parallel;":"∥","&parsim;":"⫳","&parsl;":"⫽","&part;":"∂","&pcy;":"п","&percnt;":"%","&period;":".","&permil;":"‰","&perp;":"⊥","&pertenk;":"‱","&pfr;":"𝔭","&phi;":"φ","&phiv;":"ϕ","&phmmat;":"ℳ","&phone;":"☎","&pi;":"π","&pitchfork;":"⋔","&piv;":"ϖ","&planck;":"ℏ","&planckh;":"ℎ","&plankv;":"ℏ","&plus;":"+","&plusacir;":"⨣","&plusb;":"⊞","&pluscir;":"⨢","&plusdo;":"∔","&plusdu;":"⨥","&pluse;":"⩲","&plusmn":"±","&plusmn;":"±","&plussim;":"⨦","&plustwo;":"⨧","&pm;":"±","&pointint;":"⨕","&popf;":"𝕡","&pound":"£","&pound;":"£","&pr;":"≺","&prE;":"⪳","&prap;":"⪷","&prcue;":"≼","&pre;":"⪯","&prec;":"≺","&precapprox;":"⪷","&preccurlyeq;":"≼","&preceq;":"⪯","&precnapprox;":"⪹","&precneqq;":"⪵","&precnsim;":"⋨","&precsim;":"≾","&prime;":"′","&primes;":"ℙ","&prnE;":"⪵","&prnap;":"⪹","&prnsim;":"⋨","&prod;":"∏","&profalar;":"⌮","&profline;":"⌒","&profsurf;":"⌓","&prop;":"∝","&propto;":"∝","&prsim;":"≾","&prurel;":"⊰","&pscr;":"𝓅","&psi;":"ψ","&puncsp;":" ","&qfr;":"𝔮","&qint;":"⨌","&qopf;":"𝕢","&qprime;":"⁗","&qscr;":"𝓆","&quaternions;":"ℍ","&quatint;":"⨖","&quest;":"?","&questeq;":"≟","&quot":'"',"&quot;":'"',"&rAarr;":"⇛","&rArr;":"⇒","&rAtail;":"⤜","&rBarr;":"⤏","&rHar;":"⥤","&race;":"∽̱","&racute;":"ŕ","&radic;":"√","&raemptyv;":"⦳","&rang;":"⟩","&rangd;":"⦒","&range;":"⦥","&rangle;":"⟩","&raquo":"»","&raquo;":"»","&rarr;":"→","&rarrap;":"⥵","&rarrb;":"⇥","&rarrbfs;":"⤠","&rarrc;":"⤳","&rarrfs;":"⤞","&rarrhk;":"↪","&rarrlp;":"↬","&rarrpl;":"⥅","&rarrsim;":"⥴","&rarrtl;":"↣","&rarrw;":"↝","&ratail;":"⤚","&ratio;":"∶","&rationals;":"ℚ","&rbarr;":"⤍","&rbbrk;":"❳","&rbrace;":"}","&rbrack;":"]","&rbrke;":"⦌","&rbrksld;":"⦎","&rbrkslu;":"⦐","&rcaron;":"ř","&rcedil;":"ŗ","&rceil;":"⌉","&rcub;":"}","&rcy;":"р","&rdca;":"⤷","&rdldhar;":"⥩","&rdquo;":"”","&rdquor;":"”","&rdsh;":"↳","&real;":"ℜ","&realine;":"ℛ","&realpart;":"ℜ","&reals;":"ℝ","&rect;":"▭","&reg":"®","&reg;":"®","&rfisht;":"⥽","&rfloor;":"⌋","&rfr;":"𝔯","&rhard;":"⇁","&rharu;":"⇀","&rharul;":"⥬","&rho;":"ρ","&rhov;":"ϱ","&rightarrow;":"→","&rightarrowtail;":"↣","&rightharpoondown;":"⇁","&rightharpoonup;":"⇀","&rightleftarrows;":"⇄","&rightleftharpoons;":"⇌","&rightrightarrows;":"⇉","&rightsquigarrow;":"↝","&rightthreetimes;":"⋌","&ring;":"˚","&risingdotseq;":"≓","&rlarr;":"⇄","&rlhar;":"⇌","&rlm;":"‏","&rmoust;":"⎱","&rmoustache;":"⎱","&rnmid;":"⫮","&roang;":"⟭","&roarr;":"⇾","&robrk;":"⟧","&ropar;":"⦆","&ropf;":"𝕣","&roplus;":"⨮","&rotimes;":"⨵","&rpar;":")","&rpargt;":"⦔","&rppolint;":"⨒","&rrarr;":"⇉","&rsaquo;":"›","&rscr;":"𝓇","&rsh;":"↱","&rsqb;":"]","&rsquo;":"’","&rsquor;":"’","&rthree;":"⋌","&rtimes;":"⋊","&rtri;":"▹","&rtrie;":"⊵","&rtrif;":"▸","&rtriltri;":"⧎","&ruluhar;":"⥨","&rx;":"℞","&sacute;":"ś","&sbquo;":"‚","&sc;":"≻","&scE;":"⪴","&scap;":"⪸","&scaron;":"š","&sccue;":"≽","&sce;":"⪰","&scedil;":"ş","&scirc;":"ŝ","&scnE;":"⪶","&scnap;":"⪺","&scnsim;":"⋩","&scpolint;":"⨓","&scsim;":"≿","&scy;":"с","&sdot;":"⋅","&sdotb;":"⊡","&sdote;":"⩦","&seArr;":"⇘","&searhk;":"⤥","&searr;":"↘","&searrow;":"↘","&sect":"§","&sect;":"§","&semi;":";","&seswar;":"⤩","&setminus;":"∖","&setmn;":"∖","&sext;":"✶","&sfr;":"𝔰","&sfrown;":"⌢","&sharp;":"♯","&shchcy;":"щ","&shcy;":"ш","&shortmid;":"∣","&shortparallel;":"∥","&shy":"­","&shy;":"­","&sigma;":"σ","&sigmaf;":"ς","&sigmav;":"ς","&sim;":"∼","&simdot;":"⩪","&sime;":"≃","&simeq;":"≃","&simg;":"⪞","&simgE;":"⪠","&siml;":"⪝","&simlE;":"⪟","&simne;":"≆","&simplus;":"⨤","&simrarr;":"⥲","&slarr;":"←","&smallsetminus;":"∖","&smashp;":"⨳","&smeparsl;":"⧤","&smid;":"∣","&smile;":"⌣","&smt;":"⪪","&smte;":"⪬","&smtes;":"⪬︀","&softcy;":"ь","&sol;":"/","&solb;":"⧄","&solbar;":"⌿","&sopf;":"𝕤","&spades;":"♠","&spadesuit;":"♠","&spar;":"∥","&sqcap;":"⊓","&sqcaps;":"⊓︀","&sqcup;":"⊔","&sqcups;":"⊔︀","&sqsub;":"⊏","&sqsube;":"⊑","&sqsubset;":"⊏","&sqsubseteq;":"⊑","&sqsup;":"⊐","&sqsupe;":"⊒","&sqsupset;":"⊐","&sqsupseteq;":"⊒","&squ;":"□","&square;":"□","&squarf;":"▪","&squf;":"▪","&srarr;":"→","&sscr;":"𝓈","&ssetmn;":"∖","&ssmile;":"⌣","&sstarf;":"⋆","&star;":"☆","&starf;":"★","&straightepsilon;":"ϵ","&straightphi;":"ϕ","&strns;":"¯","&sub;":"⊂","&subE;":"⫅","&subdot;":"⪽","&sube;":"⊆","&subedot;":"⫃","&submult;":"⫁","&subnE;":"⫋","&subne;":"⊊","&subplus;":"⪿","&subrarr;":"⥹","&subset;":"⊂","&subseteq;":"⊆","&subseteqq;":"⫅","&subsetneq;":"⊊","&subsetneqq;":"⫋","&subsim;":"⫇","&subsub;":"⫕","&subsup;":"⫓","&succ;":"≻","&succapprox;":"⪸","&succcurlyeq;":"≽","&succeq;":"⪰","&succnapprox;":"⪺","&succneqq;":"⪶","&succnsim;":"⋩","&succsim;":"≿","&sum;":"∑","&sung;":"♪","&sup1":"¹","&sup1;":"¹","&sup2":"²","&sup2;":"²","&sup3":"³","&sup3;":"³","&sup;":"⊃","&supE;":"⫆","&supdot;":"⪾","&supdsub;":"⫘","&supe;":"⊇","&supedot;":"⫄","&suphsol;":"⟉","&suphsub;":"⫗","&suplarr;":"⥻","&supmult;":"⫂","&supnE;":"⫌","&supne;":"⊋","&supplus;":"⫀","&supset;":"⊃","&supseteq;":"⊇","&supseteqq;":"⫆","&supsetneq;":"⊋","&supsetneqq;":"⫌","&supsim;":"⫈","&supsub;":"⫔","&supsup;":"⫖","&swArr;":"⇙","&swarhk;":"⤦","&swarr;":"↙","&swarrow;":"↙","&swnwar;":"⤪","&szlig":"ß","&szlig;":"ß","&target;":"⌖","&tau;":"τ","&tbrk;":"⎴","&tcaron;":"ť","&tcedil;":"ţ","&tcy;":"т","&tdot;":"⃛","&telrec;":"⌕","&tfr;":"𝔱","&there4;":"∴","&therefore;":"∴","&theta;":"θ","&thetasym;":"ϑ","&thetav;":"ϑ","&thickapprox;":"≈","&thicksim;":"∼","&thinsp;":" ","&thkap;":"≈","&thksim;":"∼","&thorn":"þ","&thorn;":"þ","&tilde;":"˜","&times":"×","&times;":"×","&timesb;":"⊠","&timesbar;":"⨱","&timesd;":"⨰","&tint;":"∭","&toea;":"⤨","&top;":"⊤","&topbot;":"⌶","&topcir;":"⫱","&topf;":"𝕥","&topfork;":"⫚","&tosa;":"⤩","&tprime;":"‴","&trade;":"™","&triangle;":"▵","&triangledown;":"▿","&triangleleft;":"◃","&trianglelefteq;":"⊴","&triangleq;":"≜","&triangleright;":"▹","&trianglerighteq;":"⊵","&tridot;":"◬","&trie;":"≜","&triminus;":"⨺","&triplus;":"⨹","&trisb;":"⧍","&tritime;":"⨻","&trpezium;":"⏢","&tscr;":"𝓉","&tscy;":"ц","&tshcy;":"ћ","&tstrok;":"ŧ","&twixt;":"≬","&twoheadleftarrow;":"↞","&twoheadrightarrow;":"↠","&uArr;":"⇑","&uHar;":"⥣","&uacute":"ú","&uacute;":"ú","&uarr;":"↑","&ubrcy;":"ў","&ubreve;":"ŭ","&ucirc":"û","&ucirc;":"û","&ucy;":"у","&udarr;":"⇅","&udblac;":"ű","&udhar;":"⥮","&ufisht;":"⥾","&ufr;":"𝔲","&ugrave":"ù","&ugrave;":"ù","&uharl;":"↿","&uharr;":"↾","&uhblk;":"▀","&ulcorn;":"⌜","&ulcorner;":"⌜","&ulcrop;":"⌏","&ultri;":"◸","&umacr;":"ū","&uml":"¨","&uml;":"¨","&uogon;":"ų","&uopf;":"𝕦","&uparrow;":"↑","&updownarrow;":"↕","&upharpoonleft;":"↿","&upharpoonright;":"↾","&uplus;":"⊎","&upsi;":"υ","&upsih;":"ϒ","&upsilon;":"υ","&upuparrows;":"⇈","&urcorn;":"⌝","&urcorner;":"⌝","&urcrop;":"⌎","&uring;":"ů","&urtri;":"◹","&uscr;":"𝓊","&utdot;":"⋰","&utilde;":"ũ","&utri;":"▵","&utrif;":"▴","&uuarr;":"⇈","&uuml":"ü","&uuml;":"ü","&uwangle;":"⦧","&vArr;":"⇕","&vBar;":"⫨","&vBarv;":"⫩","&vDash;":"⊨","&vangrt;":"⦜","&varepsilon;":"ϵ","&varkappa;":"ϰ","&varnothing;":"∅","&varphi;":"ϕ","&varpi;":"ϖ","&varpropto;":"∝","&varr;":"↕","&varrho;":"ϱ","&varsigma;":"ς","&varsubsetneq;":"⊊︀","&varsubsetneqq;":"⫋︀","&varsupsetneq;":"⊋︀","&varsupsetneqq;":"⫌︀","&vartheta;":"ϑ","&vartriangleleft;":"⊲","&vartriangleright;":"⊳","&vcy;":"в","&vdash;":"⊢","&vee;":"∨","&veebar;":"⊻","&veeeq;":"≚","&vellip;":"⋮","&verbar;":"|","&vert;":"|","&vfr;":"𝔳","&vltri;":"⊲","&vnsub;":"⊂⃒","&vnsup;":"⊃⃒","&vopf;":"𝕧","&vprop;":"∝","&vrtri;":"⊳","&vscr;":"𝓋","&vsubnE;":"⫋︀","&vsubne;":"⊊︀","&vsupnE;":"⫌︀","&vsupne;":"⊋︀","&vzigzag;":"⦚","&wcirc;":"ŵ","&wedbar;":"⩟","&wedge;":"∧","&wedgeq;":"≙","&weierp;":"℘","&wfr;":"𝔴","&wopf;":"𝕨","&wp;":"℘","&wr;":"≀","&wreath;":"≀","&wscr;":"𝓌","&xcap;":"⋂","&xcirc;":"◯","&xcup;":"⋃","&xdtri;":"▽","&xfr;":"𝔵","&xhArr;":"⟺","&xharr;":"⟷","&xi;":"ξ","&xlArr;":"⟸","&xlarr;":"⟵","&xmap;":"⟼","&xnis;":"⋻","&xodot;":"⨀","&xopf;":"𝕩","&xoplus;":"⨁","&xotime;":"⨂","&xrArr;":"⟹","&xrarr;":"⟶","&xscr;":"𝓍","&xsqcup;":"⨆","&xuplus;":"⨄","&xutri;":"△","&xvee;":"⋁","&xwedge;":"⋀","&yacute":"ý","&yacute;":"ý","&yacy;":"я","&ycirc;":"ŷ","&ycy;":"ы","&yen":"¥","&yen;":"¥","&yfr;":"𝔶","&yicy;":"ї","&yopf;":"𝕪","&yscr;":"𝓎","&yucy;":"ю","&yuml":"ÿ","&yuml;":"ÿ","&zacute;":"ź","&zcaron;":"ž","&zcy;":"з","&zdot;":"ż","&zeetrf;":"ℨ","&zeta;":"ζ","&zfr;":"𝔷","&zhcy;":"ж","&zigrarr;":"⇝","&zopf;":"𝕫","&zscr;":"𝓏","&zwj;":"‍","&zwnj;":"‌"},characters:{"Æ":"&AElig;","&":"&amp;","Á":"&Aacute;","Ă":"&Abreve;","Â":"&Acirc;","А":"&Acy;","𝔄":"&Afr;","À":"&Agrave;","Α":"&Alpha;","Ā":"&Amacr;","⩓":"&And;","Ą":"&Aogon;","𝔸":"&Aopf;","⁡":"&af;","Å":"&angst;","𝒜":"&Ascr;","≔":"&coloneq;","Ã":"&Atilde;","Ä":"&Auml;","∖":"&ssetmn;","⫧":"&Barv;","⌆":"&doublebarwedge;","Б":"&Bcy;","∵":"&because;","ℬ":"&bernou;","Β":"&Beta;","𝔅":"&Bfr;","𝔹":"&Bopf;","˘":"&breve;","≎":"&bump;","Ч":"&CHcy;","©":"&copy;","Ć":"&Cacute;","⋒":"&Cap;","ⅅ":"&DD;","ℭ":"&Cfr;","Č":"&Ccaron;","Ç":"&Ccedil;","Ĉ":"&Ccirc;","∰":"&Cconint;","Ċ":"&Cdot;","¸":"&cedil;","·":"&middot;","Χ":"&Chi;","⊙":"&odot;","⊖":"&ominus;","⊕":"&oplus;","⊗":"&otimes;","∲":"&cwconint;","”":"&rdquor;","’":"&rsquor;","∷":"&Proportion;","⩴":"&Colone;","≡":"&equiv;","∯":"&DoubleContourIntegral;","∮":"&oint;","ℂ":"&complexes;","∐":"&coprod;","∳":"&awconint;","⨯":"&Cross;","𝒞":"&Cscr;","⋓":"&Cup;","≍":"&asympeq;","⤑":"&DDotrahd;","Ђ":"&DJcy;","Ѕ":"&DScy;","Џ":"&DZcy;","‡":"&ddagger;","↡":"&Darr;","⫤":"&DoubleLeftTee;","Ď":"&Dcaron;","Д":"&Dcy;","∇":"&nabla;","Δ":"&Delta;","𝔇":"&Dfr;","´":"&acute;","˙":"&dot;","˝":"&dblac;","`":"&grave;","˜":"&tilde;","⋄":"&diamond;","ⅆ":"&dd;","𝔻":"&Dopf;","¨":"&uml;","⃜":"&DotDot;","≐":"&esdot;","⇓":"&dArr;","⇐":"&lArr;","⇔":"&iff;","⟸":"&xlArr;","⟺":"&xhArr;","⟹":"&xrArr;","⇒":"&rArr;","⊨":"&vDash;","⇑":"&uArr;","⇕":"&vArr;","∥":"&spar;","↓":"&downarrow;","⤓":"&DownArrowBar;","⇵":"&duarr;","̑":"&DownBreve;","⥐":"&DownLeftRightVector;","⥞":"&DownLeftTeeVector;","↽":"&lhard;","⥖":"&DownLeftVectorBar;","⥟":"&DownRightTeeVector;","⇁":"&rightharpoondown;","⥗":"&DownRightVectorBar;","⊤":"&top;","↧":"&mapstodown;","𝒟":"&Dscr;","Đ":"&Dstrok;","Ŋ":"&ENG;","Ð":"&ETH;","É":"&Eacute;","Ě":"&Ecaron;","Ê":"&Ecirc;","Э":"&Ecy;","Ė":"&Edot;","𝔈":"&Efr;","È":"&Egrave;","∈":"&isinv;","Ē":"&Emacr;","◻":"&EmptySmallSquare;","▫":"&EmptyVerySmallSquare;","Ę":"&Eogon;","𝔼":"&Eopf;","Ε":"&Epsilon;","⩵":"&Equal;","≂":"&esim;","⇌":"&rlhar;","ℰ":"&expectation;","⩳":"&Esim;","Η":"&Eta;","Ë":"&Euml;","∃":"&exist;","ⅇ":"&exponentiale;","Ф":"&Fcy;","𝔉":"&Ffr;","◼":"&FilledSmallSquare;","▪":"&squf;","𝔽":"&Fopf;","∀":"&forall;","ℱ":"&Fscr;","Ѓ":"&GJcy;",">":"&gt;","Γ":"&Gamma;","Ϝ":"&Gammad;","Ğ":"&Gbreve;","Ģ":"&Gcedil;","Ĝ":"&Gcirc;","Г":"&Gcy;","Ġ":"&Gdot;","𝔊":"&Gfr;","⋙":"&ggg;","𝔾":"&Gopf;","≥":"&geq;","⋛":"&gtreqless;","≧":"&geqq;","⪢":"&GreaterGreater;","≷":"&gtrless;","⩾":"&ges;","≳":"&gtrsim;","𝒢":"&Gscr;","≫":"&gg;","Ъ":"&HARDcy;","ˇ":"&caron;","^":"&Hat;","Ĥ":"&Hcirc;","ℌ":"&Poincareplane;","ℋ":"&hamilt;","ℍ":"&quaternions;","─":"&boxh;","Ħ":"&Hstrok;","≏":"&bumpeq;","Е":"&IEcy;","Ĳ":"&IJlig;","Ё":"&IOcy;","Í":"&Iacute;","Î":"&Icirc;","И":"&Icy;","İ":"&Idot;","ℑ":"&imagpart;","Ì":"&Igrave;","Ī":"&Imacr;","ⅈ":"&ii;","∬":"&Int;","∫":"&int;","⋂":"&xcap;","⁣":"&ic;","⁢":"&it;","Į":"&Iogon;","𝕀":"&Iopf;","Ι":"&Iota;","ℐ":"&imagline;","Ĩ":"&Itilde;","І":"&Iukcy;","Ï":"&Iuml;","Ĵ":"&Jcirc;","Й":"&Jcy;","𝔍":"&Jfr;","𝕁":"&Jopf;","𝒥":"&Jscr;","Ј":"&Jsercy;","Є":"&Jukcy;","Х":"&KHcy;","Ќ":"&KJcy;","Κ":"&Kappa;","Ķ":"&Kcedil;","К":"&Kcy;","𝔎":"&Kfr;","𝕂":"&Kopf;","𝒦":"&Kscr;","Љ":"&LJcy;","<":"&lt;","Ĺ":"&Lacute;","Λ":"&Lambda;","⟪":"&Lang;","ℒ":"&lagran;","↞":"&twoheadleftarrow;","Ľ":"&Lcaron;","Ļ":"&Lcedil;","Л":"&Lcy;","⟨":"&langle;","←":"&slarr;","⇤":"&larrb;","⇆":"&lrarr;","⌈":"&lceil;","⟦":"&lobrk;","⥡":"&LeftDownTeeVector;","⇃":"&downharpoonleft;","⥙":"&LeftDownVectorBar;","⌊":"&lfloor;","↔":"&leftrightarrow;","⥎":"&LeftRightVector;","⊣":"&dashv;","↤":"&mapstoleft;","⥚":"&LeftTeeVector;","⊲":"&vltri;","⧏":"&LeftTriangleBar;","⊴":"&trianglelefteq;","⥑":"&LeftUpDownVector;","⥠":"&LeftUpTeeVector;","↿":"&upharpoonleft;","⥘":"&LeftUpVectorBar;","↼":"&lharu;","⥒":"&LeftVectorBar;","⋚":"&lesseqgtr;","≦":"&leqq;","≶":"&lg;","⪡":"&LessLess;","⩽":"&les;","≲":"&lsim;","𝔏":"&Lfr;","⋘":"&Ll;","⇚":"&lAarr;","Ŀ":"&Lmidot;","⟵":"&xlarr;","⟷":"&xharr;","⟶":"&xrarr;","𝕃":"&Lopf;","↙":"&swarrow;","↘":"&searrow;","↰":"&lsh;","Ł":"&Lstrok;","≪":"&ll;","⤅":"&Map;","М":"&Mcy;"," ":"&MediumSpace;","ℳ":"&phmmat;","𝔐":"&Mfr;","∓":"&mp;","𝕄":"&Mopf;","Μ":"&Mu;","Њ":"&NJcy;","Ń":"&Nacute;","Ň":"&Ncaron;","Ņ":"&Ncedil;","Н":"&Ncy;","​":"&ZeroWidthSpace;","\n":"&NewLine;","𝔑":"&Nfr;","⁠":"&NoBreak;"," ":"&nbsp;","ℕ":"&naturals;","⫬":"&Not;","≢":"&nequiv;","≭":"&NotCupCap;","∦":"&nspar;","∉":"&notinva;","≠":"&ne;","≂̸":"&nesim;","∄":"&nexists;","≯":"&ngtr;","≱":"&ngeq;","≧̸":"&ngeqq;","≫̸":"&nGtv;","≹":"&ntgl;","⩾̸":"&nges;","≵":"&ngsim;","≎̸":"&nbump;","≏̸":"&nbumpe;","⋪":"&ntriangleleft;","⧏̸":"&NotLeftTriangleBar;","⋬":"&ntrianglelefteq;","≮":"&nlt;","≰":"&nleq;","≸":"&ntlg;","≪̸":"&nLtv;","⩽̸":"&nles;","≴":"&nlsim;","⪢̸":"&NotNestedGreaterGreater;","⪡̸":"&NotNestedLessLess;","⊀":"&nprec;","⪯̸":"&npreceq;","⋠":"&nprcue;","∌":"&notniva;","⋫":"&ntriangleright;","⧐̸":"&NotRightTriangleBar;","⋭":"&ntrianglerighteq;","⊏̸":"&NotSquareSubset;","⋢":"&nsqsube;","⊐̸":"&NotSquareSuperset;","⋣":"&nsqsupe;","⊂⃒":"&vnsub;","⊈":"&nsubseteq;","⊁":"&nsucc;","⪰̸":"&nsucceq;","⋡":"&nsccue;","≿̸":"&NotSucceedsTilde;","⊃⃒":"&vnsup;","⊉":"&nsupseteq;","≁":"&nsim;","≄":"&nsimeq;","≇":"&ncong;","≉":"&napprox;","∤":"&nsmid;","𝒩":"&Nscr;","Ñ":"&Ntilde;","Ν":"&Nu;","Œ":"&OElig;","Ó":"&Oacute;","Ô":"&Ocirc;","О":"&Ocy;","Ő":"&Odblac;","𝔒":"&Ofr;","Ò":"&Ograve;","Ō":"&Omacr;","Ω":"&ohm;","Ο":"&Omicron;","𝕆":"&Oopf;","“":"&ldquo;","‘":"&lsquo;","⩔":"&Or;","𝒪":"&Oscr;","Ø":"&Oslash;","Õ":"&Otilde;","⨷":"&Otimes;","Ö":"&Ouml;","‾":"&oline;","⏞":"&OverBrace;","⎴":"&tbrk;","⏜":"&OverParenthesis;","∂":"&part;","П":"&Pcy;","𝔓":"&Pfr;","Φ":"&Phi;","Π":"&Pi;","±":"&pm;","ℙ":"&primes;","⪻":"&Pr;","≺":"&prec;","⪯":"&preceq;","≼":"&preccurlyeq;","≾":"&prsim;","″":"&Prime;","∏":"&prod;","∝":"&vprop;","𝒫":"&Pscr;","Ψ":"&Psi;",'"':"&quot;","𝔔":"&Qfr;","ℚ":"&rationals;","𝒬":"&Qscr;","⤐":"&drbkarow;","®":"&reg;","Ŕ":"&Racute;","⟫":"&Rang;","↠":"&twoheadrightarrow;","⤖":"&Rarrtl;","Ř":"&Rcaron;","Ŗ":"&Rcedil;","Р":"&Rcy;","ℜ":"&realpart;","∋":"&niv;","⇋":"&lrhar;","⥯":"&duhar;","Ρ":"&Rho;","⟩":"&rangle;","→":"&srarr;","⇥":"&rarrb;","⇄":"&rlarr;","⌉":"&rceil;","⟧":"&robrk;","⥝":"&RightDownTeeVector;","⇂":"&downharpoonright;","⥕":"&RightDownVectorBar;","⌋":"&rfloor;","⊢":"&vdash;","↦":"&mapsto;","⥛":"&RightTeeVector;","⊳":"&vrtri;","⧐":"&RightTriangleBar;","⊵":"&trianglerighteq;","⥏":"&RightUpDownVector;","⥜":"&RightUpTeeVector;","↾":"&upharpoonright;","⥔":"&RightUpVectorBar;","⇀":"&rightharpoonup;","⥓":"&RightVectorBar;","ℝ":"&reals;","⥰":"&RoundImplies;","⇛":"&rAarr;","ℛ":"&realine;","↱":"&rsh;","⧴":"&RuleDelayed;","Щ":"&SHCHcy;","Ш":"&SHcy;","Ь":"&SOFTcy;","Ś":"&Sacute;","⪼":"&Sc;","Š":"&Scaron;","Ş":"&Scedil;","Ŝ":"&Scirc;","С":"&Scy;","𝔖":"&Sfr;","↑":"&uparrow;","Σ":"&Sigma;","∘":"&compfn;","𝕊":"&Sopf;","√":"&radic;","□":"&square;","⊓":"&sqcap;","⊏":"&sqsubset;","⊑":"&sqsubseteq;","⊐":"&sqsupset;","⊒":"&sqsupseteq;","⊔":"&sqcup;","𝒮":"&Sscr;","⋆":"&sstarf;","⋐":"&Subset;","⊆":"&subseteq;","≻":"&succ;","⪰":"&succeq;","≽":"&succcurlyeq;","≿":"&succsim;","∑":"&sum;","⋑":"&Supset;","⊃":"&supset;","⊇":"&supseteq;","Þ":"&THORN;","™":"&trade;","Ћ":"&TSHcy;","Ц":"&TScy;","\t":"&Tab;","Τ":"&Tau;","Ť":"&Tcaron;","Ţ":"&Tcedil;","Т":"&Tcy;","𝔗":"&Tfr;","∴":"&therefore;","Θ":"&Theta;","  ":"&ThickSpace;"," ":"&thinsp;","∼":"&thksim;","≃":"&simeq;","≅":"&cong;","≈":"&thkap;","𝕋":"&Topf;","⃛":"&tdot;","𝒯":"&Tscr;","Ŧ":"&Tstrok;","Ú":"&Uacute;","↟":"&Uarr;","⥉":"&Uarrocir;","Ў":"&Ubrcy;","Ŭ":"&Ubreve;","Û":"&Ucirc;","У":"&Ucy;","Ű":"&Udblac;","𝔘":"&Ufr;","Ù":"&Ugrave;","Ū":"&Umacr;",_:"&lowbar;","⏟":"&UnderBrace;","⎵":"&bbrk;","⏝":"&UnderParenthesis;","⋃":"&xcup;","⊎":"&uplus;","Ų":"&Uogon;","𝕌":"&Uopf;","⤒":"&UpArrowBar;","⇅":"&udarr;","↕":"&varr;","⥮":"&udhar;","⊥":"&perp;","↥":"&mapstoup;","↖":"&nwarrow;","↗":"&nearrow;","ϒ":"&upsih;","Υ":"&Upsilon;","Ů":"&Uring;","𝒰":"&Uscr;","Ũ":"&Utilde;","Ü":"&Uuml;","⊫":"&VDash;","⫫":"&Vbar;","В":"&Vcy;","⊩":"&Vdash;","⫦":"&Vdashl;","⋁":"&xvee;","‖":"&Vert;","∣":"&smid;","|":"&vert;","❘":"&VerticalSeparator;","≀":"&wreath;"," ":"&hairsp;","𝔙":"&Vfr;","𝕍":"&Vopf;","𝒱":"&Vscr;","⊪":"&Vvdash;","Ŵ":"&Wcirc;","⋀":"&xwedge;","𝔚":"&Wfr;","𝕎":"&Wopf;","𝒲":"&Wscr;","𝔛":"&Xfr;","Ξ":"&Xi;","𝕏":"&Xopf;","𝒳":"&Xscr;","Я":"&YAcy;","Ї":"&YIcy;","Ю":"&YUcy;","Ý":"&Yacute;","Ŷ":"&Ycirc;","Ы":"&Ycy;","𝔜":"&Yfr;","𝕐":"&Yopf;","𝒴":"&Yscr;","Ÿ":"&Yuml;","Ж":"&ZHcy;","Ź":"&Zacute;","Ž":"&Zcaron;","З":"&Zcy;","Ż":"&Zdot;","Ζ":"&Zeta;","ℨ":"&zeetrf;","ℤ":"&integers;","𝒵":"&Zscr;","á":"&aacute;","ă":"&abreve;","∾":"&mstpos;","∾̳":"&acE;","∿":"&acd;","â":"&acirc;","а":"&acy;","æ":"&aelig;","𝔞":"&afr;","à":"&agrave;","ℵ":"&aleph;","α":"&alpha;","ā":"&amacr;","⨿":"&amalg;","∧":"&wedge;","⩕":"&andand;","⩜":"&andd;","⩘":"&andslope;","⩚":"&andv;","∠":"&angle;","⦤":"&ange;","∡":"&measuredangle;","⦨":"&angmsdaa;","⦩":"&angmsdab;","⦪":"&angmsdac;","⦫":"&angmsdad;","⦬":"&angmsdae;","⦭":"&angmsdaf;","⦮":"&angmsdag;","⦯":"&angmsdah;","∟":"&angrt;","⊾":"&angrtvb;","⦝":"&angrtvbd;","∢":"&angsph;","⍼":"&angzarr;","ą":"&aogon;","𝕒":"&aopf;","⩰":"&apE;","⩯":"&apacir;","≊":"&approxeq;","≋":"&apid;","'":"&apos;","å":"&aring;","𝒶":"&ascr;","*":"&midast;","ã":"&atilde;","ä":"&auml;","⨑":"&awint;","⫭":"&bNot;","≌":"&bcong;","϶":"&bepsi;","‵":"&bprime;","∽":"&bsim;","⋍":"&bsime;","⊽":"&barvee;","⌅":"&barwedge;","⎶":"&bbrktbrk;","б":"&bcy;","„":"&ldquor;","⦰":"&bemptyv;","β":"&beta;","ℶ":"&beth;","≬":"&twixt;","𝔟":"&bfr;","◯":"&xcirc;","⨀":"&xodot;","⨁":"&xoplus;","⨂":"&xotime;","⨆":"&xsqcup;","★":"&starf;","▽":"&xdtri;","△":"&xutri;","⨄":"&xuplus;","⤍":"&rbarr;","⧫":"&lozf;","▴":"&utrif;","▾":"&dtrif;","◂":"&ltrif;","▸":"&rtrif;","␣":"&blank;","▒":"&blk12;","░":"&blk14;","▓":"&blk34;","█":"&block;","=⃥":"&bne;","≡⃥":"&bnequiv;","⌐":"&bnot;","𝕓":"&bopf;","⋈":"&bowtie;","╗":"&boxDL;","╔":"&boxDR;","╖":"&boxDl;","╓":"&boxDr;","═":"&boxH;","╦":"&boxHD;","╩":"&boxHU;","╤":"&boxHd;","╧":"&boxHu;","╝":"&boxUL;","╚":"&boxUR;","╜":"&boxUl;","╙":"&boxUr;","║":"&boxV;","╬":"&boxVH;","╣":"&boxVL;","╠":"&boxVR;","╫":"&boxVh;","╢":"&boxVl;","╟":"&boxVr;","⧉":"&boxbox;","╕":"&boxdL;","╒":"&boxdR;","┐":"&boxdl;","┌":"&boxdr;","╥":"&boxhD;","╨":"&boxhU;","┬":"&boxhd;","┴":"&boxhu;","⊟":"&minusb;","⊞":"&plusb;","⊠":"&timesb;","╛":"&boxuL;","╘":"&boxuR;","┘":"&boxul;","└":"&boxur;","│":"&boxv;","╪":"&boxvH;","╡":"&boxvL;","╞":"&boxvR;","┼":"&boxvh;","┤":"&boxvl;","├":"&boxvr;","¦":"&brvbar;","𝒷":"&bscr;","⁏":"&bsemi;","\\":"&bsol;","⧅":"&bsolb;","⟈":"&bsolhsub;","•":"&bullet;","⪮":"&bumpE;","ć":"&cacute;","∩":"&cap;","⩄":"&capand;","⩉":"&capbrcup;","⩋":"&capcap;","⩇":"&capcup;","⩀":"&capdot;","∩︀":"&caps;","⁁":"&caret;","⩍":"&ccaps;","č":"&ccaron;","ç":"&ccedil;","ĉ":"&ccirc;","⩌":"&ccups;","⩐":"&ccupssm;","ċ":"&cdot;","⦲":"&cemptyv;","¢":"&cent;","𝔠":"&cfr;","ч":"&chcy;","✓":"&checkmark;","χ":"&chi;","○":"&cir;","⧃":"&cirE;","ˆ":"&circ;","≗":"&cire;","↺":"&olarr;","↻":"&orarr;","Ⓢ":"&oS;","⊛":"&oast;","⊚":"&ocir;","⊝":"&odash;","⨐":"&cirfnint;","⫯":"&cirmid;","⧂":"&cirscir;","♣":"&clubsuit;",":":"&colon;",",":"&comma;","@":"&commat;","∁":"&complement;","⩭":"&congdot;","𝕔":"&copf;","℗":"&copysr;","↵":"&crarr;","✗":"&cross;","𝒸":"&cscr;","⫏":"&csub;","⫑":"&csube;","⫐":"&csup;","⫒":"&csupe;","⋯":"&ctdot;","⤸":"&cudarrl;","⤵":"&cudarrr;","⋞":"&curlyeqprec;","⋟":"&curlyeqsucc;","↶":"&curvearrowleft;","⤽":"&cularrp;","∪":"&cup;","⩈":"&cupbrcap;","⩆":"&cupcap;","⩊":"&cupcup;","⊍":"&cupdot;","⩅":"&cupor;","∪︀":"&cups;","↷":"&curvearrowright;","⤼":"&curarrm;","⋎":"&cuvee;","⋏":"&cuwed;","¤":"&curren;","∱":"&cwint;","⌭":"&cylcty;","⥥":"&dHar;","†":"&dagger;","ℸ":"&daleth;","‐":"&hyphen;","⤏":"&rBarr;","ď":"&dcaron;","д":"&dcy;","⇊":"&downdownarrows;","⩷":"&eDDot;","°":"&deg;","δ":"&delta;","⦱":"&demptyv;","⥿":"&dfisht;","𝔡":"&dfr;","♦":"&diams;","ϝ":"&gammad;","⋲":"&disin;","÷":"&divide;","⋇":"&divonx;","ђ":"&djcy;","⌞":"&llcorner;","⌍":"&dlcrop;",$:"&dollar;","𝕕":"&dopf;","≑":"&eDot;","∸":"&minusd;","∔":"&plusdo;","⊡":"&sdotb;","⌟":"&lrcorner;","⌌":"&drcrop;","𝒹":"&dscr;","ѕ":"&dscy;","⧶":"&dsol;","đ":"&dstrok;","⋱":"&dtdot;","▿":"&triangledown;","⦦":"&dwangle;","џ":"&dzcy;","⟿":"&dzigrarr;","é":"&eacute;","⩮":"&easter;","ě":"&ecaron;","≖":"&eqcirc;","ê":"&ecirc;","≕":"&eqcolon;","э":"&ecy;","ė":"&edot;","≒":"&fallingdotseq;","𝔢":"&efr;","⪚":"&eg;","è":"&egrave;","⪖":"&eqslantgtr;","⪘":"&egsdot;","⪙":"&el;","⏧":"&elinters;","ℓ":"&ell;","⪕":"&eqslantless;","⪗":"&elsdot;","ē":"&emacr;","∅":"&varnothing;"," ":"&emsp13;"," ":"&emsp14;"," ":"&emsp;","ŋ":"&eng;"," ":"&ensp;","ę":"&eogon;","𝕖":"&eopf;","⋕":"&epar;","⧣":"&eparsl;","⩱":"&eplus;","ε":"&epsilon;","ϵ":"&varepsilon;","=":"&equals;","≟":"&questeq;","⩸":"&equivDD;","⧥":"&eqvparsl;","≓":"&risingdotseq;","⥱":"&erarr;","ℯ":"&escr;","η":"&eta;","ð":"&eth;","ë":"&euml;","€":"&euro;","!":"&excl;","ф":"&fcy;","♀":"&female;","ﬃ":"&ffilig;","ﬀ":"&fflig;","ﬄ":"&ffllig;","𝔣":"&ffr;","ﬁ":"&filig;",fj:"&fjlig;","♭":"&flat;","ﬂ":"&fllig;","▱":"&fltns;","ƒ":"&fnof;","𝕗":"&fopf;","⋔":"&pitchfork;","⫙":"&forkv;","⨍":"&fpartint;","½":"&half;","⅓":"&frac13;","¼":"&frac14;","⅕":"&frac15;","⅙":"&frac16;","⅛":"&frac18;","⅔":"&frac23;","⅖":"&frac25;","¾":"&frac34;","⅗":"&frac35;","⅜":"&frac38;","⅘":"&frac45;","⅚":"&frac56;","⅝":"&frac58;","⅞":"&frac78;","⁄":"&frasl;","⌢":"&sfrown;","𝒻":"&fscr;","⪌":"&gtreqqless;","ǵ":"&gacute;","γ":"&gamma;","⪆":"&gtrapprox;","ğ":"&gbreve;","ĝ":"&gcirc;","г":"&gcy;","ġ":"&gdot;","⪩":"&gescc;","⪀":"&gesdot;","⪂":"&gesdoto;","⪄":"&gesdotol;","⋛︀":"&gesl;","⪔":"&gesles;","𝔤":"&gfr;","ℷ":"&gimel;","ѓ":"&gjcy;","⪒":"&glE;","⪥":"&gla;","⪤":"&glj;","≩":"&gneqq;","⪊":"&gnapprox;","⪈":"&gneq;","⋧":"&gnsim;","𝕘":"&gopf;","ℊ":"&gscr;","⪎":"&gsime;","⪐":"&gsiml;","⪧":"&gtcc;","⩺":"&gtcir;","⋗":"&gtrdot;","⦕":"&gtlPar;","⩼":"&gtquest;","⥸":"&gtrarr;","≩︀":"&gvnE;","ъ":"&hardcy;","⥈":"&harrcir;","↭":"&leftrightsquigarrow;","ℏ":"&plankv;","ĥ":"&hcirc;","♥":"&heartsuit;","…":"&mldr;","⊹":"&hercon;","𝔥":"&hfr;","⤥":"&searhk;","⤦":"&swarhk;","⇿":"&hoarr;","∻":"&homtht;","↩":"&larrhk;","↪":"&rarrhk;","𝕙":"&hopf;","―":"&horbar;","𝒽":"&hscr;","ħ":"&hstrok;","⁃":"&hybull;","í":"&iacute;","î":"&icirc;","и":"&icy;","е":"&iecy;","¡":"&iexcl;","𝔦":"&ifr;","ì":"&igrave;","⨌":"&qint;","∭":"&tint;","⧜":"&iinfin;","℩":"&iiota;","ĳ":"&ijlig;","ī":"&imacr;","ı":"&inodot;","⊷":"&imof;","Ƶ":"&imped;","℅":"&incare;","∞":"&infin;","⧝":"&infintie;","⊺":"&intercal;","⨗":"&intlarhk;","⨼":"&iprod;","ё":"&iocy;","į":"&iogon;","𝕚":"&iopf;","ι":"&iota;","¿":"&iquest;","𝒾":"&iscr;","⋹":"&isinE;","⋵":"&isindot;","⋴":"&isins;","⋳":"&isinsv;","ĩ":"&itilde;","і":"&iukcy;","ï":"&iuml;","ĵ":"&jcirc;","й":"&jcy;","𝔧":"&jfr;","ȷ":"&jmath;","𝕛":"&jopf;","𝒿":"&jscr;","ј":"&jsercy;","є":"&jukcy;","κ":"&kappa;","ϰ":"&varkappa;","ķ":"&kcedil;","к":"&kcy;","𝔨":"&kfr;","ĸ":"&kgreen;","х":"&khcy;","ќ":"&kjcy;","𝕜":"&kopf;","𝓀":"&kscr;","⤛":"&lAtail;","⤎":"&lBarr;","⪋":"&lesseqqgtr;","⥢":"&lHar;","ĺ":"&lacute;","⦴":"&laemptyv;","λ":"&lambda;","⦑":"&langd;","⪅":"&lessapprox;","«":"&laquo;","⤟":"&larrbfs;","⤝":"&larrfs;","↫":"&looparrowleft;","⤹":"&larrpl;","⥳":"&larrsim;","↢":"&leftarrowtail;","⪫":"&lat;","⤙":"&latail;","⪭":"&late;","⪭︀":"&lates;","⤌":"&lbarr;","❲":"&lbbrk;","{":"&lcub;","[":"&lsqb;","⦋":"&lbrke;","⦏":"&lbrksld;","⦍":"&lbrkslu;","ľ":"&lcaron;","ļ":"&lcedil;","л":"&lcy;","⤶":"&ldca;","⥧":"&ldrdhar;","⥋":"&ldrushar;","↲":"&ldsh;","≤":"&leq;","⇇":"&llarr;","⋋":"&lthree;","⪨":"&lescc;","⩿":"&lesdot;","⪁":"&lesdoto;","⪃":"&lesdotor;","⋚︀":"&lesg;","⪓":"&lesges;","⋖":"&ltdot;","⥼":"&lfisht;","𝔩":"&lfr;","⪑":"&lgE;","⥪":"&lharul;","▄":"&lhblk;","љ":"&ljcy;","⥫":"&llhard;","◺":"&lltri;","ŀ":"&lmidot;","⎰":"&lmoustache;","≨":"&lneqq;","⪉":"&lnapprox;","⪇":"&lneq;","⋦":"&lnsim;","⟬":"&loang;","⇽":"&loarr;","⟼":"&xmap;","↬":"&rarrlp;","⦅":"&lopar;","𝕝":"&lopf;","⨭":"&loplus;","⨴":"&lotimes;","∗":"&lowast;","◊":"&lozenge;","(":"&lpar;","⦓":"&lparlt;","⥭":"&lrhard;","‎":"&lrm;","⊿":"&lrtri;","‹":"&lsaquo;","𝓁":"&lscr;","⪍":"&lsime;","⪏":"&lsimg;","‚":"&sbquo;","ł":"&lstrok;","⪦":"&ltcc;","⩹":"&ltcir;","⋉":"&ltimes;","⥶":"&ltlarr;","⩻":"&ltquest;","⦖":"&ltrPar;","◃":"&triangleleft;","⥊":"&lurdshar;","⥦":"&luruhar;","≨︀":"&lvnE;","∺":"&mDDot;","¯":"&strns;","♂":"&male;","✠":"&maltese;","▮":"&marker;","⨩":"&mcomma;","м":"&mcy;","—":"&mdash;","𝔪":"&mfr;","℧":"&mho;","µ":"&micro;","⫰":"&midcir;","−":"&minus;","⨪":"&minusdu;","⫛":"&mlcp;","⊧":"&models;","𝕞":"&mopf;","𝓂":"&mscr;","μ":"&mu;","⊸":"&mumap;","⋙̸":"&nGg;","≫⃒":"&nGt;","⇍":"&nlArr;","⇎":"&nhArr;","⋘̸":"&nLl;","≪⃒":"&nLt;","⇏":"&nrArr;","⊯":"&nVDash;","⊮":"&nVdash;","ń":"&nacute;","∠⃒":"&nang;","⩰̸":"&napE;","≋̸":"&napid;","ŉ":"&napos;","♮":"&natural;","⩃":"&ncap;","ň":"&ncaron;","ņ":"&ncedil;","⩭̸":"&ncongdot;","⩂":"&ncup;","н":"&ncy;","–":"&ndash;","⇗":"&neArr;","⤤":"&nearhk;","≐̸":"&nedot;","⤨":"&toea;","𝔫":"&nfr;","↮":"&nleftrightarrow;","⫲":"&nhpar;","⋼":"&nis;","⋺":"&nisd;","њ":"&njcy;","≦̸":"&nleqq;","↚":"&nleftarrow;","‥":"&nldr;","𝕟":"&nopf;","¬":"&not;","⋹̸":"&notinE;","⋵̸":"&notindot;","⋷":"&notinvb;","⋶":"&notinvc;","⋾":"&notnivb;","⋽":"&notnivc;","⫽⃥":"&nparsl;","∂̸":"&npart;","⨔":"&npolint;","↛":"&nrightarrow;","⤳̸":"&nrarrc;","↝̸":"&nrarrw;","𝓃":"&nscr;","⊄":"&nsub;","⫅̸":"&nsubseteqq;","⊅":"&nsup;","⫆̸":"&nsupseteqq;","ñ":"&ntilde;","ν":"&nu;","#":"&num;","№":"&numero;"," ":"&numsp;","⊭":"&nvDash;","⤄":"&nvHarr;","≍⃒":"&nvap;","⊬":"&nvdash;","≥⃒":"&nvge;",">⃒":"&nvgt;","⧞":"&nvinfin;","⤂":"&nvlArr;","≤⃒":"&nvle;","<⃒":"&nvlt;","⊴⃒":"&nvltrie;","⤃":"&nvrArr;","⊵⃒":"&nvrtrie;","∼⃒":"&nvsim;","⇖":"&nwArr;","⤣":"&nwarhk;","⤧":"&nwnear;","ó":"&oacute;","ô":"&ocirc;","о":"&ocy;","ő":"&odblac;","⨸":"&odiv;","⦼":"&odsold;","œ":"&oelig;","⦿":"&ofcir;","𝔬":"&ofr;","˛":"&ogon;","ò":"&ograve;","⧁":"&ogt;","⦵":"&ohbar;","⦾":"&olcir;","⦻":"&olcross;","⧀":"&olt;","ō":"&omacr;","ω":"&omega;","ο":"&omicron;","⦶":"&omid;","𝕠":"&oopf;","⦷":"&opar;","⦹":"&operp;","∨":"&vee;","⩝":"&ord;","ℴ":"&oscr;","ª":"&ordf;","º":"&ordm;","⊶":"&origof;","⩖":"&oror;","⩗":"&orslope;","⩛":"&orv;","ø":"&oslash;","⊘":"&osol;","õ":"&otilde;","⨶":"&otimesas;","ö":"&ouml;","⌽":"&ovbar;","¶":"&para;","⫳":"&parsim;","⫽":"&parsl;","п":"&pcy;","%":"&percnt;",".":"&period;","‰":"&permil;","‱":"&pertenk;","𝔭":"&pfr;","φ":"&phi;","ϕ":"&varphi;","☎":"&phone;","π":"&pi;","ϖ":"&varpi;","ℎ":"&planckh;","+":"&plus;","⨣":"&plusacir;","⨢":"&pluscir;","⨥":"&plusdu;","⩲":"&pluse;","⨦":"&plussim;","⨧":"&plustwo;","⨕":"&pointint;","𝕡":"&popf;","£":"&pound;","⪳":"&prE;","⪷":"&precapprox;","⪹":"&prnap;","⪵":"&prnE;","⋨":"&prnsim;","′":"&prime;","⌮":"&profalar;","⌒":"&profline;","⌓":"&profsurf;","⊰":"&prurel;","𝓅":"&pscr;","ψ":"&psi;"," ":"&puncsp;","𝔮":"&qfr;","𝕢":"&qopf;","⁗":"&qprime;","𝓆":"&qscr;","⨖":"&quatint;","?":"&quest;","⤜":"&rAtail;","⥤":"&rHar;","∽̱":"&race;","ŕ":"&racute;","⦳":"&raemptyv;","⦒":"&rangd;","⦥":"&range;","»":"&raquo;","⥵":"&rarrap;","⤠":"&rarrbfs;","⤳":"&rarrc;","⤞":"&rarrfs;","⥅":"&rarrpl;","⥴":"&rarrsim;","↣":"&rightarrowtail;","↝":"&rightsquigarrow;","⤚":"&ratail;","∶":"&ratio;","❳":"&rbbrk;","}":"&rcub;","]":"&rsqb;","⦌":"&rbrke;","⦎":"&rbrksld;","⦐":"&rbrkslu;","ř":"&rcaron;","ŗ":"&rcedil;","р":"&rcy;","⤷":"&rdca;","⥩":"&rdldhar;","↳":"&rdsh;","▭":"&rect;","⥽":"&rfisht;","𝔯":"&rfr;","⥬":"&rharul;","ρ":"&rho;","ϱ":"&varrho;","⇉":"&rrarr;","⋌":"&rthree;","˚":"&ring;","‏":"&rlm;","⎱":"&rmoustache;","⫮":"&rnmid;","⟭":"&roang;","⇾":"&roarr;","⦆":"&ropar;","𝕣":"&ropf;","⨮":"&roplus;","⨵":"&rotimes;",")":"&rpar;","⦔":"&rpargt;","⨒":"&rppolint;","›":"&rsaquo;","𝓇":"&rscr;","⋊":"&rtimes;","▹":"&triangleright;","⧎":"&rtriltri;","⥨":"&ruluhar;","℞":"&rx;","ś":"&sacute;","⪴":"&scE;","⪸":"&succapprox;","š":"&scaron;","ş":"&scedil;","ŝ":"&scirc;","⪶":"&succneqq;","⪺":"&succnapprox;","⋩":"&succnsim;","⨓":"&scpolint;","с":"&scy;","⋅":"&sdot;","⩦":"&sdote;","⇘":"&seArr;","§":"&sect;",";":"&semi;","⤩":"&tosa;","✶":"&sext;","𝔰":"&sfr;","♯":"&sharp;","щ":"&shchcy;","ш":"&shcy;","­":"&shy;","σ":"&sigma;","ς":"&varsigma;","⩪":"&simdot;","⪞":"&simg;","⪠":"&simgE;","⪝":"&siml;","⪟":"&simlE;","≆":"&simne;","⨤":"&simplus;","⥲":"&simrarr;","⨳":"&smashp;","⧤":"&smeparsl;","⌣":"&ssmile;","⪪":"&smt;","⪬":"&smte;","⪬︀":"&smtes;","ь":"&softcy;","/":"&sol;","⧄":"&solb;","⌿":"&solbar;","𝕤":"&sopf;","♠":"&spadesuit;","⊓︀":"&sqcaps;","⊔︀":"&sqcups;","𝓈":"&sscr;","☆":"&star;","⊂":"&subset;","⫅":"&subseteqq;","⪽":"&subdot;","⫃":"&subedot;","⫁":"&submult;","⫋":"&subsetneqq;","⊊":"&subsetneq;","⪿":"&subplus;","⥹":"&subrarr;","⫇":"&subsim;","⫕":"&subsub;","⫓":"&subsup;","♪":"&sung;","¹":"&sup1;","²":"&sup2;","³":"&sup3;","⫆":"&supseteqq;","⪾":"&supdot;","⫘":"&supdsub;","⫄":"&supedot;","⟉":"&suphsol;","⫗":"&suphsub;","⥻":"&suplarr;","⫂":"&supmult;","⫌":"&supsetneqq;","⊋":"&supsetneq;","⫀":"&supplus;","⫈":"&supsim;","⫔":"&supsub;","⫖":"&supsup;","⇙":"&swArr;","⤪":"&swnwar;","ß":"&szlig;","⌖":"&target;","τ":"&tau;","ť":"&tcaron;","ţ":"&tcedil;","т":"&tcy;","⌕":"&telrec;","𝔱":"&tfr;","θ":"&theta;","ϑ":"&vartheta;","þ":"&thorn;","×":"&times;","⨱":"&timesbar;","⨰":"&timesd;","⌶":"&topbot;","⫱":"&topcir;","𝕥":"&topf;","⫚":"&topfork;","‴":"&tprime;","▵":"&utri;","≜":"&trie;","◬":"&tridot;","⨺":"&triminus;","⨹":"&triplus;","⧍":"&trisb;","⨻":"&tritime;","⏢":"&trpezium;","𝓉":"&tscr;","ц":"&tscy;","ћ":"&tshcy;","ŧ":"&tstrok;","⥣":"&uHar;","ú":"&uacute;","ў":"&ubrcy;","ŭ":"&ubreve;","û":"&ucirc;","у":"&ucy;","ű":"&udblac;","⥾":"&ufisht;","𝔲":"&ufr;","ù":"&ugrave;","▀":"&uhblk;","⌜":"&ulcorner;","⌏":"&ulcrop;","◸":"&ultri;","ū":"&umacr;","ų":"&uogon;","𝕦":"&uopf;","υ":"&upsilon;","⇈":"&uuarr;","⌝":"&urcorner;","⌎":"&urcrop;","ů":"&uring;","◹":"&urtri;","𝓊":"&uscr;","⋰":"&utdot;","ũ":"&utilde;","ü":"&uuml;","⦧":"&uwangle;","⫨":"&vBar;","⫩":"&vBarv;","⦜":"&vangrt;","⊊︀":"&vsubne;","⫋︀":"&vsubnE;","⊋︀":"&vsupne;","⫌︀":"&vsupnE;","в":"&vcy;","⊻":"&veebar;","≚":"&veeeq;","⋮":"&vellip;","𝔳":"&vfr;","𝕧":"&vopf;","𝓋":"&vscr;","⦚":"&vzigzag;","ŵ":"&wcirc;","⩟":"&wedbar;","≙":"&wedgeq;","℘":"&wp;","𝔴":"&wfr;","𝕨":"&wopf;","𝓌":"&wscr;","𝔵":"&xfr;","ξ":"&xi;","⋻":"&xnis;","𝕩":"&xopf;","𝓍":"&xscr;","ý":"&yacute;","я":"&yacy;","ŷ":"&ycirc;","ы":"&ycy;","¥":"&yen;","𝔶":"&yfr;","ї":"&yicy;","𝕪":"&yopf;","𝓎":"&yscr;","ю":"&yucy;","ÿ":"&yuml;","ź":"&zacute;","ž":"&zcaron;","з":"&zcy;","ż":"&zdot;","ζ":"&zeta;","𝔷":"&zfr;","ж":"&zhcy;","⇝":"&zigrarr;","𝕫":"&zopf;","𝓏":"&zscr;","‍":"&zwj;","‌":"&zwnj;"}}};
-
-/***/ }),
-
-/***/ "../../common/temp/node_modules/html-entities/lib/numeric-unicode-map.js":
-/*!********************************************************************************************************!*\
-  !*** C:/dev/_try/piral_monorepo_mvp/common/temp/node_modules/html-entities/lib/numeric-unicode-map.js ***!
-  \********************************************************************************************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-Object.defineProperty(exports,"__esModule",{value:true});exports.numericUnicodeMap={0:65533,128:8364,130:8218,131:402,132:8222,133:8230,134:8224,135:8225,136:710,137:8240,138:352,139:8249,140:338,142:381,145:8216,146:8217,147:8220,148:8221,149:8226,150:8211,151:8212,152:732,153:8482,154:353,155:8250,156:339,158:382,159:376};
-
-/***/ }),
-
-/***/ "../../common/temp/node_modules/html-entities/lib/surrogate-pairs.js":
-/*!****************************************************************************************************!*\
-  !*** C:/dev/_try/piral_monorepo_mvp/common/temp/node_modules/html-entities/lib/surrogate-pairs.js ***!
-  \****************************************************************************************************/
-/*! no static exports found */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-Object.defineProperty(exports,"__esModule",{value:true});exports.fromCodePoint=String.fromCodePoint||function(astralCodePoint){return String.fromCharCode(Math.floor((astralCodePoint-65536)/1024)+55296,(astralCodePoint-65536)%1024+56320)};exports.getCodePoint=String.prototype.codePointAt?function(input,position){return input.codePointAt(position)}:function(input,position){return(input.charCodeAt(position)-55296)*1024+input.charCodeAt(position+1)-56320+65536};exports.highSurrogateFrom=55296;exports.highSurrogateTo=56319;
-
-/***/ }),
-
 /***/ "../../common/temp/node_modules/isarray/index.js":
 /*!********************************************************************************!*\
   !*** C:/dev/_try/piral_monorepo_mvp/common/temp/node_modules/isarray/index.js ***!
@@ -24315,7 +24077,7 @@ function createInstance(config = {}) {
     const createApi = apiFactory(context, usedPlugins);
     const root = createApi({
         name: 'root',
-        version: "0.0.0" || false,
+        version: "0.0.1" || false,
         spec: '',
     });
     const options = Object(_helpers__WEBPACK_IMPORTED_MODULE_4__["createPiletOptions"])({
@@ -24853,7 +24615,9 @@ if (typeof window !== 'undefined' && 'customElements' in window) {
             return ['name', 'params'];
         }
     }
-    customElements.define('piral-extension', PiralExtension);
+    if(!customElements.get("piral-extension")){
+        customElements.define('piral-extension', PiralExtension); 
+    } 
 }
 function render(context, element, props) {
     let [id, portal] = Object(_utils__WEBPACK_IMPORTED_MODULE_3__["renderInDom"])(context, element, _components__WEBPACK_IMPORTED_MODULE_2__["ExtensionSlot"], props);
@@ -26706,11 +26470,11 @@ function installPiralDebug(options) {
         debug: debugApiVersion,
         instance: {
             name: "app-shell",
-            version: "0.0.0",
+            version: "0.0.1",
             dependencies: "react,react-dom,react-router,react-router-dom,history,tslib,path-to-regexp,@libre/atom,@dbeining/react-atom",
         },
         build: {
-            date: "2022-01-17T11:45:46.350Z",
+            date: "2022-01-18T08:15:47.928Z",
             cli: "0.14.7",
             compat: "0.14",
         },
@@ -28712,7 +28476,7 @@ __webpack_require__.r(__webpack_exports__);
 __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "extendPiralApi", function() { return extendPiralApi; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "createPiral", function() { return createPiral; });
-/* harmony import */ var piral_core__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! piral-core */ "../../common/temp/node_modules/piral-core/esm/index.js");
+/* harmony import */ var piral_core__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! piral-core */ "../../common/temp/node_modules/piral/node_modules/piral-core/esm/index.js");
 /* harmony import */ var piral_ext__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! piral-ext */ "../../common/temp/node_modules/piral-ext/esm/index.js");
 
 
@@ -28949,7 +28713,7 @@ function hydrateInstance(options) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony import */ var piral_core__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! piral-core */ "../../common/temp/node_modules/piral-core/esm/index.js");
+/* harmony import */ var piral_core__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! piral-core */ "../../common/temp/node_modules/piral/node_modules/piral-core/esm/index.js");
 /* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "createInstance", function() { return piral_core__WEBPACK_IMPORTED_MODULE_0__["createInstance"]; });
 
 /* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "Piral", function() { return piral_core__WEBPACK_IMPORTED_MODULE_0__["Piral"]; });
@@ -29337,7 +29101,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "../../common/temp/node_modules/react/index.js");
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
 /* harmony import */ var piral_ext__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! piral-ext */ "../../common/temp/node_modules/piral-ext/esm/index.js");
-/* harmony import */ var piral_core__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! piral-core */ "../../common/temp/node_modules/piral-core/esm/index.js");
+/* harmony import */ var piral_core__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! piral-core */ "../../common/temp/node_modules/piral/node_modules/piral-core/esm/index.js");
 
 
 
@@ -29374,6 +29138,4812 @@ function getContainer(selector) {
     }
 }
 //# sourceMappingURL=options.js.map
+
+/***/ }),
+
+/***/ "../../common/temp/node_modules/piral/node_modules/piral-base/esm/aggregate.js":
+/*!**************************************************************************************************************!*\
+  !*** C:/dev/_try/piral_monorepo_mvp/common/temp/node_modules/piral/node_modules/piral-base/esm/aggregate.js ***!
+  \**************************************************************************************************************/
+/*! exports provided: createPilets, createPilet */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "createPilets", function() { return createPilets; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "createPilet", function() { return createPilet; });
+/* harmony import */ var _utils__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./utils */ "../../common/temp/node_modules/piral/node_modules/piral-base/esm/utils.js");
+/* harmony import */ var _setup__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./setup */ "../../common/temp/node_modules/piral/node_modules/piral-base/esm/setup.js");
+
+
+function checkCreateApi(createApi) {
+    if (!Object(_utils__WEBPACK_IMPORTED_MODULE_0__["isfunc"])(createApi)) {
+        console.warn('Invalid `createApi` function. Skipping pilet installation.');
+        return false;
+    }
+    return true;
+}
+/**
+ * Sets up the evaluated pilets to become integrated pilets.
+ * @param createApi The function to create an API object for a pilet.
+ * @param pilets The available evaluated app pilets.
+ * @returns The integrated pilets.
+ */
+function createPilets(createApi, pilets) {
+    const promises = [];
+    if (checkCreateApi(createApi) && Array.isArray(pilets)) {
+        for (const pilet of pilets) {
+            promises.push(Object(_setup__WEBPACK_IMPORTED_MODULE_1__["setupPilet"])(pilet, createApi));
+        }
+    }
+    return Promise.all(promises).then(() => pilets);
+}
+/**
+ * Sets up an evaluated pilet to become an integrated pilet.
+ * @param createApi The function to create an API object for the pilet.
+ * @param pilet The available evaluated pilet.
+ * @returns The integrated pilet.
+ */
+function createPilet(createApi, pilet) {
+    const promises = [];
+    if (checkCreateApi(createApi)) {
+        promises.push(Object(_setup__WEBPACK_IMPORTED_MODULE_1__["setupPilet"])(pilet, createApi));
+    }
+    return Promise.all(promises).then(() => pilet);
+}
+//# sourceMappingURL=aggregate.js.map
+
+/***/ }),
+
+/***/ "../../common/temp/node_modules/piral/node_modules/piral-base/esm/api.js":
+/*!********************************************************************************************************!*\
+  !*** C:/dev/_try/piral_monorepo_mvp/common/temp/node_modules/piral/node_modules/piral-base/esm/api.js ***!
+  \********************************************************************************************************/
+/*! exports provided: initializeApi, mergeApis */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "initializeApi", function() { return initializeApi; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "mergeApis", function() { return mergeApis; });
+/* harmony import */ var tslib__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! tslib */ "../../common/temp/node_modules/tslib/tslib.es6.js");
+
+function initializeApi(target, events) {
+    return {
+        on: events.on,
+        off: events.off,
+        emit: events.emit,
+        meta: Object.assign({}, target),
+    };
+}
+function mergeApis(api, extenders, target) {
+    const frags = extenders.map((extender) => extender(api, target));
+    Object(tslib__WEBPACK_IMPORTED_MODULE_0__["__assign"])(api, ...frags);
+    return api;
+}
+//# sourceMappingURL=api.js.map
+
+/***/ }),
+
+/***/ "../../common/temp/node_modules/piral/node_modules/piral-base/esm/cleanup.js":
+/*!************************************************************************************************************!*\
+  !*** C:/dev/_try/piral_monorepo_mvp/common/temp/node_modules/piral/node_modules/piral-base/esm/cleanup.js ***!
+  \************************************************************************************************************/
+/*! exports provided: cleanup */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "cleanup", function() { return cleanup; });
+function cleanup(pilet) {
+    const css = document.querySelector(`link[data-origin=${JSON.stringify(pilet.name)}]`);
+    css === null || css === void 0 ? void 0 : css.remove();
+    // check if this was actually set up using a require reference
+    if ('requireRef' in pilet) {
+        const depName = pilet.requireRef;
+        delete window[depName];
+    }
+}
+//# sourceMappingURL=cleanup.js.map
+
+/***/ }),
+
+/***/ "../../common/temp/node_modules/piral/node_modules/piral-base/esm/create.js":
+/*!***********************************************************************************************************!*\
+  !*** C:/dev/_try/piral_monorepo_mvp/common/temp/node_modules/piral/node_modules/piral-base/esm/create.js ***!
+  \***********************************************************************************************************/
+/*! exports provided: startLoadingPilets */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "startLoadingPilets", function() { return startLoadingPilets; });
+/* harmony import */ var _utils__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./utils */ "../../common/temp/node_modules/piral/node_modules/piral-base/esm/utils.js");
+/* harmony import */ var _strategies__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./strategies */ "../../common/temp/node_modules/piral/node_modules/piral-base/esm/strategies.js");
+
+
+function startLoadingPilets(options) {
+    const state = {
+        loaded: false,
+        pilets: [],
+        error: undefined,
+    };
+    const notifiers = [];
+    const call = (notifier) => notifier(state.error, state.pilets, state.loaded);
+    const notify = () => notifiers.forEach(call);
+    const setPilets = (error, pilets) => {
+        state.error = error;
+        state.pilets = pilets;
+        notify();
+    };
+    const setLoaded = () => {
+        state.loaded = true;
+        notify();
+    };
+    const { strategy = _strategies__WEBPACK_IMPORTED_MODULE_1__["standardStrategy"] } = options;
+    strategy(options, setPilets).then(setLoaded, setLoaded);
+    return {
+        connect(notifier) {
+            if (Object(_utils__WEBPACK_IMPORTED_MODULE_0__["isfunc"])(notifier)) {
+                notifiers.push(notifier);
+                call(notifier);
+            }
+        },
+        disconnect(notifier) {
+            const index = notifiers.indexOf(notifier);
+            index !== -1 && notifiers.splice(index, 1);
+        },
+    };
+}
+//# sourceMappingURL=create.js.map
+
+/***/ }),
+
+/***/ "../../common/temp/node_modules/piral/node_modules/piral-base/esm/dependency.js":
+/*!***************************************************************************************************************!*\
+  !*** C:/dev/_try/piral_monorepo_mvp/common/temp/node_modules/piral/node_modules/piral-base/esm/dependency.js ***!
+  \***************************************************************************************************************/
+/*! exports provided: evalDependency, compileDependency, includeScriptDependency, includeDependency, includeBundle */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "evalDependency", function() { return evalDependency; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "compileDependency", function() { return compileDependency; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "includeScriptDependency", function() { return includeScriptDependency; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "includeDependency", function() { return includeDependency; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "includeBundle", function() { return includeBundle; });
+function requireModule(name) {
+    const dependency = System.get(name);
+    if (!dependency) {
+        const error = new Error(`Cannot find module '${name}'`);
+        error.code = 'MODULE_NOT_FOUND';
+        throw error;
+    }
+    return dependency;
+}
+function checkPiletApp(name, app) {
+    if (!app) {
+        console.error('Invalid module found.', name);
+    }
+    else if (typeof app.setup !== 'function') {
+        console.warn('Setup function is missing.', name);
+    }
+    else {
+        return app;
+    }
+    return {
+        setup() { },
+    };
+}
+function checkPiletAppAsync(name, app) {
+    return Promise.resolve(app).then((resolvedApp) => checkPiletApp(name, resolvedApp));
+}
+/**
+ * Compiles the given content from a generic dependency.
+ * @param name The name of the dependency to compile.
+ * @param content The content of the dependency to compile.
+ * @param link The optional link to the dependency.
+ * @returns The evaluated dependency.
+ */
+function evalDependency(name, content, link = '') {
+    const mod = {
+        exports: {},
+    };
+    try {
+        const sourceUrl = link && `\n//# sourceURL=${link}`;
+        const importer = new Function('module', 'exports', 'require', content + sourceUrl);
+        importer(mod, mod.exports, requireModule);
+    }
+    catch (e) {
+        console.error(`Error while evaluating ${name}.`, e);
+    }
+    return mod.exports;
+}
+/**
+ * Compiles the given content from a module with a dependency resolution.
+ * @param name The name of the dependency to compile.
+ * @param content The content of the dependency to compile.
+ * @param link The optional link to the dependency.
+ * @returns The evaluated module.
+ */
+function compileDependency(name, content, link = '') {
+    const app = evalDependency(name, content, link);
+    return checkPiletAppAsync(name, app);
+}
+function includeScript(piletName, depName, link, integrity, crossOrigin) {
+    window[depName] = requireModule;
+    return includeScriptDependency(link, integrity, crossOrigin).then((s) => checkPiletAppAsync(piletName, s.app), () => checkPiletApp(piletName));
+}
+/**
+ * Includes a dependency as a script.
+ * @param link The link to the script.
+ * @param integrity The integrity for the script, if any.
+ * @param crossOrigin Defines if cross-origin should be used.
+ * @returns The script element.
+ */
+function includeScriptDependency(link, integrity, crossOrigin) {
+    return new Promise((resolve, reject) => {
+        const s = document.createElement('script');
+        s.async = true;
+        s.src = link;
+        if (integrity) {
+            s.crossOrigin = crossOrigin || 'anonymous';
+            s.integrity = integrity;
+        }
+        else if (crossOrigin) {
+            s.crossOrigin = crossOrigin;
+        }
+        s.onload = () => resolve(s);
+        s.onerror = () => reject();
+        document.body.appendChild(s);
+    });
+}
+/**
+ * Includes the given single pilet script via its URL with a dependency resolution.
+ * @param meta The meta data of the dependency to include.
+ * @param crossOrigin The override for the cross-origin attribute.
+ * @returns The evaluated module.
+ */
+function includeDependency(meta, crossOrigin) {
+    return includeScript(meta.name, meta.requireRef, meta.link, meta.integrity, crossOrigin);
+}
+/**
+ * Includes the given bundle script via its URL with a dependency resolution.
+ * @param meta The meta data of the dependency to include.
+ * @param crossOrigin The override for the cross-origin attribute.
+ * @returns The evaluated module.
+ */
+function includeBundle(meta, crossOrigin) {
+    var _a;
+    return includeScript((_a = meta.name) !== null && _a !== void 0 ? _a : '(bundle)', meta.bundle, meta.link, meta.integrity, crossOrigin);
+}
+//# sourceMappingURL=dependency.js.map
+
+/***/ }),
+
+/***/ "../../common/temp/node_modules/piral/node_modules/piral-base/esm/events.js":
+/*!***********************************************************************************************************!*\
+  !*** C:/dev/_try/piral_monorepo_mvp/common/temp/node_modules/piral/node_modules/piral-base/esm/events.js ***!
+  \***********************************************************************************************************/
+/*! exports provided: createListener */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "createListener", function() { return createListener; });
+function nameOf(type) {
+    return `piral-${type}`;
+}
+/**
+ * Creates a new Piral app shell event emitter.
+ * Uses a custom event dispatcher with a state for usage control.
+ * @param state The optional state object to identify the instance.
+ * @returns The event emitter.
+ */
+function createListener(state = {}) {
+    const eventListeners = [];
+    return {
+        on(type, callback) {
+            const listener = ({ detail }) => detail && detail.state === state && callback(detail.arg);
+            document.body.addEventListener(nameOf(type), listener);
+            eventListeners.push([callback, listener]);
+            return this;
+        },
+        off(type, callback) {
+            const [listener] = eventListeners.filter((m) => m[0] === callback);
+            if (listener) {
+                document.body.removeEventListener(nameOf(type), listener[1]);
+                eventListeners.splice(eventListeners.indexOf(listener), 1);
+            }
+            return this;
+        },
+        emit(type, arg) {
+            const ce = document.createEvent('CustomEvent');
+            ce.initCustomEvent(nameOf(type), false, false, {
+                arg,
+                state,
+            });
+            document.body.dispatchEvent(ce);
+            return this;
+        },
+    };
+}
+//# sourceMappingURL=events.js.map
+
+/***/ }),
+
+/***/ "../../common/temp/node_modules/piral/node_modules/piral-base/esm/fetch.js":
+/*!**********************************************************************************************************!*\
+  !*** C:/dev/_try/piral_monorepo_mvp/common/temp/node_modules/piral/node_modules/piral-base/esm/fetch.js ***!
+  \**********************************************************************************************************/
+/*! exports provided: fetchDependency */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "fetchDependency", function() { return fetchDependency; });
+/**
+ * Uses the `fetch` function (must be available). If you
+ * use this function make sure to use, e.g., `whatwg-fetch`
+ * which comes with polyfills for older browsers.
+ * @param url The URL to GET.
+ * @returns A promise leading to the raw text content.
+ */
+function fetchDependency(url) {
+    return fetch(url, {
+        method: 'GET',
+        cache: 'force-cache',
+    }).then((m) => m.text());
+}
+//# sourceMappingURL=fetch.js.map
+
+/***/ }),
+
+/***/ "../../common/temp/node_modules/piral/node_modules/piral-base/esm/index.js":
+/*!**********************************************************************************************************!*\
+  !*** C:/dev/_try/piral_monorepo_mvp/common/temp/node_modules/piral/node_modules/piral-base/esm/index.js ***!
+  \**********************************************************************************************************/
+/*! exports provided: initializeApi, mergeApis, startLoadingPilets, createListener, loadMetadata, loadPilets, loadFrom, extendLoader, getDefaultLoader, setupSinglePilet, setupMultiPilet, setupPilet, createProgressiveStrategy, blazingStrategy, asyncStrategy, standardStrategy, syncStrategy, createDeferredStrategy, isfunc, createEmptyModule, getBasePath, setBasePath */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _api__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./api */ "../../common/temp/node_modules/piral/node_modules/piral-base/esm/api.js");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "initializeApi", function() { return _api__WEBPACK_IMPORTED_MODULE_0__["initializeApi"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "mergeApis", function() { return _api__WEBPACK_IMPORTED_MODULE_0__["mergeApis"]; });
+
+/* harmony import */ var _create__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./create */ "../../common/temp/node_modules/piral/node_modules/piral-base/esm/create.js");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "startLoadingPilets", function() { return _create__WEBPACK_IMPORTED_MODULE_1__["startLoadingPilets"]; });
+
+/* harmony import */ var _events__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./events */ "../../common/temp/node_modules/piral/node_modules/piral-base/esm/events.js");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "createListener", function() { return _events__WEBPACK_IMPORTED_MODULE_2__["createListener"]; });
+
+/* harmony import */ var _load__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./load */ "../../common/temp/node_modules/piral/node_modules/piral-base/esm/load.js");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "loadMetadata", function() { return _load__WEBPACK_IMPORTED_MODULE_3__["loadMetadata"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "loadPilets", function() { return _load__WEBPACK_IMPORTED_MODULE_3__["loadPilets"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "loadFrom", function() { return _load__WEBPACK_IMPORTED_MODULE_3__["loadFrom"]; });
+
+/* harmony import */ var _loader__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./loader */ "../../common/temp/node_modules/piral/node_modules/piral-base/esm/loader.js");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "extendLoader", function() { return _loader__WEBPACK_IMPORTED_MODULE_4__["extendLoader"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "getDefaultLoader", function() { return _loader__WEBPACK_IMPORTED_MODULE_4__["getDefaultLoader"]; });
+
+/* harmony import */ var _setup__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./setup */ "../../common/temp/node_modules/piral/node_modules/piral-base/esm/setup.js");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "setupSinglePilet", function() { return _setup__WEBPACK_IMPORTED_MODULE_5__["setupSinglePilet"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "setupMultiPilet", function() { return _setup__WEBPACK_IMPORTED_MODULE_5__["setupMultiPilet"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "setupPilet", function() { return _setup__WEBPACK_IMPORTED_MODULE_5__["setupPilet"]; });
+
+/* harmony import */ var _strategies__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./strategies */ "../../common/temp/node_modules/piral/node_modules/piral-base/esm/strategies.js");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "createProgressiveStrategy", function() { return _strategies__WEBPACK_IMPORTED_MODULE_6__["createProgressiveStrategy"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "blazingStrategy", function() { return _strategies__WEBPACK_IMPORTED_MODULE_6__["blazingStrategy"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "asyncStrategy", function() { return _strategies__WEBPACK_IMPORTED_MODULE_6__["asyncStrategy"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "standardStrategy", function() { return _strategies__WEBPACK_IMPORTED_MODULE_6__["standardStrategy"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "syncStrategy", function() { return _strategies__WEBPACK_IMPORTED_MODULE_6__["syncStrategy"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "createDeferredStrategy", function() { return _strategies__WEBPACK_IMPORTED_MODULE_6__["createDeferredStrategy"]; });
+
+/* harmony import */ var _types__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ./types */ "../../common/temp/node_modules/piral/node_modules/piral-base/esm/types.js");
+/* empty/unused harmony star reexport *//* harmony import */ var _utils__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ./utils */ "../../common/temp/node_modules/piral/node_modules/piral-base/esm/utils.js");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "isfunc", function() { return _utils__WEBPACK_IMPORTED_MODULE_8__["isfunc"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "createEmptyModule", function() { return _utils__WEBPACK_IMPORTED_MODULE_8__["createEmptyModule"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "getBasePath", function() { return _utils__WEBPACK_IMPORTED_MODULE_8__["getBasePath"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "setBasePath", function() { return _utils__WEBPACK_IMPORTED_MODULE_8__["setBasePath"]; });
+
+
+
+
+
+
+
+
+
+
+//# sourceMappingURL=index.js.map
+
+/***/ }),
+
+/***/ "../../common/temp/node_modules/piral/node_modules/piral-base/esm/legacy.js":
+/*!***********************************************************************************************************!*\
+  !*** C:/dev/_try/piral_monorepo_mvp/common/temp/node_modules/piral/node_modules/piral-base/esm/legacy.js ***!
+  \***********************************************************************************************************/
+/*! exports provided: loadLegacyPilet */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "loadLegacyPilet", function() { return loadLegacyPilet; });
+/* harmony import */ var _load__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./load */ "../../common/temp/node_modules/piral/node_modules/piral-base/esm/load.js");
+/* harmony import */ var _fetch__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./fetch */ "../../common/temp/node_modules/piral/node_modules/piral-base/esm/fetch.js");
+/* harmony import */ var _utils__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./utils */ "../../common/temp/node_modules/piral/node_modules/piral-base/esm/utils.js");
+/* harmony import */ var _dependency__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./dependency */ "../../common/temp/node_modules/piral/node_modules/piral-base/esm/dependency.js");
+
+
+
+
+/**
+ * Loads a legacy (v0) or invalid pilet.
+ * @param meta The metadata of the pilet.
+ * @returns The evaluated pilet that can now be integrated.
+ */
+function loadLegacyPilet(meta) {
+    const name = meta.name;
+    if ('link' in meta && meta.link) {
+        const link = Object(_utils__WEBPACK_IMPORTED_MODULE_2__["setBasePath"])(meta, meta.link);
+        return Object(_fetch__WEBPACK_IMPORTED_MODULE_1__["fetchDependency"])(link).then((content) => Object(_load__WEBPACK_IMPORTED_MODULE_0__["loadFrom"])(meta, () => Object(_dependency__WEBPACK_IMPORTED_MODULE_3__["compileDependency"])(name, content, link)));
+    }
+    else if ('content' in meta && meta.content) {
+        const content = meta.content;
+        return Object(_load__WEBPACK_IMPORTED_MODULE_0__["loadFrom"])(meta, () => Object(_dependency__WEBPACK_IMPORTED_MODULE_3__["compileDependency"])(name, content, undefined));
+    }
+    else {
+        console.warn('Empty pilet found!', name);
+    }
+    return Promise.resolve(Object(_utils__WEBPACK_IMPORTED_MODULE_2__["createEmptyModule"])(meta));
+}
+//# sourceMappingURL=legacy.js.map
+
+/***/ }),
+
+/***/ "../../common/temp/node_modules/piral/node_modules/piral-base/esm/load.js":
+/*!*********************************************************************************************************!*\
+  !*** C:/dev/_try/piral_monorepo_mvp/common/temp/node_modules/piral/node_modules/piral-base/esm/load.js ***!
+  \*********************************************************************************************************/
+/*! exports provided: loadMetadata, loadPilets, loadFrom */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "loadMetadata", function() { return loadMetadata; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "loadPilets", function() { return loadPilets; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "loadFrom", function() { return loadFrom; });
+/* harmony import */ var _utils__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./utils */ "../../common/temp/node_modules/piral/node_modules/piral-base/esm/utils.js");
+/* harmony import */ var _dependency__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./dependency */ "../../common/temp/node_modules/piral/node_modules/piral-base/esm/dependency.js");
+
+
+const depContext = {};
+function loadSharedDependencies(sharedDependencies) {
+    if (sharedDependencies && typeof sharedDependencies === 'object') {
+        const sharedDependencyNames = Object.keys(sharedDependencies);
+        return Promise.all(sharedDependencyNames.map((name) => {
+            return depContext[name] || (depContext[name] = Object(_dependency__WEBPACK_IMPORTED_MODULE_1__["includeScriptDependency"])(sharedDependencies[name]));
+        }));
+    }
+    return Promise.resolve();
+}
+function checkFetchPilets(fetchPilets) {
+    if (!Object(_utils__WEBPACK_IMPORTED_MODULE_0__["isfunc"])(fetchPilets)) {
+        console.error('Could not get the pilets. Provide a valid `fetchPilets` function.');
+        return false;
+    }
+    return true;
+}
+/**
+ * Loads the pilets metadata and puts them in the cache, if provided.
+ * @param fetchPilets The function to resolve the pilets.
+ * @param cache The optional cache to use initially and update later.
+ */
+function loadMetadata(fetchPilets) {
+    if (checkFetchPilets(fetchPilets)) {
+        return fetchPilets();
+    }
+    return Promise.resolve([]);
+}
+/**
+ * Loads the pilets by first getting them, then evaluating the raw content.
+ * @param fetchPilets The function to resolve the pilets.
+ * @param fetchDependency A function to fetch the dependencies. By default, `fetch` is used.
+ * @param dependencies The availablly global dependencies, if any.
+ * @returns A promise leading to the evaluated pilets.
+ */
+function loadPilets(fetchPilets, loadPilet) {
+    return loadMetadata(fetchPilets).then((pilets) => {
+        if (!Array.isArray(pilets)) {
+            throw new Error('The fetched pilets metadata is not an array.');
+        }
+        return Promise.all(pilets.map(loadPilet));
+    });
+}
+/**
+ * Loads a pilet from the specified metadata and loader function.
+ * @param meta The metadata of the pilet.
+ * @param loadPilet The loader function derived for the pilet.
+ * @returns The evaluated pilet, which can then be integrated.
+ */
+function loadFrom(meta, loadPilet) {
+    return loadSharedDependencies(meta.dependencies)
+        .then(loadPilet)
+        .then((app) => (Object.assign(Object.assign({}, app), meta)));
+}
+//# sourceMappingURL=load.js.map
+
+/***/ }),
+
+/***/ "../../common/temp/node_modules/piral/node_modules/piral-base/esm/loader.js":
+/*!***********************************************************************************************************!*\
+  !*** C:/dev/_try/piral_monorepo_mvp/common/temp/node_modules/piral/node_modules/piral-base/esm/loader.js ***!
+  \***********************************************************************************************************/
+/*! exports provided: extendLoader, getDefaultLoader */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "extendLoader", function() { return extendLoader; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "getDefaultLoader", function() { return getDefaultLoader; });
+/* harmony import */ var _dependency__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./dependency */ "../../common/temp/node_modules/piral/node_modules/piral-base/esm/dependency.js");
+/* harmony import */ var _umd__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./umd */ "../../common/temp/node_modules/piral/node_modules/piral-base/esm/umd.js");
+/* harmony import */ var _legacy__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./legacy */ "../../common/temp/node_modules/piral/node_modules/piral-base/esm/legacy.js");
+/* harmony import */ var _system__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./system */ "../../common/temp/node_modules/piral/node_modules/piral-base/esm/system.js");
+
+
+
+
+const inBrowser = typeof document !== 'undefined';
+/**
+ * Extends the default loader with the spec loaders, if any are given.
+ * @param fallback The loader to use if none of the spec loaders matches.
+ * @param specLoaders The spec loaders to use.
+ * @returns The loader.
+ */
+function extendLoader(fallback, specLoaders) {
+    if (typeof specLoaders === 'object' && specLoaders) {
+        return (meta) => {
+            if (typeof meta.spec === 'string') {
+                const loaderOverride = specLoaders[meta.spec];
+                if (typeof loaderOverride === 'function') {
+                    return loaderOverride(meta);
+                }
+            }
+            return fallback(meta);
+        };
+    }
+    return fallback;
+}
+/**
+ * Gets the default loader provided by piral-base.
+ * @param config The loader configuration.
+ * @returns The function to load a pilet from metadata.
+ */
+function getDefaultLoader(config = {}) {
+    return (meta) => {
+        if (inBrowser && 'link' in meta && meta.spec === 'v2') {
+            return Object(_system__WEBPACK_IMPORTED_MODULE_3__["loadSystemPilet"])(meta);
+        }
+        else if (inBrowser && 'requireRef' in meta && meta.spec !== 'v2') {
+            return Object(_umd__WEBPACK_IMPORTED_MODULE_1__["loadUmdPilet"])(meta, config, _dependency__WEBPACK_IMPORTED_MODULE_0__["includeDependency"]);
+        }
+        else if (inBrowser && 'bundle' in meta && meta.bundle) {
+            return Object(_umd__WEBPACK_IMPORTED_MODULE_1__["loadUmdPilet"])(meta, config, _dependency__WEBPACK_IMPORTED_MODULE_0__["includeBundle"]);
+        }
+        else {
+            return Object(_legacy__WEBPACK_IMPORTED_MODULE_2__["loadLegacyPilet"])(meta);
+        }
+    };
+}
+//# sourceMappingURL=loader.js.map
+
+/***/ }),
+
+/***/ "../../common/temp/node_modules/piral/node_modules/piral-base/esm/setup.js":
+/*!**********************************************************************************************************!*\
+  !*** C:/dev/_try/piral_monorepo_mvp/common/temp/node_modules/piral/node_modules/piral-base/esm/setup.js ***!
+  \**********************************************************************************************************/
+/*! exports provided: setupSinglePilet, setupMultiPilet, setupPilet */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "setupSinglePilet", function() { return setupSinglePilet; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "setupMultiPilet", function() { return setupMultiPilet; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "setupPilet", function() { return setupPilet; });
+/* harmony import */ var _cleanup__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./cleanup */ "../../common/temp/node_modules/piral/node_modules/piral-base/esm/cleanup.js");
+
+/**
+ * Sets up the given single pilet by calling the exported `setup`
+ * function on the pilet with the created API.
+ * @param app The pilet's evaluated content.
+ * @param api The generated API for the pilet.
+ */
+function setupSinglePilet(app, api) {
+    try {
+        const result = app.setup(api);
+        const evtName = 'unload-pilet';
+        const handler = (e) => {
+            if (e.name === app.name) {
+                api.off(evtName, handler);
+                if (typeof app.teardown === 'function') {
+                    app.teardown(api);
+                }
+                Object(_cleanup__WEBPACK_IMPORTED_MODULE_0__["cleanup"])(app);
+            }
+        };
+        api.on(evtName, handler);
+        return result;
+    }
+    catch (e) {
+        console.error(`Error while setting up ${app === null || app === void 0 ? void 0 : app.name}.`, e);
+    }
+}
+/**
+ * Sets up the given multi pilet by calling the exported `setup`
+ * function on the pilet with the API factory.
+ * @param app The pilet's evaluated content.
+ * @param apiFactory The API factory to be used in the bundle.
+ */
+function setupMultiPilet(app, apiFactory) {
+    try {
+        return app.setup(apiFactory);
+    }
+    catch (e) {
+        console.error(`Error while setting up ${app === null || app === void 0 ? void 0 : app.name}.`, e);
+    }
+}
+/**
+ * Sets up the given pilet by calling the exported `setup` function
+ * on the pilet.
+ * @param app The pilet's evaluated content.
+ * @param apiFactory The API factory to be used in the bundle.
+ */
+function setupPilet(app, apiFactory) {
+    if ('bundle' in app) {
+        return setupMultiPilet(app, apiFactory);
+    }
+    else {
+        return setupSinglePilet(app, apiFactory(app));
+    }
+}
+//# sourceMappingURL=setup.js.map
+
+/***/ }),
+
+/***/ "../../common/temp/node_modules/piral/node_modules/piral-base/esm/strategies.js":
+/*!***************************************************************************************************************!*\
+  !*** C:/dev/_try/piral_monorepo_mvp/common/temp/node_modules/piral/node_modules/piral-base/esm/strategies.js ***!
+  \***************************************************************************************************************/
+/*! exports provided: createProgressiveStrategy, blazingStrategy, asyncStrategy, standardStrategy, syncStrategy, createDeferredStrategy */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "createProgressiveStrategy", function() { return createProgressiveStrategy; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "blazingStrategy", function() { return blazingStrategy; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "asyncStrategy", function() { return asyncStrategy; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "standardStrategy", function() { return standardStrategy; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "syncStrategy", function() { return syncStrategy; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "createDeferredStrategy", function() { return createDeferredStrategy; });
+/* harmony import */ var _loader__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./loader */ "../../common/temp/node_modules/piral/node_modules/piral-base/esm/loader.js");
+/* harmony import */ var _load__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./load */ "../../common/temp/node_modules/piral/node_modules/piral-base/esm/load.js");
+/* harmony import */ var _system__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./system */ "../../common/temp/node_modules/piral/node_modules/piral-base/esm/system.js");
+/* harmony import */ var _aggregate__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./aggregate */ "../../common/temp/node_modules/piral/node_modules/piral-base/esm/aggregate.js");
+
+
+
+
+function evalAll(createApi, oldModules, newModules) {
+    if (!Array.isArray(oldModules)) {
+        return Promise.reject(`The existing pilets must be passed as an array.`);
+    }
+    try {
+        for (const oldModule of oldModules) {
+            const [newModule] = newModules.filter((m) => m.name === oldModule.name);
+            if (newModule) {
+                newModules.splice(newModules.indexOf(newModule), 1);
+            }
+        }
+        return Object(_aggregate__WEBPACK_IMPORTED_MODULE_3__["createPilets"])(createApi, [...oldModules, ...newModules]);
+    }
+    catch (err) {
+        return Promise.reject(err);
+    }
+}
+/**
+ * This strategy is dependent on the async parameter. If false it will start rendering when
+ * everything has been received, otherwise it will start rendering when the metadata has been
+ * received. In any case it will evaluate pilets as fast as possible.
+ * @param async Uses the asynchronous mode.
+ */
+function createProgressiveStrategy(async) {
+    return (options, cb) => {
+        const { fetchPilets, dependencies = {}, createApi, config, pilets = [], loadPilet = Object(_loader__WEBPACK_IMPORTED_MODULE_0__["getDefaultLoader"])(config), loaders, } = options;
+        const loader = Object(_load__WEBPACK_IMPORTED_MODULE_1__["loadMetadata"])(fetchPilets);
+        const loadSingle = Object(_loader__WEBPACK_IMPORTED_MODULE_0__["extendLoader"])(loadPilet, loaders);
+        return Object(_system__WEBPACK_IMPORTED_MODULE_2__["registerDependencies"])(dependencies).then(() => Object(_aggregate__WEBPACK_IMPORTED_MODULE_3__["createPilets"])(createApi, pilets).then((allModules) => {
+            if (async && allModules.length > 0) {
+                cb(undefined, [...allModules]);
+            }
+            const followUp = loader.then((metadata) => {
+                const promises = metadata.map((m) => loadSingle(m).then((mod) => {
+                    const available = pilets.filter((m) => m.name === mod.name).length === 0;
+                    if (available) {
+                        return Object(_aggregate__WEBPACK_IMPORTED_MODULE_3__["createPilet"])(createApi, mod).then((newModule) => {
+                            allModules.push(newModule);
+                            if (async) {
+                                cb(undefined, [...allModules]);
+                            }
+                        });
+                    }
+                }));
+                return Promise.all(promises).then(() => {
+                    if (!async) {
+                        cb(undefined, allModules);
+                    }
+                });
+            });
+            return async ? loader.then() : followUp.then();
+        }));
+    };
+}
+/**
+ * This strategy starts rendering when the pilets metadata has been received.
+ * Evaluates the pilets once available without waiting for all pilets to be
+ * available.
+ */
+function blazingStrategy(options, cb) {
+    const strategy = createProgressiveStrategy(true);
+    return strategy(options, cb);
+}
+/**
+ * The async strategy picked when no strategy is declared and async is set to
+ * true. Directly renders, but waits for all pilets to be available before
+ * evaluating them.
+ */
+function asyncStrategy(options, cb) {
+    standardStrategy(options, cb);
+    return Promise.resolve();
+}
+/**
+ * The standard strategy that is used if no strategy is declared and async is
+ * false. Loads and evaluates all pilets before rendering.
+ */
+function standardStrategy(options, cb) {
+    const { fetchPilets, dependencies = {}, createApi, config, pilets = [], loadPilet = Object(_loader__WEBPACK_IMPORTED_MODULE_0__["getDefaultLoader"])(config), loaders, } = options;
+    const loadSingle = Object(_loader__WEBPACK_IMPORTED_MODULE_0__["extendLoader"])(loadPilet, loaders);
+    return Object(_system__WEBPACK_IMPORTED_MODULE_2__["registerDependencies"])(dependencies)
+        .then(() => Object(_load__WEBPACK_IMPORTED_MODULE_1__["loadPilets"])(fetchPilets, loadSingle))
+        .then((newModules) => evalAll(createApi, pilets, newModules))
+        .then((modules) => cb(undefined, modules))
+        .catch((error) => cb(error, []));
+}
+/**
+ * The strategy that could be used for special purposes, e.g., SSR or specific
+ * builds of the Piral instance. This strategy ignores the fetcher and only
+ * considers the already given pilets.
+ */
+function syncStrategy(options, cb) {
+    const { createApi, dependencies = {}, pilets = [] } = options;
+    return Object(_system__WEBPACK_IMPORTED_MODULE_2__["registerDependencies"])(dependencies).then(() => evalAll(createApi, pilets, []).then((modules) => cb(undefined, modules), (err) => cb(err, [])));
+}
+/**
+ * Creates a strategy that deferres the actual loading until a trigger promise resolves.
+ * The loading spinner is not shown during this time and pilets are supposed to appear directly.
+ * @param trigger The trigger resolving when the strategy should be applied.
+ * @param strategy The strategy to apply. Falls back to the standard strategy.
+ * @returns A pilet loading strategy.
+ */
+function createDeferredStrategy(trigger, strategy = standardStrategy) {
+    return (options, cb) => {
+        cb(undefined, []);
+        trigger.then(() => strategy(options, cb));
+        return Promise.resolve();
+    };
+}
+//# sourceMappingURL=strategies.js.map
+
+/***/ }),
+
+/***/ "../../common/temp/node_modules/piral/node_modules/piral-base/esm/system.js":
+/*!***********************************************************************************************************!*\
+  !*** C:/dev/_try/piral_monorepo_mvp/common/temp/node_modules/piral/node_modules/piral-base/esm/system.js ***!
+  \***********************************************************************************************************/
+/*! exports provided: loadSystemPilet, loadSystemModule, registerDependencies, registerModule */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "loadSystemPilet", function() { return loadSystemPilet; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "loadSystemModule", function() { return loadSystemModule; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "registerDependencies", function() { return registerDependencies; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "registerModule", function() { return registerModule; });
+/* harmony import */ var systemjs_dist_system_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! systemjs/dist/system.js */ "../../common/temp/node_modules/systemjs/dist/system.js");
+/* harmony import */ var systemjs_dist_system_js__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(systemjs_dist_system_js__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var systemjs_dist_extras_named_register_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! systemjs/dist/extras/named-register.js */ "../../common/temp/node_modules/systemjs/dist/extras/named-register.js");
+/* harmony import */ var systemjs_dist_extras_named_register_js__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(systemjs_dist_extras_named_register_js__WEBPACK_IMPORTED_MODULE_1__);
+/* harmony import */ var _utils__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./utils */ "../../common/temp/node_modules/piral/node_modules/piral-base/esm/utils.js");
+
+
+
+/**
+ * Loads the provided SystemJS-powered pilet.
+ * @param meta The pilet's metadata.
+ */
+function loadSystemPilet(meta) {
+    const deps = meta.dependencies;
+    const link = Object(_utils__WEBPACK_IMPORTED_MODULE_2__["setBasePath"])(meta, meta.link);
+    if (deps) {
+        for (const depName of Object.keys(deps)) {
+            if (!System.has(depName)) {
+                registerModule(depName, () => System.import(deps[depName]));
+            }
+        }
+    }
+    return loadSystemModule(link).then(([_, app]) => (Object.assign(Object.assign({}, app), meta)));
+}
+/**
+ * Loads the provided modules by their URL. Performs a
+ * SystemJS import.
+ * @param modules The names of the modules to resolve.
+ */
+function loadSystemModule(source) {
+    return System.import(source).then((value) => [source, value], (error) => {
+        console.error('Failed to load SystemJS module', source, error);
+        return [source, {}];
+    });
+}
+/**
+ * Registers all static global dependencies in the system.
+ * @param modules The modules to register as dependencies.
+ * @returns A promise when SystemJS included all dependencies.
+ */
+function registerDependencies(modules) {
+    const moduleNames = Object.keys(modules);
+    moduleNames.forEach((name) => registerModule(name, () => modules[name]));
+    return Promise.all(moduleNames.map((name) => System.import(name)));
+}
+/**
+ * Registers a plain module in SystemJS.
+ * @param name The name of the module
+ * @param resolve The resolver for the module's content.
+ */
+function registerModule(name, resolve) {
+    System.register(name, [], (_exports) => ({
+        execute() {
+            const content = resolve();
+            if (content instanceof Promise) {
+                return content.then(_exports);
+            }
+            else {
+                _exports(content);
+                if (typeof content === 'function') {
+                    _exports('__esModule', true);
+                    _exports('default', content);
+                }
+                else if (typeof content === 'object') {
+                    if (content && !Array.isArray(content) && !('default' in content)) {
+                        _exports('default', content);
+                    }
+                }
+            }
+        },
+    }));
+}
+//# sourceMappingURL=system.js.map
+
+/***/ }),
+
+/***/ "../../common/temp/node_modules/piral/node_modules/piral-base/esm/types.js":
+/*!**********************************************************************************************************!*\
+  !*** C:/dev/_try/piral_monorepo_mvp/common/temp/node_modules/piral/node_modules/piral-base/esm/types.js ***!
+  \**********************************************************************************************************/
+/*! no exports provided */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+
+//# sourceMappingURL=types.js.map
+
+/***/ }),
+
+/***/ "../../common/temp/node_modules/piral/node_modules/piral-base/esm/umd.js":
+/*!********************************************************************************************************!*\
+  !*** C:/dev/_try/piral_monorepo_mvp/common/temp/node_modules/piral/node_modules/piral-base/esm/umd.js ***!
+  \********************************************************************************************************/
+/*! exports provided: loadUmdPilet */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "loadUmdPilet", function() { return loadUmdPilet; });
+/* harmony import */ var _load__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./load */ "../../common/temp/node_modules/piral/node_modules/piral-base/esm/load.js");
+/* harmony import */ var _utils__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./utils */ "../../common/temp/node_modules/piral/node_modules/piral-base/esm/utils.js");
+
+
+/**
+ * Loads the provided UMD-powered pilet.
+ * @param meta The pilet's metadata.
+ * @param config The configuration for loading the pilet.
+ * @param loader The associated loader, either for bundle or single mode.
+ */
+function loadUmdPilet(meta, config, loader) {
+    Object(_utils__WEBPACK_IMPORTED_MODULE_1__["setBasePath"])(meta, meta.link);
+    return Object(_load__WEBPACK_IMPORTED_MODULE_0__["loadFrom"])(meta, () => loader(meta, config.crossOrigin));
+}
+//# sourceMappingURL=umd.js.map
+
+/***/ }),
+
+/***/ "../../common/temp/node_modules/piral/node_modules/piral-base/esm/utils.js":
+/*!**********************************************************************************************************!*\
+  !*** C:/dev/_try/piral_monorepo_mvp/common/temp/node_modules/piral/node_modules/piral-base/esm/utils.js ***!
+  \**********************************************************************************************************/
+/*! exports provided: isfunc, createEmptyModule, getBasePath, setBasePath */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "isfunc", function() { return isfunc; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "createEmptyModule", function() { return createEmptyModule; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "getBasePath", function() { return getBasePath; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "setBasePath", function() { return setBasePath; });
+function isfunc(f) {
+    return typeof f === 'function';
+}
+function createEmptyModule(meta) {
+    return Object.assign(Object.assign({}, meta), { setup() { } });
+}
+function getBasePath(link) {
+    if (link) {
+        const idx = link.lastIndexOf('/');
+        return link.substr(0, idx + 1);
+    }
+    return link;
+}
+function setBasePath(meta, link) {
+    meta.basePath = getBasePath(link);
+    return link;
+}
+//# sourceMappingURL=utils.js.map
+
+/***/ }),
+
+/***/ "../../common/temp/node_modules/piral/node_modules/piral-core/debug-pilet.js":
+/*!************************************************************************************************************!*\
+  !*** C:/dev/_try/piral_monorepo_mvp/common/temp/node_modules/piral/node_modules/piral-core/debug-pilet.js ***!
+  \************************************************************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+exports.__esModule = true;
+exports.integrate = void 0;
+var piral_debug_utils_1 = __webpack_require__(/*! piral-debug-utils */ "../../common/temp/node_modules/piral/node_modules/piral-debug-utils/esm/index.js");
+function integrate(context, options) {
+    options.fetchPilets = (0, piral_debug_utils_1.withEmulatorPilets)(options.fetchPilets, {
+        injectPilet: context.injectPilet,
+        createApi: options.createApi,
+        loadPilet: options.loadPilet
+    });
+}
+exports.integrate = integrate;
+
+
+/***/ }),
+
+/***/ "../../common/temp/node_modules/piral/node_modules/piral-core/debug-piral.js":
+/*!************************************************************************************************************!*\
+  !*** C:/dev/_try/piral_monorepo_mvp/common/temp/node_modules/piral/node_modules/piral-core/debug-piral.js ***!
+  \************************************************************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+var __assign = (this && this.__assign) || function () {
+    __assign = Object.assign || function(t) {
+        for (var s, i = 1, n = arguments.length; i < n; i++) {
+            s = arguments[i];
+            for (var p in s) if (Object.prototype.hasOwnProperty.call(s, p))
+                t[p] = s[p];
+        }
+        return t;
+    };
+    return __assign.apply(this, arguments);
+};
+var __spreadArray = (this && this.__spreadArray) || function (to, from, pack) {
+    if (pack || arguments.length === 2) for (var i = 0, l = from.length, ar; i < l; i++) {
+        if (ar || !(i in from)) {
+            if (!ar) ar = Array.prototype.slice.call(from, 0, i);
+            ar[i] = from[i];
+        }
+    }
+    return to.concat(ar || Array.prototype.slice.call(from));
+};
+exports.__esModule = true;
+exports.integrate = void 0;
+var react_atom_1 = __webpack_require__(/*! @dbeining/react-atom */ "../../common/temp/node_modules/@dbeining/react-atom/dist/react-atom.js");
+var piral_debug_utils_1 = __webpack_require__(/*! piral-debug-utils */ "../../common/temp/node_modules/piral/node_modules/piral-debug-utils/esm/index.js");
+function integrate(context, options, debug) {
+    if (debug === void 0) { debug = {}; }
+    (0, piral_debug_utils_1.installPiralDebug)(__assign(__assign({}, debug), { createApi: options.createApi, loadPilet: options.loadPilet, injectPilet: context.injectPilet, fireEvent: context.emit, getDependencies: function () {
+            return Object.keys(options.dependencies);
+        }, getExtensions: function () {
+            return context.readState(function (s) { return Object.keys(s.registry.extensions); });
+        }, getRoutes: function () {
+            var registeredRoutes = context.readState(function (state) { return Object.keys(state.registry.pages); });
+            var componentRoutes = context.readState(function (state) { return Object.keys(state.routes); });
+            return __spreadArray(__spreadArray([], componentRoutes, true), registeredRoutes, true);
+        }, getGlobalState: function () {
+            return context.readState(function (s) { return s; });
+        }, getPilets: function () {
+            return context.readState(function (s) { return s.modules; });
+        }, setPilets: function (modules) {
+            context.dispatch(function (state) { return (__assign(__assign({}, state), { modules: modules })); });
+        }, integrate: function (dbg) {
+            context.dispatch(function (s) { return (__assign(__assign({}, s), { components: __assign(__assign({}, s.components), dbg.components), routes: __assign(__assign({}, s.routes), dbg.routes), registry: __assign(__assign({}, s.registry), { wrappers: __assign(__assign({}, s.registry.wrappers), dbg.wrappers) }) })); });
+            (0, react_atom_1.addChangeHandler)(context.state, 'debugging', function (_a) {
+                var previous = _a.previous, current = _a.current;
+                var pilets = current.modules !== previous.modules;
+                var pages = current.registry.pages !== previous.registry.pages || current.routes !== previous.routes;
+                var extensions = current.registry.extensions !== previous.registry.extensions;
+                var state = current !== previous;
+                dbg.onChange(previous, current, {
+                    pilets: pilets,
+                    pages: pages,
+                    extensions: extensions,
+                    state: state
+                });
+            });
+        } }));
+}
+exports.integrate = integrate;
+
+
+/***/ }),
+
+/***/ "../../common/temp/node_modules/piral/node_modules/piral-core/dependencies.codegen":
+/*!******************************************************************************************************************!*\
+  !*** C:/dev/_try/piral_monorepo_mvp/common/temp/node_modules/piral/node_modules/piral-core/dependencies.codegen ***!
+  \******************************************************************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+module.exports = function(deps){
+    deps['app-shell']={};deps["react"]=__webpack_require__(/*! react */ "../../common/temp/node_modules/react/index.js");deps["react@17.0.2"]=__webpack_require__(/*! react */ "../../common/temp/node_modules/react/index.js");deps["react-dom"]=__webpack_require__(/*! react-dom */ "../../common/temp/node_modules/react-dom/index.js");deps["react-dom@17.0.2"]=__webpack_require__(/*! react-dom */ "../../common/temp/node_modules/react-dom/index.js");deps["react-router"]=__webpack_require__(/*! react-router */ "../../common/temp/node_modules/react-router/esm/react-router.js");deps["react-router@5.2.1"]=__webpack_require__(/*! react-router */ "../../common/temp/node_modules/react-router/esm/react-router.js");deps["react-router-dom"]=__webpack_require__(/*! react-router-dom */ "../../common/temp/node_modules/react-router-dom/esm/react-router-dom.js");deps["react-router-dom@5.3.0"]=__webpack_require__(/*! react-router-dom */ "../../common/temp/node_modules/react-router-dom/esm/react-router-dom.js");deps["history"]=__webpack_require__(/*! history */ "../../common/temp/node_modules/history/esm/history.js");deps["history@4.10.1"]=__webpack_require__(/*! history */ "../../common/temp/node_modules/history/esm/history.js");deps["tslib"]=__webpack_require__(/*! tslib */ "../../common/temp/node_modules/tslib/tslib.es6.js");deps["tslib@2.3.1"]=__webpack_require__(/*! tslib */ "../../common/temp/node_modules/tslib/tslib.es6.js");deps["path-to-regexp"]=__webpack_require__(/*! path-to-regexp */ "../../common/temp/node_modules/path-to-regexp/index.js");deps["path-to-regexp@1.8.0"]=__webpack_require__(/*! path-to-regexp */ "../../common/temp/node_modules/path-to-regexp/index.js");deps["@libre/atom"]=__webpack_require__(/*! @libre/atom */ "../../common/temp/node_modules/@libre/atom/dist/index.esm.js");deps["@libre/atom@1.3.3"]=__webpack_require__(/*! @libre/atom */ "../../common/temp/node_modules/@libre/atom/dist/index.esm.js");deps["@dbeining/react-atom"]=__webpack_require__(/*! @dbeining/react-atom */ "../../common/temp/node_modules/@dbeining/react-atom/dist/react-atom.js");deps["@dbeining/react-atom@4.1.21"]=__webpack_require__(/*! @dbeining/react-atom */ "../../common/temp/node_modules/@dbeining/react-atom/dist/react-atom.js")
+  }
+
+/***/ }),
+
+/***/ "../../common/temp/node_modules/piral/node_modules/piral-core/esm/Piral.js":
+/*!**********************************************************************************************************!*\
+  !*** C:/dev/_try/piral_monorepo_mvp/common/temp/node_modules/piral/node_modules/piral-core/esm/Piral.js ***!
+  \**********************************************************************************************************/
+/*! exports provided: Piral */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "Piral", function() { return Piral; });
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "../../common/temp/node_modules/react/index.js");
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var _state__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./state */ "../../common/temp/node_modules/piral/node_modules/piral-core/esm/state/index.js");
+/* harmony import */ var _createInstance__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./createInstance */ "../../common/temp/node_modules/piral/node_modules/piral-core/esm/createInstance.js");
+/* harmony import */ var _components__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./components */ "../../common/temp/node_modules/piral/node_modules/piral-core/esm/components/index.js");
+
+
+
+
+/**
+ * Represents the Piral app shell frame. Use this component together
+ * with an existing instance to render the app shell.
+ * Includes layout and routing handling. Wires the state container
+ * to the generated views.
+ *
+ * @example
+```jsx
+const app = (
+  <Piral instance={yourPiralInstance}>
+    <Define name="Layout" component={MyLayout} />
+  </Piral>
+);
+```
+ */
+const Piral = ({ instance = Object(_createInstance__WEBPACK_IMPORTED_MODULE_2__["createInstance"])(), breakpoints, children }) => (react__WEBPACK_IMPORTED_MODULE_0__["createElement"](_state__WEBPACK_IMPORTED_MODULE_1__["StateContext"].Provider, { value: instance.context },
+    react__WEBPACK_IMPORTED_MODULE_0__["createElement"](_components__WEBPACK_IMPORTED_MODULE_3__["ResponsiveLayout"], { breakpoints: breakpoints }),
+    react__WEBPACK_IMPORTED_MODULE_0__["createElement"](_components__WEBPACK_IMPORTED_MODULE_3__["Mediator"], { options: instance.options }),
+    react__WEBPACK_IMPORTED_MODULE_0__["createElement"](_components__WEBPACK_IMPORTED_MODULE_3__["PiralView"], null,
+        react__WEBPACK_IMPORTED_MODULE_0__["createElement"](_components__WEBPACK_IMPORTED_MODULE_3__["PortalRenderer"], { id: "root" }),
+        children)));
+Piral.displayName = 'Piral';
+//# sourceMappingURL=Piral.js.map
+
+/***/ }),
+
+/***/ "../../common/temp/node_modules/piral/node_modules/piral-core/esm/actions/app.js":
+/*!****************************************************************************************************************!*\
+  !*** C:/dev/_try/piral_monorepo_mvp/common/temp/node_modules/piral/node_modules/piral-core/esm/actions/app.js ***!
+  \****************************************************************************************************************/
+/*! exports provided: changeLayout, initialize, injectPilet, setComponent, setErrorComponent, setRoute, includeProvider */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "changeLayout", function() { return changeLayout; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "initialize", function() { return initialize; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "injectPilet", function() { return injectPilet; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "setComponent", function() { return setComponent; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "setErrorComponent", function() { return setErrorComponent; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "setRoute", function() { return setRoute; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "includeProvider", function() { return includeProvider; });
+/* harmony import */ var _utils__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../utils */ "../../common/temp/node_modules/piral/node_modules/piral-core/esm/utils/index.js");
+
+function changeLayout(ctx, current) {
+    ctx.dispatch((state) => (Object.assign(Object.assign({}, state), { app: Object(_utils__WEBPACK_IMPORTED_MODULE_0__["withKey"])(state.app, 'layout', current) })));
+}
+function initialize(ctx, loading, error, modules) {
+    ctx.dispatch((state) => (Object.assign(Object.assign({}, state), { app: Object.assign(Object.assign({}, state.app), { error,
+            loading }), modules })));
+}
+function injectPilet(ctx, pilet) {
+    ctx.dispatch((state) => (Object.assign(Object.assign({}, state), { modules: Object(_utils__WEBPACK_IMPORTED_MODULE_0__["replaceOrAddItem"])(state.modules, pilet, (m) => m.name === pilet.name), registry: Object(_utils__WEBPACK_IMPORTED_MODULE_0__["removeNested"])(state.registry, (m) => m.pilet === pilet.name) })));
+    ctx.emit('unload-pilet', {
+        name: pilet.name,
+    });
+}
+function setComponent(ctx, name, component) {
+    ctx.dispatch((state) => (Object.assign(Object.assign({}, state), { components: Object(_utils__WEBPACK_IMPORTED_MODULE_0__["withKey"])(state.components, name, component) })));
+}
+function setErrorComponent(ctx, type, component) {
+    ctx.dispatch((state) => (Object.assign(Object.assign({}, state), { errorComponents: Object(_utils__WEBPACK_IMPORTED_MODULE_0__["withKey"])(state.errorComponents, type, component) })));
+}
+function setRoute(ctx, path, component) {
+    ctx.dispatch(Object(_utils__WEBPACK_IMPORTED_MODULE_0__["withRoute"])(path, component));
+}
+function includeProvider(ctx, provider) {
+    ctx.dispatch(Object(_utils__WEBPACK_IMPORTED_MODULE_0__["withProvider"])(provider));
+}
+//# sourceMappingURL=app.js.map
+
+/***/ }),
+
+/***/ "../../common/temp/node_modules/piral/node_modules/piral-core/esm/actions/components.js":
+/*!***********************************************************************************************************************!*\
+  !*** C:/dev/_try/piral_monorepo_mvp/common/temp/node_modules/piral/node_modules/piral-core/esm/actions/components.js ***!
+  \***********************************************************************************************************************/
+/*! exports provided: registerPage, unregisterPage, registerExtension, unregisterExtension */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "registerPage", function() { return registerPage; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "unregisterPage", function() { return unregisterPage; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "registerExtension", function() { return registerExtension; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "unregisterExtension", function() { return unregisterExtension; });
+/* harmony import */ var _utils__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../utils */ "../../common/temp/node_modules/piral/node_modules/piral-core/esm/utils/index.js");
+
+function registerPage(ctx, name, value) {
+    ctx.dispatch(Object(_utils__WEBPACK_IMPORTED_MODULE_0__["withPage"])(name, value));
+}
+function unregisterPage(ctx, name) {
+    ctx.dispatch(Object(_utils__WEBPACK_IMPORTED_MODULE_0__["withoutPage"])(name));
+}
+function registerExtension(ctx, name, value) {
+    ctx.dispatch(Object(_utils__WEBPACK_IMPORTED_MODULE_0__["withExtension"])(name, value));
+}
+function unregisterExtension(ctx, name, reference) {
+    ctx.dispatch(Object(_utils__WEBPACK_IMPORTED_MODULE_0__["withoutExtension"])(name, reference));
+}
+//# sourceMappingURL=components.js.map
+
+/***/ }),
+
+/***/ "../../common/temp/node_modules/piral/node_modules/piral-core/esm/actions/data.js":
+/*!*****************************************************************************************************************!*\
+  !*** C:/dev/_try/piral_monorepo_mvp/common/temp/node_modules/piral/node_modules/piral-core/esm/actions/data.js ***!
+  \*****************************************************************************************************************/
+/*! exports provided: resetData, readDataItem, readDataValue, writeDataItem, tryWriteDataItem */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "resetData", function() { return resetData; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "readDataItem", function() { return readDataItem; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "readDataValue", function() { return readDataValue; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "writeDataItem", function() { return writeDataItem; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "tryWriteDataItem", function() { return tryWriteDataItem; });
+/* harmony import */ var _utils__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../utils */ "../../common/temp/node_modules/piral/node_modules/piral-core/esm/utils/index.js");
+
+function resetData(ctx) {
+    ctx.dispatch((state) => (Object.assign(Object.assign({}, state), { data: {} })));
+}
+function readDataItem(ctx, key) {
+    return ctx.readState((state) => state.data[key]);
+}
+function readDataValue(ctx, key) {
+    const item = readDataItem(ctx, key);
+    return item && item.value;
+}
+function writeDataItem(ctx, key, value, owner, target, expires) {
+    const isNull = !value && typeof value === 'object';
+    const data = isNull
+        ? value
+        : {
+            value,
+            owner,
+            target,
+            expires,
+        };
+    ctx.dispatch((state) => (Object.assign(Object.assign({}, state), { data: Object(_utils__WEBPACK_IMPORTED_MODULE_0__["updateKey"])(state.data, key, data) })));
+    ctx.emit('store-data', {
+        name: key,
+        target,
+        value,
+        owner,
+        expires,
+    });
+}
+function tryWriteDataItem(ctx, key, value, owner, target, expires) {
+    const item = readDataItem(ctx, key);
+    if (item && item.owner !== owner) {
+        console.error(`Invalid data write to '${key}'. This item currently belongs to '${item.owner}' (write attempted from '${owner}'). The action has been ignored.`);
+        return false;
+    }
+    writeDataItem(ctx, key, value, owner, target, expires);
+    return true;
+}
+//# sourceMappingURL=data.js.map
+
+/***/ }),
+
+/***/ "../../common/temp/node_modules/piral/node_modules/piral-core/esm/actions/define.js":
+/*!*******************************************************************************************************************!*\
+  !*** C:/dev/_try/piral_monorepo_mvp/common/temp/node_modules/piral/node_modules/piral-core/esm/actions/define.js ***!
+  \*******************************************************************************************************************/
+/*! exports provided: defineAction, defineActions */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "defineAction", function() { return defineAction; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "defineActions", function() { return defineActions; });
+function defineAction(ctx, actionName, action) {
+    ctx[actionName] = action.bind(ctx, ctx);
+}
+function defineActions(ctx, actions) {
+    for (const actionName of Object.keys(actions)) {
+        const action = actions[actionName];
+        defineAction(ctx, actionName, action);
+    }
+}
+//# sourceMappingURL=define.js.map
+
+/***/ }),
+
+/***/ "../../common/temp/node_modules/piral/node_modules/piral-core/esm/actions/index.js":
+/*!******************************************************************************************************************!*\
+  !*** C:/dev/_try/piral_monorepo_mvp/common/temp/node_modules/piral/node_modules/piral-core/esm/actions/index.js ***!
+  \******************************************************************************************************************/
+/*! exports provided: changeLayout, initialize, injectPilet, setComponent, setErrorComponent, setRoute, includeProvider, registerPage, unregisterPage, registerExtension, unregisterExtension, resetData, readDataItem, readDataValue, writeDataItem, tryWriteDataItem, defineAction, defineActions, destroyPortal, hidePortal, updatePortal, showPortal, dispatch, readState */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _app__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./app */ "../../common/temp/node_modules/piral/node_modules/piral-core/esm/actions/app.js");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "changeLayout", function() { return _app__WEBPACK_IMPORTED_MODULE_0__["changeLayout"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "initialize", function() { return _app__WEBPACK_IMPORTED_MODULE_0__["initialize"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "injectPilet", function() { return _app__WEBPACK_IMPORTED_MODULE_0__["injectPilet"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "setComponent", function() { return _app__WEBPACK_IMPORTED_MODULE_0__["setComponent"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "setErrorComponent", function() { return _app__WEBPACK_IMPORTED_MODULE_0__["setErrorComponent"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "setRoute", function() { return _app__WEBPACK_IMPORTED_MODULE_0__["setRoute"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "includeProvider", function() { return _app__WEBPACK_IMPORTED_MODULE_0__["includeProvider"]; });
+
+/* harmony import */ var _components__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./components */ "../../common/temp/node_modules/piral/node_modules/piral-core/esm/actions/components.js");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "registerPage", function() { return _components__WEBPACK_IMPORTED_MODULE_1__["registerPage"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "unregisterPage", function() { return _components__WEBPACK_IMPORTED_MODULE_1__["unregisterPage"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "registerExtension", function() { return _components__WEBPACK_IMPORTED_MODULE_1__["registerExtension"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "unregisterExtension", function() { return _components__WEBPACK_IMPORTED_MODULE_1__["unregisterExtension"]; });
+
+/* harmony import */ var _data__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./data */ "../../common/temp/node_modules/piral/node_modules/piral-core/esm/actions/data.js");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "resetData", function() { return _data__WEBPACK_IMPORTED_MODULE_2__["resetData"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "readDataItem", function() { return _data__WEBPACK_IMPORTED_MODULE_2__["readDataItem"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "readDataValue", function() { return _data__WEBPACK_IMPORTED_MODULE_2__["readDataValue"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "writeDataItem", function() { return _data__WEBPACK_IMPORTED_MODULE_2__["writeDataItem"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "tryWriteDataItem", function() { return _data__WEBPACK_IMPORTED_MODULE_2__["tryWriteDataItem"]; });
+
+/* harmony import */ var _define__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./define */ "../../common/temp/node_modules/piral/node_modules/piral-core/esm/actions/define.js");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "defineAction", function() { return _define__WEBPACK_IMPORTED_MODULE_3__["defineAction"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "defineActions", function() { return _define__WEBPACK_IMPORTED_MODULE_3__["defineActions"]; });
+
+/* harmony import */ var _portal__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./portal */ "../../common/temp/node_modules/piral/node_modules/piral-core/esm/actions/portal.js");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "destroyPortal", function() { return _portal__WEBPACK_IMPORTED_MODULE_4__["destroyPortal"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "hidePortal", function() { return _portal__WEBPACK_IMPORTED_MODULE_4__["hidePortal"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "updatePortal", function() { return _portal__WEBPACK_IMPORTED_MODULE_4__["updatePortal"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "showPortal", function() { return _portal__WEBPACK_IMPORTED_MODULE_4__["showPortal"]; });
+
+/* harmony import */ var _state__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./state */ "../../common/temp/node_modules/piral/node_modules/piral-core/esm/actions/state.js");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "dispatch", function() { return _state__WEBPACK_IMPORTED_MODULE_5__["dispatch"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "readState", function() { return _state__WEBPACK_IMPORTED_MODULE_5__["readState"]; });
+
+
+
+
+
+
+
+//# sourceMappingURL=index.js.map
+
+/***/ }),
+
+/***/ "../../common/temp/node_modules/piral/node_modules/piral-core/esm/actions/portal.js":
+/*!*******************************************************************************************************************!*\
+  !*** C:/dev/_try/piral_monorepo_mvp/common/temp/node_modules/piral/node_modules/piral-core/esm/actions/portal.js ***!
+  \*******************************************************************************************************************/
+/*! exports provided: destroyPortal, hidePortal, updatePortal, showPortal */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "destroyPortal", function() { return destroyPortal; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "hidePortal", function() { return hidePortal; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "updatePortal", function() { return updatePortal; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "showPortal", function() { return showPortal; });
+/* harmony import */ var _utils__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../utils */ "../../common/temp/node_modules/piral/node_modules/piral-core/esm/utils/index.js");
+
+function destroyPortal(ctx, id) {
+    ctx.dispatch((state) => (Object.assign(Object.assign({}, state), { portals: Object(_utils__WEBPACK_IMPORTED_MODULE_0__["withoutKey"])(state.portals, id) })));
+}
+function hidePortal(ctx, id, entry) {
+    ctx.dispatch((state) => (Object.assign(Object.assign({}, state), { portals: Object(_utils__WEBPACK_IMPORTED_MODULE_0__["withKey"])(state.portals, id, Object(_utils__WEBPACK_IMPORTED_MODULE_0__["excludeItem"])(state.portals[id], entry)) })));
+}
+function updatePortal(ctx, id, current, next) {
+    ctx.dispatch((state) => (Object.assign(Object.assign({}, state), { portals: Object(_utils__WEBPACK_IMPORTED_MODULE_0__["withKey"])(state.portals, id, Object(_utils__WEBPACK_IMPORTED_MODULE_0__["replaceOrAddItem"])(state.portals[id], next, (m) => m === current)) })));
+}
+function showPortal(ctx, id, entry) {
+    ctx.dispatch((state) => (Object.assign(Object.assign({}, state), { portals: Object(_utils__WEBPACK_IMPORTED_MODULE_0__["withKey"])(state.portals, id, Object(_utils__WEBPACK_IMPORTED_MODULE_0__["includeItem"])(state.portals[id], entry)) })));
+}
+//# sourceMappingURL=portal.js.map
+
+/***/ }),
+
+/***/ "../../common/temp/node_modules/piral/node_modules/piral-core/esm/actions/state.js":
+/*!******************************************************************************************************************!*\
+  !*** C:/dev/_try/piral_monorepo_mvp/common/temp/node_modules/piral/node_modules/piral-core/esm/actions/state.js ***!
+  \******************************************************************************************************************/
+/*! exports provided: dispatch, readState */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "dispatch", function() { return dispatch; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "readState", function() { return readState; });
+/* harmony import */ var _dbeining_react_atom__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @dbeining/react-atom */ "../../common/temp/node_modules/@dbeining/react-atom/dist/react-atom.js");
+/* harmony import */ var _dbeining_react_atom__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_dbeining_react_atom__WEBPACK_IMPORTED_MODULE_0__);
+
+function dispatch(ctx, update) {
+    Object(_dbeining_react_atom__WEBPACK_IMPORTED_MODULE_0__["swap"])(ctx.state, update);
+}
+function readState(ctx, read) {
+    const state = Object(_dbeining_react_atom__WEBPACK_IMPORTED_MODULE_0__["deref"])(ctx.state);
+    return read(state);
+}
+//# sourceMappingURL=state.js.map
+
+/***/ }),
+
+/***/ "../../common/temp/node_modules/piral/node_modules/piral-core/esm/components/DefaultErrorInfo.js":
+/*!********************************************************************************************************************************!*\
+  !*** C:/dev/_try/piral_monorepo_mvp/common/temp/node_modules/piral/node_modules/piral-core/esm/components/DefaultErrorInfo.js ***!
+  \********************************************************************************************************************************/
+/*! exports provided: DefaultErrorInfo */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "DefaultErrorInfo", function() { return DefaultErrorInfo; });
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "../../common/temp/node_modules/react/index.js");
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var _ExtensionSlot__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./ExtensionSlot */ "../../common/temp/node_modules/piral/node_modules/piral-core/esm/components/ExtensionSlot.js");
+/* harmony import */ var _SwitchErrorInfo__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./SwitchErrorInfo */ "../../common/temp/node_modules/piral/node_modules/piral-core/esm/components/SwitchErrorInfo.js");
+
+
+
+/**
+ * The default error info component. Just uses the "error" extension slot.
+ * Leverage the default one by registration of respective extensions using
+ * the "error" name.
+ */
+const DefaultErrorInfo = (props) => (react__WEBPACK_IMPORTED_MODULE_0__["createElement"](_ExtensionSlot__WEBPACK_IMPORTED_MODULE_1__["ExtensionSlot"], { name: "error", params: props, empty: () => react__WEBPACK_IMPORTED_MODULE_0__["createElement"](_SwitchErrorInfo__WEBPACK_IMPORTED_MODULE_2__["SwitchErrorInfo"], Object.assign({ key: "default_error" }, props)) }));
+DefaultErrorInfo.displayName = 'DefaultErrorInfo';
+//# sourceMappingURL=DefaultErrorInfo.js.map
+
+/***/ }),
+
+/***/ "../../common/temp/node_modules/piral/node_modules/piral-core/esm/components/DefaultLayout.js":
+/*!*****************************************************************************************************************************!*\
+  !*** C:/dev/_try/piral_monorepo_mvp/common/temp/node_modules/piral/node_modules/piral-core/esm/components/DefaultLayout.js ***!
+  \*****************************************************************************************************************************/
+/*! exports provided: DefaultLayout */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "DefaultLayout", function() { return DefaultLayout; });
+/* harmony import */ var _utils__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../utils */ "../../common/temp/node_modules/piral/node_modules/piral-core/esm/utils/index.js");
+
+/**
+ * The default layout only rendering the provided children.
+ */
+const DefaultLayout = ({ children }) => Object(_utils__WEBPACK_IMPORTED_MODULE_0__["defaultRender"])(children);
+DefaultLayout.displayName = 'DefaultLayout';
+//# sourceMappingURL=DefaultLayout.js.map
+
+/***/ }),
+
+/***/ "../../common/temp/node_modules/piral/node_modules/piral-core/esm/components/DefaultLoader.js":
+/*!*****************************************************************************************************************************!*\
+  !*** C:/dev/_try/piral_monorepo_mvp/common/temp/node_modules/piral/node_modules/piral-core/esm/components/DefaultLoader.js ***!
+  \*****************************************************************************************************************************/
+/*! exports provided: DefaultLoadingIndicator */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "DefaultLoadingIndicator", function() { return DefaultLoadingIndicator; });
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "../../common/temp/node_modules/react/index.js");
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
+
+/**
+ * The default loading indicator only displaying "Loading".
+ */
+const DefaultLoadingIndicator = () => react__WEBPACK_IMPORTED_MODULE_0__["createElement"]("div", null, "Loading");
+DefaultLoadingIndicator.displayName = 'DefaultLoadingIndicator';
+//# sourceMappingURL=DefaultLoader.js.map
+
+/***/ }),
+
+/***/ "../../common/temp/node_modules/piral/node_modules/piral-core/esm/components/DefaultRouter.js":
+/*!*****************************************************************************************************************************!*\
+  !*** C:/dev/_try/piral_monorepo_mvp/common/temp/node_modules/piral/node_modules/piral-core/esm/components/DefaultRouter.js ***!
+  \*****************************************************************************************************************************/
+/*! exports provided: DefaultRouter */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "DefaultRouter", function() { return DefaultRouter; });
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "../../common/temp/node_modules/react/index.js");
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var react_router_dom__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! react-router-dom */ "../../common/temp/node_modules/react-router-dom/esm/react-router-dom.js");
+/* harmony import */ var _hooks__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../hooks */ "../../common/temp/node_modules/piral/node_modules/piral-core/esm/hooks/index.js");
+
+
+
+const DefaultRouter = ({ children }) => {
+    const publicPath = Object(_hooks__WEBPACK_IMPORTED_MODULE_2__["useGlobalState"])((s) => s.app.publicPath);
+    return react__WEBPACK_IMPORTED_MODULE_0__["createElement"](react_router_dom__WEBPACK_IMPORTED_MODULE_1__["BrowserRouter"], { basename: publicPath }, children);
+};
+//# sourceMappingURL=DefaultRouter.js.map
+
+/***/ }),
+
+/***/ "../../common/temp/node_modules/piral/node_modules/piral-core/esm/components/ErrorBoundary.js":
+/*!*****************************************************************************************************************************!*\
+  !*** C:/dev/_try/piral_monorepo_mvp/common/temp/node_modules/piral/node_modules/piral-core/esm/components/ErrorBoundary.js ***!
+  \*****************************************************************************************************************************/
+/*! exports provided: ErrorBoundary */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "ErrorBoundary", function() { return ErrorBoundary; });
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "../../common/temp/node_modules/react/index.js");
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var piral_base__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! piral-base */ "../../common/temp/node_modules/piral/node_modules/piral-base/esm/index.js");
+
+
+/**
+ * The React component for catching errors and displaying error information.
+ */
+class ErrorBoundary extends react__WEBPACK_IMPORTED_MODULE_0__["Component"] {
+    constructor(props) {
+        super(props);
+        this.state = {
+            error: undefined,
+        };
+    }
+    componentDidCatch(error) {
+        const { onError } = this.props;
+        if (Object(piral_base__WEBPACK_IMPORTED_MODULE_1__["isfunc"])(onError)) {
+            onError(error);
+        }
+        this.setState({
+            error,
+        });
+    }
+    render() {
+        const { children, renderError, renderChild, renderProps } = this.props;
+        const { error } = this.state;
+        if (error) {
+            if (Object(piral_base__WEBPACK_IMPORTED_MODULE_1__["isfunc"])(renderError)) {
+                return renderError(error, renderProps);
+            }
+            return react__WEBPACK_IMPORTED_MODULE_0__["createElement"]("div", { style: { whiteSpace: 'pre-wrap' } }, error && error.message);
+        }
+        return Object(piral_base__WEBPACK_IMPORTED_MODULE_1__["isfunc"])(renderChild) ? renderChild(children, renderProps) : children;
+    }
+}
+//# sourceMappingURL=ErrorBoundary.js.map
+
+/***/ }),
+
+/***/ "../../common/temp/node_modules/piral/node_modules/piral-core/esm/components/ExtensionSlot.js":
+/*!*****************************************************************************************************************************!*\
+  !*** C:/dev/_try/piral_monorepo_mvp/common/temp/node_modules/piral/node_modules/piral-core/esm/components/ExtensionSlot.js ***!
+  \*****************************************************************************************************************************/
+/*! exports provided: ExtensionSlot */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "ExtensionSlot", function() { return ExtensionSlot; });
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "../../common/temp/node_modules/react/index.js");
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var piral_base__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! piral-base */ "../../common/temp/node_modules/piral/node_modules/piral-base/esm/index.js");
+/* harmony import */ var _hooks__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../hooks */ "../../common/temp/node_modules/piral/node_modules/piral-core/esm/hooks/index.js");
+/* harmony import */ var _utils__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../utils */ "../../common/temp/node_modules/piral/node_modules/piral-core/esm/utils/index.js");
+
+
+
+
+/**
+ * The extension slot component to be used when the available
+ * extensions of a given name should be rendered at a specific
+ * location.
+ */
+function ExtensionSlot(props) {
+    const { name, render = _utils__WEBPACK_IMPORTED_MODULE_3__["defaultRender"], empty, params } = props;
+    const extensions = Object(_hooks__WEBPACK_IMPORTED_MODULE_2__["useGlobalState"])((s) => s.registry.extensions[name] || _utils__WEBPACK_IMPORTED_MODULE_3__["none"]);
+    return render(extensions.length === 0 && Object(piral_base__WEBPACK_IMPORTED_MODULE_1__["isfunc"])(empty)
+        ? [Object(_utils__WEBPACK_IMPORTED_MODULE_3__["defaultRender"])(empty(), 'empty')]
+        : extensions.map(({ component: Component, reference, defaults = {} }, i) => (react__WEBPACK_IMPORTED_MODULE_0__["createElement"](Component, { key: `${(reference === null || reference === void 0 ? void 0 : reference.displayName) || '_'}${i}`, params: Object.assign(Object.assign({}, defaults), (params || {})) }))));
+}
+ExtensionSlot.displayName = `ExtensionSlot`;
+//# sourceMappingURL=ExtensionSlot.js.map
+
+/***/ }),
+
+/***/ "../../common/temp/node_modules/piral/node_modules/piral-core/esm/components/Mediator.js":
+/*!************************************************************************************************************************!*\
+  !*** C:/dev/_try/piral_monorepo_mvp/common/temp/node_modules/piral/node_modules/piral-core/esm/components/Mediator.js ***!
+  \************************************************************************************************************************/
+/*! exports provided: Mediator */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "Mediator", function() { return Mediator; });
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "../../common/temp/node_modules/react/index.js");
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var piral_base__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! piral-base */ "../../common/temp/node_modules/piral/node_modules/piral-base/esm/index.js");
+/* harmony import */ var _hooks__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../hooks */ "../../common/temp/node_modules/piral/node_modules/piral-core/esm/hooks/index.js");
+/* harmony import */ var _utils__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../utils */ "../../common/temp/node_modules/piral/node_modules/piral-core/esm/utils/index.js");
+
+
+
+
+/**
+ * The Mediator component for interfacing with pilets loading.
+ */
+const Mediator = ({ options }) => {
+    const initialize = Object(_hooks__WEBPACK_IMPORTED_MODULE_2__["useAction"])('initialize');
+    react__WEBPACK_IMPORTED_MODULE_0__["useEffect"](() => {
+        const { connect, disconnect } = Object(piral_base__WEBPACK_IMPORTED_MODULE_1__["startLoadingPilets"])(options);
+        const notifier = (error, pilets, loaded) => {
+            initialize(!loaded, error, pilets);
+        };
+        connect(notifier);
+        return () => disconnect(notifier);
+    }, _utils__WEBPACK_IMPORTED_MODULE_3__["none"]);
+    // tslint:disable-next-line:no-null-keyword
+    return null;
+};
+//# sourceMappingURL=Mediator.js.map
+
+/***/ }),
+
+/***/ "../../common/temp/node_modules/piral/node_modules/piral-core/esm/components/PiralRoutes.js":
+/*!***************************************************************************************************************************!*\
+  !*** C:/dev/_try/piral_monorepo_mvp/common/temp/node_modules/piral/node_modules/piral-core/esm/components/PiralRoutes.js ***!
+  \***************************************************************************************************************************/
+/*! exports provided: PiralRoutes */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "PiralRoutes", function() { return PiralRoutes; });
+/* harmony import */ var tslib__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! tslib */ "../../common/temp/node_modules/tslib/tslib.es6.js");
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! react */ "../../common/temp/node_modules/react/index.js");
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_1__);
+/* harmony import */ var react_router__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! react-router */ "../../common/temp/node_modules/react-router/esm/react-router.js");
+/* harmony import */ var _hooks__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../hooks */ "../../common/temp/node_modules/piral/node_modules/piral-core/esm/hooks/index.js");
+
+
+
+
+/**
+ * The component for defining the exclusive routes to be used.
+ */
+const PiralRoutes = (_a) => {
+    var { NotFound } = _a, props = Object(tslib__WEBPACK_IMPORTED_MODULE_0__["__rest"])(_a, ["NotFound"]);
+    const routes = Object(_hooks__WEBPACK_IMPORTED_MODULE_3__["useGlobalState"])((s) => s.routes);
+    const pages = Object(_hooks__WEBPACK_IMPORTED_MODULE_3__["useGlobalState"])((s) => s.registry.pages);
+    return (react__WEBPACK_IMPORTED_MODULE_1__["createElement"](react_router__WEBPACK_IMPORTED_MODULE_2__["Switch"], Object.assign({}, props),
+        Object.keys(routes).map((url) => (react__WEBPACK_IMPORTED_MODULE_1__["createElement"](react_router__WEBPACK_IMPORTED_MODULE_2__["Route"], { exact: true, key: url, path: url, component: routes[url] }))),
+        Object.keys(pages).map((url) => (react__WEBPACK_IMPORTED_MODULE_1__["createElement"](react_router__WEBPACK_IMPORTED_MODULE_2__["Route"], { exact: true, key: url, path: url, component: pages[url].component }))),
+        react__WEBPACK_IMPORTED_MODULE_1__["createElement"](react_router__WEBPACK_IMPORTED_MODULE_2__["Route"], { component: NotFound })));
+};
+PiralRoutes.displayName = 'Routes';
+//# sourceMappingURL=PiralRoutes.js.map
+
+/***/ }),
+
+/***/ "../../common/temp/node_modules/piral/node_modules/piral-core/esm/components/PiralView.js":
+/*!*************************************************************************************************************************!*\
+  !*** C:/dev/_try/piral_monorepo_mvp/common/temp/node_modules/piral/node_modules/piral-core/esm/components/PiralView.js ***!
+  \*************************************************************************************************************************/
+/*! exports provided: PiralView */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "PiralView", function() { return PiralView; });
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "../../common/temp/node_modules/react/index.js");
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var react_router__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! react-router */ "../../common/temp/node_modules/react-router/esm/react-router.js");
+/* harmony import */ var _components__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./components */ "../../common/temp/node_modules/piral/node_modules/piral-core/esm/components/components.js");
+/* harmony import */ var _PiralRoutes__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./PiralRoutes */ "../../common/temp/node_modules/piral/node_modules/piral-core/esm/components/PiralRoutes.js");
+/* harmony import */ var _hooks__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../hooks */ "../../common/temp/node_modules/piral/node_modules/piral-core/esm/hooks/index.js");
+
+
+
+
+
+const NotFound = (props) => react__WEBPACK_IMPORTED_MODULE_0__["createElement"](_components__WEBPACK_IMPORTED_MODULE_2__["PiralError"], Object.assign({ type: "not_found" }, props));
+const PiralContent = () => {
+    const { error, loading, layout } = Object(_hooks__WEBPACK_IMPORTED_MODULE_4__["useGlobalState"])((m) => m.app);
+    return error ? (react__WEBPACK_IMPORTED_MODULE_0__["createElement"](_components__WEBPACK_IMPORTED_MODULE_2__["PiralError"], { type: "loading", error: error })) : loading ? (react__WEBPACK_IMPORTED_MODULE_0__["createElement"](_components__WEBPACK_IMPORTED_MODULE_2__["PiralLoadingIndicator"], null)) : (react__WEBPACK_IMPORTED_MODULE_0__["createElement"](_components__WEBPACK_IMPORTED_MODULE_2__["PiralLayout"], { currentLayout: layout },
+        react__WEBPACK_IMPORTED_MODULE_0__["createElement"](_PiralRoutes__WEBPACK_IMPORTED_MODULE_3__["PiralRoutes"], { NotFound: NotFound })));
+};
+const FallbackRouter = (props) => {
+    const publicPath = Object(_hooks__WEBPACK_IMPORTED_MODULE_4__["useGlobalState"])((s) => s.app.publicPath);
+    return react__WEBPACK_IMPORTED_MODULE_0__["createElement"](react_router__WEBPACK_IMPORTED_MODULE_1__["StaticRouter"], Object.assign({ location: "/" }, props, { basename: publicPath }));
+};
+const Router = typeof window === 'undefined' ? FallbackRouter : _components__WEBPACK_IMPORTED_MODULE_2__["PiralRouter"];
+const PiralProvider = ({ children }) => {
+    const provider = Object(_hooks__WEBPACK_IMPORTED_MODULE_4__["useGlobalState"])((m) => m.provider) || react__WEBPACK_IMPORTED_MODULE_0__["Fragment"];
+    return react__WEBPACK_IMPORTED_MODULE_0__["createElement"](provider, undefined, children);
+};
+/**
+ * The component responsible for the generic view of the application.
+ * This includes the global providers, the used Router, the current content and some convenience.
+ */
+const PiralView = ({ children }) => (react__WEBPACK_IMPORTED_MODULE_0__["createElement"](PiralProvider, null,
+    react__WEBPACK_IMPORTED_MODULE_0__["createElement"](Router, null,
+        react__WEBPACK_IMPORTED_MODULE_0__["createElement"](PiralContent, null),
+        children,
+        react__WEBPACK_IMPORTED_MODULE_0__["createElement"](_components__WEBPACK_IMPORTED_MODULE_2__["PiralDebug"], null))));
+PiralView.displayName = 'PiralView';
+//# sourceMappingURL=PiralView.js.map
+
+/***/ }),
+
+/***/ "../../common/temp/node_modules/piral/node_modules/piral-core/esm/components/PortalRenderer.js":
+/*!******************************************************************************************************************************!*\
+  !*** C:/dev/_try/piral_monorepo_mvp/common/temp/node_modules/piral/node_modules/piral-core/esm/components/PortalRenderer.js ***!
+  \******************************************************************************************************************************/
+/*! exports provided: PortalRenderer */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "PortalRenderer", function() { return PortalRenderer; });
+/* harmony import */ var _hooks__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../hooks */ "../../common/temp/node_modules/piral/node_modules/piral-core/esm/hooks/index.js");
+/* harmony import */ var _utils__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../utils */ "../../common/temp/node_modules/piral/node_modules/piral-core/esm/utils/index.js");
+
+
+const PortalRenderer = ({ id }) => {
+    const children = Object(_hooks__WEBPACK_IMPORTED_MODULE_0__["useGlobalState"])((m) => m.portals[id]) || _utils__WEBPACK_IMPORTED_MODULE_1__["none"];
+    return Object(_utils__WEBPACK_IMPORTED_MODULE_1__["defaultRender"])(children);
+};
+//# sourceMappingURL=PortalRenderer.js.map
+
+/***/ }),
+
+/***/ "../../common/temp/node_modules/piral/node_modules/piral-core/esm/components/ResponsiveLayout.js":
+/*!********************************************************************************************************************************!*\
+  !*** C:/dev/_try/piral_monorepo_mvp/common/temp/node_modules/piral/node_modules/piral-core/esm/components/ResponsiveLayout.js ***!
+  \********************************************************************************************************************************/
+/*! exports provided: ResponsiveLayout */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "ResponsiveLayout", function() { return ResponsiveLayout; });
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "../../common/temp/node_modules/react/index.js");
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var _hooks__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../hooks */ "../../common/temp/node_modules/piral/node_modules/piral-core/esm/hooks/index.js");
+/* harmony import */ var _utils__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../utils */ "../../common/temp/node_modules/piral/node_modules/piral-core/esm/utils/index.js");
+
+
+
+/**
+ * The component capable of identifying and switching the currently used layout.
+ */
+const ResponsiveLayout = ({ breakpoints = _utils__WEBPACK_IMPORTED_MODULE_2__["defaultBreakpoints"], children }) => {
+    const current = Object(_hooks__WEBPACK_IMPORTED_MODULE_1__["useGlobalState"])((m) => m.app.layout) || 'desktop';
+    const changeTo = Object(_hooks__WEBPACK_IMPORTED_MODULE_1__["useAction"])('changeLayout');
+    const selected = Object(_hooks__WEBPACK_IMPORTED_MODULE_1__["useMedia"])(breakpoints, _utils__WEBPACK_IMPORTED_MODULE_2__["defaultLayouts"], current);
+    react__WEBPACK_IMPORTED_MODULE_0__["useEffect"](() => {
+        if (selected !== current) {
+            changeTo(selected);
+        }
+    }, [selected]);
+    return Object(_utils__WEBPACK_IMPORTED_MODULE_2__["defaultRender"])(children);
+};
+ResponsiveLayout.displayName = 'ResponsiveLayout';
+//# sourceMappingURL=ResponsiveLayout.js.map
+
+/***/ }),
+
+/***/ "../../common/temp/node_modules/piral/node_modules/piral-core/esm/components/SetComponent.js":
+/*!****************************************************************************************************************************!*\
+  !*** C:/dev/_try/piral_monorepo_mvp/common/temp/node_modules/piral/node_modules/piral-core/esm/components/SetComponent.js ***!
+  \****************************************************************************************************************************/
+/*! exports provided: SetComponent */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "SetComponent", function() { return SetComponent; });
+/* harmony import */ var _hooks__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../hooks */ "../../common/temp/node_modules/piral/node_modules/piral-core/esm/hooks/index.js");
+
+/**
+ * The component capable of setting a layout component at mounting.
+ */
+function SetComponent({ name, component, }) {
+    const setComponent = Object(_hooks__WEBPACK_IMPORTED_MODULE_0__["useAction"])('setComponent');
+    Object(_hooks__WEBPACK_IMPORTED_MODULE_0__["useSetter"])(() => component && setComponent(name, component));
+    // tslint:disable-next-line:no-null-keyword
+    return null;
+}
+//# sourceMappingURL=SetComponent.js.map
+
+/***/ }),
+
+/***/ "../../common/temp/node_modules/piral/node_modules/piral-core/esm/components/SetError.js":
+/*!************************************************************************************************************************!*\
+  !*** C:/dev/_try/piral_monorepo_mvp/common/temp/node_modules/piral/node_modules/piral-core/esm/components/SetError.js ***!
+  \************************************************************************************************************************/
+/*! exports provided: SetError */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "SetError", function() { return SetError; });
+/* harmony import */ var _hooks__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../hooks */ "../../common/temp/node_modules/piral/node_modules/piral-core/esm/hooks/index.js");
+
+/**
+ * The component capable of setting a globally defined error handler component at mounting.
+ */
+function SetError({ type, component, }) {
+    const setErrorComponent = Object(_hooks__WEBPACK_IMPORTED_MODULE_0__["useAction"])('setErrorComponent');
+    Object(_hooks__WEBPACK_IMPORTED_MODULE_0__["useSetter"])(() => component && setErrorComponent(type, component));
+    // tslint:disable-next-line:no-null-keyword
+    return null;
+}
+//# sourceMappingURL=SetError.js.map
+
+/***/ }),
+
+/***/ "../../common/temp/node_modules/piral/node_modules/piral-core/esm/components/SetErrors.js":
+/*!*************************************************************************************************************************!*\
+  !*** C:/dev/_try/piral_monorepo_mvp/common/temp/node_modules/piral/node_modules/piral-core/esm/components/SetErrors.js ***!
+  \*************************************************************************************************************************/
+/*! exports provided: SetErrors */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "SetErrors", function() { return SetErrors; });
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "../../common/temp/node_modules/react/index.js");
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var _SetError__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./SetError */ "../../common/temp/node_modules/piral/node_modules/piral-core/esm/components/SetError.js");
+
+
+/**
+ * The component capable of batch setting error handling components.
+ */
+function SetErrors({ errors = {} }) {
+    return (react__WEBPACK_IMPORTED_MODULE_0__["createElement"](react__WEBPACK_IMPORTED_MODULE_0__["Fragment"], null, Object.keys(errors).map((key) => (react__WEBPACK_IMPORTED_MODULE_0__["createElement"](_SetError__WEBPACK_IMPORTED_MODULE_1__["SetError"], { type: key, component: errors[key], key: key })))));
+}
+//# sourceMappingURL=SetErrors.js.map
+
+/***/ }),
+
+/***/ "../../common/temp/node_modules/piral/node_modules/piral-core/esm/components/SetLayout.js":
+/*!*************************************************************************************************************************!*\
+  !*** C:/dev/_try/piral_monorepo_mvp/common/temp/node_modules/piral/node_modules/piral-core/esm/components/SetLayout.js ***!
+  \*************************************************************************************************************************/
+/*! exports provided: SetLayout */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "SetLayout", function() { return SetLayout; });
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "../../common/temp/node_modules/react/index.js");
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var _SetComponent__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./SetComponent */ "../../common/temp/node_modules/piral/node_modules/piral-core/esm/components/SetComponent.js");
+
+
+/**
+ * The component capable of batch setting layout components.
+ */
+function SetLayout({ layout = {} }) {
+    return (react__WEBPACK_IMPORTED_MODULE_0__["createElement"](react__WEBPACK_IMPORTED_MODULE_0__["Fragment"], null, Object.keys(layout).map((key) => (react__WEBPACK_IMPORTED_MODULE_0__["createElement"](_SetComponent__WEBPACK_IMPORTED_MODULE_1__["SetComponent"], { name: key, component: layout[key], key: key })))));
+}
+//# sourceMappingURL=SetLayout.js.map
+
+/***/ }),
+
+/***/ "../../common/temp/node_modules/piral/node_modules/piral-core/esm/components/SetProvider.js":
+/*!***************************************************************************************************************************!*\
+  !*** C:/dev/_try/piral_monorepo_mvp/common/temp/node_modules/piral/node_modules/piral-core/esm/components/SetProvider.js ***!
+  \***************************************************************************************************************************/
+/*! exports provided: SetProvider */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "SetProvider", function() { return SetProvider; });
+/* harmony import */ var _hooks__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../hooks */ "../../common/temp/node_modules/piral/node_modules/piral-core/esm/hooks/index.js");
+
+/**
+ * The component capable of setting a global provider at mounting.
+ */
+function SetProvider({ provider }) {
+    const includeProvider = Object(_hooks__WEBPACK_IMPORTED_MODULE_0__["useAction"])('includeProvider');
+    Object(_hooks__WEBPACK_IMPORTED_MODULE_0__["useSetter"])(() => provider && includeProvider(provider));
+    // tslint:disable-next-line:no-null-keyword
+    return null;
+}
+//# sourceMappingURL=SetProvider.js.map
+
+/***/ }),
+
+/***/ "../../common/temp/node_modules/piral/node_modules/piral-core/esm/components/SetRedirect.js":
+/*!***************************************************************************************************************************!*\
+  !*** C:/dev/_try/piral_monorepo_mvp/common/temp/node_modules/piral/node_modules/piral-core/esm/components/SetRedirect.js ***!
+  \***************************************************************************************************************************/
+/*! exports provided: SetRedirect */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "SetRedirect", function() { return SetRedirect; });
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "../../common/temp/node_modules/react/index.js");
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var react_router__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! react-router */ "../../common/temp/node_modules/react-router/esm/react-router.js");
+/* harmony import */ var _hooks__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../hooks */ "../../common/temp/node_modules/piral/node_modules/piral-core/esm/hooks/index.js");
+
+
+
+/**
+ * The component capable of setting a global redirect route at mounting.
+ */
+function SetRedirect({ from, to }) {
+    const setRoute = Object(_hooks__WEBPACK_IMPORTED_MODULE_2__["useAction"])('setRoute');
+    Object(_hooks__WEBPACK_IMPORTED_MODULE_2__["useSetter"])(() => setRoute(from, () => react__WEBPACK_IMPORTED_MODULE_0__["createElement"](react_router__WEBPACK_IMPORTED_MODULE_1__["Redirect"], { to: to })));
+    // tslint:disable-next-line:no-null-keyword
+    return null;
+}
+//# sourceMappingURL=SetRedirect.js.map
+
+/***/ }),
+
+/***/ "../../common/temp/node_modules/piral/node_modules/piral-core/esm/components/SetRoute.js":
+/*!************************************************************************************************************************!*\
+  !*** C:/dev/_try/piral_monorepo_mvp/common/temp/node_modules/piral/node_modules/piral-core/esm/components/SetRoute.js ***!
+  \************************************************************************************************************************/
+/*! exports provided: SetRoute */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "SetRoute", function() { return SetRoute; });
+/* harmony import */ var _hooks__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../hooks */ "../../common/temp/node_modules/piral/node_modules/piral-core/esm/hooks/index.js");
+
+/**
+ * The component capable of setting a global route at mounting.
+ */
+function SetRoute({ path, component }) {
+    const setRoute = Object(_hooks__WEBPACK_IMPORTED_MODULE_0__["useAction"])('setRoute');
+    Object(_hooks__WEBPACK_IMPORTED_MODULE_0__["useSetter"])(() => component && setRoute(path, component));
+    // tslint:disable-next-line:no-null-keyword
+    return null;
+}
+//# sourceMappingURL=SetRoute.js.map
+
+/***/ }),
+
+/***/ "../../common/temp/node_modules/piral/node_modules/piral-core/esm/components/SwitchErrorInfo.js":
+/*!*******************************************************************************************************************************!*\
+  !*** C:/dev/_try/piral_monorepo_mvp/common/temp/node_modules/piral/node_modules/piral-core/esm/components/SwitchErrorInfo.js ***!
+  \*******************************************************************************************************************************/
+/*! exports provided: SwitchErrorInfo */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "SwitchErrorInfo", function() { return SwitchErrorInfo; });
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "../../common/temp/node_modules/react/index.js");
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var _hooks__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../hooks */ "../../common/temp/node_modules/piral/node_modules/piral-core/esm/hooks/index.js");
+/* harmony import */ var _utils__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../utils */ "../../common/temp/node_modules/piral/node_modules/piral-core/esm/utils/index.js");
+
+
+
+function renderComponent(components, props) {
+    const name = props.type;
+    const Component = components[name];
+    if (true) {
+        react__WEBPACK_IMPORTED_MODULE_0__["useEffect"](() => console.error('[dev-info] An error occurred in the Piral instance.', props), _utils__WEBPACK_IMPORTED_MODULE_2__["none"]);
+    }
+    if (!Component) {
+        const Unknown = components.unknown;
+        if (Unknown) {
+            return react__WEBPACK_IMPORTED_MODULE_0__["createElement"](Unknown, Object.assign({}, props, { type: "unknown" }));
+        }
+        return Object(_utils__WEBPACK_IMPORTED_MODULE_2__["defaultRender"])(`Error: ${props.type}`);
+    }
+    return react__WEBPACK_IMPORTED_MODULE_0__["createElement"](Component, Object.assign({}, props));
+}
+const SwitchErrorInfo = (props) => {
+    const components = Object(_hooks__WEBPACK_IMPORTED_MODULE_1__["useGlobalState"])((m) => m.errorComponents);
+    return renderComponent(components, props);
+};
+//# sourceMappingURL=SwitchErrorInfo.js.map
+
+/***/ }),
+
+/***/ "../../common/temp/node_modules/piral/node_modules/piral-core/esm/components/components.js":
+/*!**************************************************************************************************************************!*\
+  !*** C:/dev/_try/piral_monorepo_mvp/common/temp/node_modules/piral/node_modules/piral-core/esm/components/components.js ***!
+  \**************************************************************************************************************************/
+/*! exports provided: getPiralComponent, PiralError, PiralLoadingIndicator, PiralRouter, PiralLayout, PiralDebug */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "getPiralComponent", function() { return getPiralComponent; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "PiralError", function() { return PiralError; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "PiralLoadingIndicator", function() { return PiralLoadingIndicator; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "PiralRouter", function() { return PiralRouter; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "PiralLayout", function() { return PiralLayout; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "PiralDebug", function() { return PiralDebug; });
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "../../common/temp/node_modules/react/index.js");
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var _hooks__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../hooks */ "../../common/temp/node_modules/piral/node_modules/piral-core/esm/hooks/index.js");
+
+
+function getPiralComponent(name) {
+    return (props) => {
+        const Component = Object(_hooks__WEBPACK_IMPORTED_MODULE_1__["useGlobalState"])((s) => s.components[name]);
+        return Component ? react__WEBPACK_IMPORTED_MODULE_0__["createElement"](Component, Object.assign({}, props)) : null;
+    };
+}
+/**
+ * Gets the currently registered ErrorInfo component.
+ * By default the DefaultErrorInfo component is used.
+ */
+const PiralError = getPiralComponent('ErrorInfo');
+/**
+ * Gets the currently registered LoadingIndicator component.
+ * By default only Loading is rendered.
+ */
+const PiralLoadingIndicator = getPiralComponent('LoadingIndicator');
+/**
+ * Gets the currently registered Router component.
+ * By default the BrowserRouter is used.
+ */
+const PiralRouter = getPiralComponent('Router');
+/**
+ * Gets the currently registered Layout component.
+ * By default the children are rendered.
+ */
+const PiralLayout = getPiralComponent('Layout');
+/**
+ * Gets the currently registered Debug component.
+ * By default nothing is used.
+ */
+const PiralDebug = getPiralComponent('Debug');
+//# sourceMappingURL=components.js.map
+
+/***/ }),
+
+/***/ "../../common/temp/node_modules/piral/node_modules/piral-core/esm/components/index.js":
+/*!*********************************************************************************************************************!*\
+  !*** C:/dev/_try/piral_monorepo_mvp/common/temp/node_modules/piral/node_modules/piral-core/esm/components/index.js ***!
+  \*********************************************************************************************************************/
+/*! exports provided: getPiralComponent, PiralError, PiralLoadingIndicator, PiralRouter, PiralLayout, PiralDebug, DefaultErrorInfo, DefaultLayout, DefaultLoadingIndicator, DefaultRouter, ErrorBoundary, ExtensionSlot, Mediator, PiralRoutes, PiralView, PortalRenderer, ResponsiveLayout, SetComponent, SetError, SetErrors, SetLayout, SetProvider, SetRedirect, SetRoute, SwitchErrorInfo */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _components__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./components */ "../../common/temp/node_modules/piral/node_modules/piral-core/esm/components/components.js");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "getPiralComponent", function() { return _components__WEBPACK_IMPORTED_MODULE_0__["getPiralComponent"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "PiralError", function() { return _components__WEBPACK_IMPORTED_MODULE_0__["PiralError"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "PiralLoadingIndicator", function() { return _components__WEBPACK_IMPORTED_MODULE_0__["PiralLoadingIndicator"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "PiralRouter", function() { return _components__WEBPACK_IMPORTED_MODULE_0__["PiralRouter"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "PiralLayout", function() { return _components__WEBPACK_IMPORTED_MODULE_0__["PiralLayout"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "PiralDebug", function() { return _components__WEBPACK_IMPORTED_MODULE_0__["PiralDebug"]; });
+
+/* harmony import */ var _DefaultErrorInfo__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./DefaultErrorInfo */ "../../common/temp/node_modules/piral/node_modules/piral-core/esm/components/DefaultErrorInfo.js");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "DefaultErrorInfo", function() { return _DefaultErrorInfo__WEBPACK_IMPORTED_MODULE_1__["DefaultErrorInfo"]; });
+
+/* harmony import */ var _DefaultLayout__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./DefaultLayout */ "../../common/temp/node_modules/piral/node_modules/piral-core/esm/components/DefaultLayout.js");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "DefaultLayout", function() { return _DefaultLayout__WEBPACK_IMPORTED_MODULE_2__["DefaultLayout"]; });
+
+/* harmony import */ var _DefaultLoader__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./DefaultLoader */ "../../common/temp/node_modules/piral/node_modules/piral-core/esm/components/DefaultLoader.js");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "DefaultLoadingIndicator", function() { return _DefaultLoader__WEBPACK_IMPORTED_MODULE_3__["DefaultLoadingIndicator"]; });
+
+/* harmony import */ var _DefaultRouter__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./DefaultRouter */ "../../common/temp/node_modules/piral/node_modules/piral-core/esm/components/DefaultRouter.js");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "DefaultRouter", function() { return _DefaultRouter__WEBPACK_IMPORTED_MODULE_4__["DefaultRouter"]; });
+
+/* harmony import */ var _ErrorBoundary__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./ErrorBoundary */ "../../common/temp/node_modules/piral/node_modules/piral-core/esm/components/ErrorBoundary.js");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "ErrorBoundary", function() { return _ErrorBoundary__WEBPACK_IMPORTED_MODULE_5__["ErrorBoundary"]; });
+
+/* harmony import */ var _ExtensionSlot__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./ExtensionSlot */ "../../common/temp/node_modules/piral/node_modules/piral-core/esm/components/ExtensionSlot.js");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "ExtensionSlot", function() { return _ExtensionSlot__WEBPACK_IMPORTED_MODULE_6__["ExtensionSlot"]; });
+
+/* harmony import */ var _Mediator__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ./Mediator */ "../../common/temp/node_modules/piral/node_modules/piral-core/esm/components/Mediator.js");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "Mediator", function() { return _Mediator__WEBPACK_IMPORTED_MODULE_7__["Mediator"]; });
+
+/* harmony import */ var _PiralRoutes__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ./PiralRoutes */ "../../common/temp/node_modules/piral/node_modules/piral-core/esm/components/PiralRoutes.js");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "PiralRoutes", function() { return _PiralRoutes__WEBPACK_IMPORTED_MODULE_8__["PiralRoutes"]; });
+
+/* harmony import */ var _PiralView__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ./PiralView */ "../../common/temp/node_modules/piral/node_modules/piral-core/esm/components/PiralView.js");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "PiralView", function() { return _PiralView__WEBPACK_IMPORTED_MODULE_9__["PiralView"]; });
+
+/* harmony import */ var _PortalRenderer__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! ./PortalRenderer */ "../../common/temp/node_modules/piral/node_modules/piral-core/esm/components/PortalRenderer.js");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "PortalRenderer", function() { return _PortalRenderer__WEBPACK_IMPORTED_MODULE_10__["PortalRenderer"]; });
+
+/* harmony import */ var _ResponsiveLayout__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! ./ResponsiveLayout */ "../../common/temp/node_modules/piral/node_modules/piral-core/esm/components/ResponsiveLayout.js");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "ResponsiveLayout", function() { return _ResponsiveLayout__WEBPACK_IMPORTED_MODULE_11__["ResponsiveLayout"]; });
+
+/* harmony import */ var _SetComponent__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(/*! ./SetComponent */ "../../common/temp/node_modules/piral/node_modules/piral-core/esm/components/SetComponent.js");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "SetComponent", function() { return _SetComponent__WEBPACK_IMPORTED_MODULE_12__["SetComponent"]; });
+
+/* harmony import */ var _SetError__WEBPACK_IMPORTED_MODULE_13__ = __webpack_require__(/*! ./SetError */ "../../common/temp/node_modules/piral/node_modules/piral-core/esm/components/SetError.js");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "SetError", function() { return _SetError__WEBPACK_IMPORTED_MODULE_13__["SetError"]; });
+
+/* harmony import */ var _SetErrors__WEBPACK_IMPORTED_MODULE_14__ = __webpack_require__(/*! ./SetErrors */ "../../common/temp/node_modules/piral/node_modules/piral-core/esm/components/SetErrors.js");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "SetErrors", function() { return _SetErrors__WEBPACK_IMPORTED_MODULE_14__["SetErrors"]; });
+
+/* harmony import */ var _SetLayout__WEBPACK_IMPORTED_MODULE_15__ = __webpack_require__(/*! ./SetLayout */ "../../common/temp/node_modules/piral/node_modules/piral-core/esm/components/SetLayout.js");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "SetLayout", function() { return _SetLayout__WEBPACK_IMPORTED_MODULE_15__["SetLayout"]; });
+
+/* harmony import */ var _SetProvider__WEBPACK_IMPORTED_MODULE_16__ = __webpack_require__(/*! ./SetProvider */ "../../common/temp/node_modules/piral/node_modules/piral-core/esm/components/SetProvider.js");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "SetProvider", function() { return _SetProvider__WEBPACK_IMPORTED_MODULE_16__["SetProvider"]; });
+
+/* harmony import */ var _SetRedirect__WEBPACK_IMPORTED_MODULE_17__ = __webpack_require__(/*! ./SetRedirect */ "../../common/temp/node_modules/piral/node_modules/piral-core/esm/components/SetRedirect.js");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "SetRedirect", function() { return _SetRedirect__WEBPACK_IMPORTED_MODULE_17__["SetRedirect"]; });
+
+/* harmony import */ var _SetRoute__WEBPACK_IMPORTED_MODULE_18__ = __webpack_require__(/*! ./SetRoute */ "../../common/temp/node_modules/piral/node_modules/piral-core/esm/components/SetRoute.js");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "SetRoute", function() { return _SetRoute__WEBPACK_IMPORTED_MODULE_18__["SetRoute"]; });
+
+/* harmony import */ var _SwitchErrorInfo__WEBPACK_IMPORTED_MODULE_19__ = __webpack_require__(/*! ./SwitchErrorInfo */ "../../common/temp/node_modules/piral/node_modules/piral-core/esm/components/SwitchErrorInfo.js");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "SwitchErrorInfo", function() { return _SwitchErrorInfo__WEBPACK_IMPORTED_MODULE_19__["SwitchErrorInfo"]; });
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+//# sourceMappingURL=index.js.map
+
+/***/ }),
+
+/***/ "../../common/temp/node_modules/piral/node_modules/piral-core/esm/createInstance.js":
+/*!*******************************************************************************************************************!*\
+  !*** C:/dev/_try/piral_monorepo_mvp/common/temp/node_modules/piral/node_modules/piral-core/esm/createInstance.js ***!
+  \*******************************************************************************************************************/
+/*! exports provided: createInstance */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "createInstance", function() { return createInstance; });
+/* harmony import */ var tslib__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! tslib */ "../../common/temp/node_modules/tslib/tslib.es6.js");
+/* harmony import */ var piral_base__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! piral-base */ "../../common/temp/node_modules/piral/node_modules/piral-base/esm/index.js");
+/* harmony import */ var _modules__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./modules */ "../../common/temp/node_modules/piral/node_modules/piral-core/esm/modules/index.js");
+/* harmony import */ var _state__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./state */ "../../common/temp/node_modules/piral/node_modules/piral-core/esm/state/index.js");
+/* harmony import */ var _helpers__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./helpers */ "../../common/temp/node_modules/piral/node_modules/piral-core/esm/helpers.js");
+
+
+
+
+
+/**
+ * Creates a new PiralInstance component, which can be used for
+ * bootstrapping the application easily.
+ *
+ * @example
+```jsx
+const instance = createInstance({
+  requestPilets() {
+    return fetch(...);
+  },
+});
+
+const app = (
+  <Piral instance={instance}>
+    <Define name="Layout" component={MyLayout} />
+  </Piral>
+);
+render(app, document.querySelector('#app'));
+```
+ */
+function createInstance(config = {}) {
+    const { state, actions, availablePilets = [], plugins, requestPilets = _modules__WEBPACK_IMPORTED_MODULE_2__["defaultModuleRequester"], loaderConfig, async = false, shareDependencies = _modules__WEBPACK_IMPORTED_MODULE_2__["defaultDependencySelector"], loadPilet, loaders, debug, apiFactory = _modules__WEBPACK_IMPORTED_MODULE_2__["defaultApiFactory"], } = config;
+    const globalState = Object(_state__WEBPACK_IMPORTED_MODULE_3__["createGlobalState"])(state);
+    const events = Object(piral_base__WEBPACK_IMPORTED_MODULE_1__["createListener"])(globalState);
+    const context = Object(_state__WEBPACK_IMPORTED_MODULE_3__["createActions"])(globalState, events);
+    const definedPlugins = plugins || [];
+    const usedPlugins = Array.isArray(definedPlugins) ? definedPlugins : [definedPlugins];
+    const createApi = apiFactory(context, usedPlugins);
+    const root = createApi({
+        name: 'root',
+        version: "0.0.1" || false,
+        spec: '',
+    });
+    const options = Object(_helpers__WEBPACK_IMPORTED_MODULE_4__["createPiletOptions"])({
+        context,
+        createApi,
+        loaders,
+        loadPilet,
+        availablePilets,
+        loaderConfig,
+        shareDependencies,
+        strategy: Object(piral_base__WEBPACK_IMPORTED_MODULE_1__["isfunc"])(async) ? async : async ? piral_base__WEBPACK_IMPORTED_MODULE_1__["blazingStrategy"] : piral_base__WEBPACK_IMPORTED_MODULE_1__["standardStrategy"],
+        requestPilets,
+        debug,
+    });
+    if (actions) {
+        Object(_state__WEBPACK_IMPORTED_MODULE_3__["includeActions"])(context, actions);
+    }
+    context.options = options;
+    return Object(tslib__WEBPACK_IMPORTED_MODULE_0__["__assign"])(events, {
+        createApi,
+        context,
+        root,
+        options,
+    });
+}
+//# sourceMappingURL=createInstance.js.map
+
+/***/ }),
+
+/***/ "../../common/temp/node_modules/piral/node_modules/piral-core/esm/helpers.js":
+/*!************************************************************************************************************!*\
+  !*** C:/dev/_try/piral_monorepo_mvp/common/temp/node_modules/piral/node_modules/piral-core/esm/helpers.js ***!
+  \************************************************************************************************************/
+/*! exports provided: createPiletOptions */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "createPiletOptions", function() { return createPiletOptions; });
+/* harmony import */ var piral_base__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! piral-base */ "../../common/temp/node_modules/piral/node_modules/piral-base/esm/index.js");
+/* harmony import */ var _modules__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./modules */ "../../common/temp/node_modules/piral/node_modules/piral-core/esm/modules/index.js");
+
+
+function createPiletOptions({ context, loaders, loaderConfig, availablePilets, strategy, createApi, loadPilet, requestPilets, shareDependencies, debug, }) {
+    const options = {
+        config: loaderConfig,
+        strategy,
+        loadPilet: Object(piral_base__WEBPACK_IMPORTED_MODULE_0__["extendLoader"])(loadPilet !== null && loadPilet !== void 0 ? loadPilet : Object(piral_base__WEBPACK_IMPORTED_MODULE_0__["getDefaultLoader"])(loaderConfig), loaders),
+        createApi,
+        pilets: availablePilets,
+        fetchPilets: requestPilets,
+        dependencies: shareDependencies(_modules__WEBPACK_IMPORTED_MODULE_1__["globalDependencies"]),
+    };
+    // if we build the debug version of piral (debug and emulator build)
+    if (true) {
+        const { integrate } = __webpack_require__(/*! ../debug-piral */ "../../common/temp/node_modules/piral/node_modules/piral-core/debug-piral.js");
+        integrate(context, options, debug);
+    }
+    // if we build the emulator version of piral (shipped to pilets)
+    if (true) {
+        const { integrate } = __webpack_require__(/*! ../debug-pilet */ "../../common/temp/node_modules/piral/node_modules/piral-core/debug-pilet.js");
+        integrate(context, options);
+    }
+    return options;
+}
+//# sourceMappingURL=helpers.js.map
+
+/***/ }),
+
+/***/ "../../common/temp/node_modules/piral/node_modules/piral-core/esm/hooks/action.js":
+/*!*****************************************************************************************************************!*\
+  !*** C:/dev/_try/piral_monorepo_mvp/common/temp/node_modules/piral/node_modules/piral-core/esm/hooks/action.js ***!
+  \*****************************************************************************************************************/
+/*! exports provided: useAction */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "useAction", function() { return useAction; });
+/* harmony import */ var _globalState__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./globalState */ "../../common/temp/node_modules/piral/node_modules/piral-core/esm/hooks/globalState.js");
+
+/**
+ * Hook that gets an action for manipulating the global state.
+ * @param action The name of the action to retrieve.
+ */
+function useAction(action) {
+    const ctx = Object(_globalState__WEBPACK_IMPORTED_MODULE_0__["useGlobalStateContext"])();
+    return ctx[action];
+}
+//# sourceMappingURL=action.js.map
+
+/***/ }),
+
+/***/ "../../common/temp/node_modules/piral/node_modules/piral-core/esm/hooks/actions.js":
+/*!******************************************************************************************************************!*\
+  !*** C:/dev/_try/piral_monorepo_mvp/common/temp/node_modules/piral/node_modules/piral-core/esm/hooks/actions.js ***!
+  \******************************************************************************************************************/
+/*! exports provided: useActions */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "useActions", function() { return useActions; });
+/* harmony import */ var tslib__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! tslib */ "../../common/temp/node_modules/tslib/tslib.es6.js");
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! react */ "../../common/temp/node_modules/react/index.js");
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_1__);
+/* harmony import */ var _state_stateContext__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../state/stateContext */ "../../common/temp/node_modules/piral/node_modules/piral-core/esm/state/stateContext.js");
+
+
+
+/**
+ * Hook that gets the actions for manipulating the global state.
+ */
+function useActions() {
+    const _a = Object(react__WEBPACK_IMPORTED_MODULE_1__["useContext"])(_state_stateContext__WEBPACK_IMPORTED_MODULE_2__["StateContext"]), { state } = _a, actions = Object(tslib__WEBPACK_IMPORTED_MODULE_0__["__rest"])(_a, ["state"]);
+    return actions;
+}
+//# sourceMappingURL=actions.js.map
+
+/***/ }),
+
+/***/ "../../common/temp/node_modules/piral/node_modules/piral-core/esm/hooks/globalState.js":
+/*!**********************************************************************************************************************!*\
+  !*** C:/dev/_try/piral_monorepo_mvp/common/temp/node_modules/piral/node_modules/piral-core/esm/hooks/globalState.js ***!
+  \**********************************************************************************************************************/
+/*! exports provided: useGlobalStateContext, useGlobalState */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "useGlobalStateContext", function() { return useGlobalStateContext; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "useGlobalState", function() { return useGlobalState; });
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "../../common/temp/node_modules/react/index.js");
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var _dbeining_react_atom__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @dbeining/react-atom */ "../../common/temp/node_modules/@dbeining/react-atom/dist/react-atom.js");
+/* harmony import */ var _dbeining_react_atom__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(_dbeining_react_atom__WEBPACK_IMPORTED_MODULE_1__);
+/* harmony import */ var _state_stateContext__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../state/stateContext */ "../../common/temp/node_modules/piral/node_modules/piral-core/esm/state/stateContext.js");
+
+
+
+const useGlobalAtom = typeof window !== 'undefined' ? _dbeining_react_atom__WEBPACK_IMPORTED_MODULE_1__["useAtom"] : useDirectAtom;
+function useDirectAtom(atom, opts) {
+    const state = Object(_dbeining_react_atom__WEBPACK_IMPORTED_MODULE_1__["deref"])(atom);
+    const select = opts && opts.select;
+    return typeof select === 'function' ? select(state) : state;
+}
+/**
+ * Hook to obtain the global state context, which gives you directly
+ * all actions, state, and more of the Piral instance.
+ * If you are only interested in reading out the state, use the
+ * `useGlobalState` hook instead.
+ */
+function useGlobalStateContext() {
+    return Object(react__WEBPACK_IMPORTED_MODULE_0__["useContext"])(_state_stateContext__WEBPACK_IMPORTED_MODULE_2__["StateContext"]);
+}
+function useGlobalState(select) {
+    const { state } = useGlobalStateContext();
+    return useGlobalAtom(state, select && { select });
+}
+//# sourceMappingURL=globalState.js.map
+
+/***/ }),
+
+/***/ "../../common/temp/node_modules/piral/node_modules/piral-core/esm/hooks/index.js":
+/*!****************************************************************************************************************!*\
+  !*** C:/dev/_try/piral_monorepo_mvp/common/temp/node_modules/piral/node_modules/piral-core/esm/hooks/index.js ***!
+  \****************************************************************************************************************/
+/*! exports provided: useAction, useActions, useGlobalStateContext, useGlobalState, useMedia, useSetter, useSharedData */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _action__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./action */ "../../common/temp/node_modules/piral/node_modules/piral-core/esm/hooks/action.js");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "useAction", function() { return _action__WEBPACK_IMPORTED_MODULE_0__["useAction"]; });
+
+/* harmony import */ var _actions__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./actions */ "../../common/temp/node_modules/piral/node_modules/piral-core/esm/hooks/actions.js");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "useActions", function() { return _actions__WEBPACK_IMPORTED_MODULE_1__["useActions"]; });
+
+/* harmony import */ var _globalState__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./globalState */ "../../common/temp/node_modules/piral/node_modules/piral-core/esm/hooks/globalState.js");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "useGlobalStateContext", function() { return _globalState__WEBPACK_IMPORTED_MODULE_2__["useGlobalStateContext"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "useGlobalState", function() { return _globalState__WEBPACK_IMPORTED_MODULE_2__["useGlobalState"]; });
+
+/* harmony import */ var _media__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./media */ "../../common/temp/node_modules/piral/node_modules/piral-core/esm/hooks/media.js");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "useMedia", function() { return _media__WEBPACK_IMPORTED_MODULE_3__["useMedia"]; });
+
+/* harmony import */ var _setter__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./setter */ "../../common/temp/node_modules/piral/node_modules/piral-core/esm/hooks/setter.js");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "useSetter", function() { return _setter__WEBPACK_IMPORTED_MODULE_4__["useSetter"]; });
+
+/* harmony import */ var _sharedData__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./sharedData */ "../../common/temp/node_modules/piral/node_modules/piral-core/esm/hooks/sharedData.js");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "useSharedData", function() { return _sharedData__WEBPACK_IMPORTED_MODULE_5__["useSharedData"]; });
+
+
+
+
+
+
+
+//# sourceMappingURL=index.js.map
+
+/***/ }),
+
+/***/ "../../common/temp/node_modules/piral/node_modules/piral-core/esm/hooks/media.js":
+/*!****************************************************************************************************************!*\
+  !*** C:/dev/_try/piral_monorepo_mvp/common/temp/node_modules/piral/node_modules/piral-core/esm/hooks/media.js ***!
+  \****************************************************************************************************************/
+/*! exports provided: useMedia */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "useMedia", function() { return useMedia; });
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "../../common/temp/node_modules/react/index.js");
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var _utils_helpers__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../utils/helpers */ "../../common/temp/node_modules/piral/node_modules/piral-core/esm/utils/helpers.js");
+/* harmony import */ var _utils_media__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../utils/media */ "../../common/temp/node_modules/piral/node_modules/piral-core/esm/utils/media.js");
+
+
+
+/**
+ * Hook to detect layout changes (e.g., which UI breakpoint was hit).
+ * @param queries The available queries matching the breakpoints.
+ * @param values The values mapping to the breakpoints
+ * @param defaultValue The default value.
+ */
+function useMedia(queries, values, defaultValue) {
+    const match = () => Object(_utils_media__WEBPACK_IMPORTED_MODULE_2__["getCurrentLayout"])(queries, values, defaultValue);
+    const [value, update] = Object(react__WEBPACK_IMPORTED_MODULE_0__["useState"])(match);
+    Object(react__WEBPACK_IMPORTED_MODULE_0__["useEffect"])(() => {
+        if (typeof document !== 'undefined') {
+            const handler = () => update(match);
+            window.addEventListener('resize', handler);
+            return () => window.removeEventListener('resize', handler);
+        }
+    }, _utils_helpers__WEBPACK_IMPORTED_MODULE_1__["none"]);
+    return value;
+}
+//# sourceMappingURL=media.js.map
+
+/***/ }),
+
+/***/ "../../common/temp/node_modules/piral/node_modules/piral-core/esm/hooks/setter.js":
+/*!*****************************************************************************************************************!*\
+  !*** C:/dev/_try/piral_monorepo_mvp/common/temp/node_modules/piral/node_modules/piral-core/esm/hooks/setter.js ***!
+  \*****************************************************************************************************************/
+/*! exports provided: useSetter */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "useSetter", function() { return useSetter; });
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "../../common/temp/node_modules/react/index.js");
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var _utils_helpers__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../utils/helpers */ "../../common/temp/node_modules/piral/node_modules/piral-core/esm/utils/helpers.js");
+
+
+function useMainEffect(cb) {
+    cb();
+}
+const useEffect = typeof window !== 'undefined' ? react__WEBPACK_IMPORTED_MODULE_0__["useEffect"] : useMainEffect;
+/**
+ * Hook for running the callback once on mount.
+ * @param cb The callback to be invoked on mounting.
+ */
+function useSetter(cb) {
+    useEffect(cb, _utils_helpers__WEBPACK_IMPORTED_MODULE_1__["none"]);
+}
+//# sourceMappingURL=setter.js.map
+
+/***/ }),
+
+/***/ "../../common/temp/node_modules/piral/node_modules/piral-core/esm/hooks/sharedData.js":
+/*!*********************************************************************************************************************!*\
+  !*** C:/dev/_try/piral_monorepo_mvp/common/temp/node_modules/piral/node_modules/piral-core/esm/hooks/sharedData.js ***!
+  \*********************************************************************************************************************/
+/*! exports provided: useSharedData */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "useSharedData", function() { return useSharedData; });
+/* harmony import */ var _globalState__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./globalState */ "../../common/temp/node_modules/piral/node_modules/piral-core/esm/hooks/globalState.js");
+
+function useSharedData(s) {
+    const select = s || ((m) => m);
+    return Object(_globalState__WEBPACK_IMPORTED_MODULE_0__["useGlobalState"])((s) => select(s.data));
+}
+//# sourceMappingURL=sharedData.js.map
+
+/***/ }),
+
+/***/ "../../common/temp/node_modules/piral/node_modules/piral-core/esm/index.js":
+/*!**********************************************************************************************************!*\
+  !*** C:/dev/_try/piral_monorepo_mvp/common/temp/node_modules/piral/node_modules/piral-core/esm/index.js ***!
+  \**********************************************************************************************************/
+/*! exports provided: createInstance, Piral, createPiletOptions, getPiralComponent, PiralError, PiralLoadingIndicator, PiralRouter, PiralLayout, PiralDebug, DefaultErrorInfo, DefaultLayout, DefaultLoadingIndicator, DefaultRouter, ErrorBoundary, ExtensionSlot, Mediator, PiralRoutes, PiralView, PortalRenderer, ResponsiveLayout, SetComponent, SetError, SetErrors, SetLayout, SetProvider, SetRedirect, SetRoute, SwitchErrorInfo, useAction, useActions, useGlobalStateContext, useGlobalState, useMedia, useSetter, useSharedData, includeActions, createActions, createGlobalState, StateContext, withApi, compare, createDataView, createDataOptions, getDataExpiration, toExtension, attachDomPortal, changeDomPortal, convertComponent, renderInDom, generateId, buildName, removeIndicator, none, noop, prependItem, appendItem, prependItems, appendItems, excludeItem, includeItem, replaceOrAddItem, removeNested, excludeOn, updateKey, withKey, withoutKey, tryParseJson, defaultLayouts, defaultBreakpoints, getCurrentLayout, defaultRender, withAll, withPage, withoutPage, withExtension, withoutExtension, withRootExtension, withProvider, withRoute, storage, cookie */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _createInstance__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./createInstance */ "../../common/temp/node_modules/piral/node_modules/piral-core/esm/createInstance.js");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "createInstance", function() { return _createInstance__WEBPACK_IMPORTED_MODULE_0__["createInstance"]; });
+
+/* harmony import */ var _Piral__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./Piral */ "../../common/temp/node_modules/piral/node_modules/piral-core/esm/Piral.js");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "Piral", function() { return _Piral__WEBPACK_IMPORTED_MODULE_1__["Piral"]; });
+
+/* harmony import */ var _helpers__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./helpers */ "../../common/temp/node_modules/piral/node_modules/piral-core/esm/helpers.js");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "createPiletOptions", function() { return _helpers__WEBPACK_IMPORTED_MODULE_2__["createPiletOptions"]; });
+
+/* harmony import */ var _components__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./components */ "../../common/temp/node_modules/piral/node_modules/piral-core/esm/components/index.js");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "getPiralComponent", function() { return _components__WEBPACK_IMPORTED_MODULE_3__["getPiralComponent"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "PiralError", function() { return _components__WEBPACK_IMPORTED_MODULE_3__["PiralError"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "PiralLoadingIndicator", function() { return _components__WEBPACK_IMPORTED_MODULE_3__["PiralLoadingIndicator"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "PiralRouter", function() { return _components__WEBPACK_IMPORTED_MODULE_3__["PiralRouter"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "PiralLayout", function() { return _components__WEBPACK_IMPORTED_MODULE_3__["PiralLayout"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "PiralDebug", function() { return _components__WEBPACK_IMPORTED_MODULE_3__["PiralDebug"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "DefaultErrorInfo", function() { return _components__WEBPACK_IMPORTED_MODULE_3__["DefaultErrorInfo"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "DefaultLayout", function() { return _components__WEBPACK_IMPORTED_MODULE_3__["DefaultLayout"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "DefaultLoadingIndicator", function() { return _components__WEBPACK_IMPORTED_MODULE_3__["DefaultLoadingIndicator"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "DefaultRouter", function() { return _components__WEBPACK_IMPORTED_MODULE_3__["DefaultRouter"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "ErrorBoundary", function() { return _components__WEBPACK_IMPORTED_MODULE_3__["ErrorBoundary"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "ExtensionSlot", function() { return _components__WEBPACK_IMPORTED_MODULE_3__["ExtensionSlot"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "Mediator", function() { return _components__WEBPACK_IMPORTED_MODULE_3__["Mediator"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "PiralRoutes", function() { return _components__WEBPACK_IMPORTED_MODULE_3__["PiralRoutes"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "PiralView", function() { return _components__WEBPACK_IMPORTED_MODULE_3__["PiralView"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "PortalRenderer", function() { return _components__WEBPACK_IMPORTED_MODULE_3__["PortalRenderer"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "ResponsiveLayout", function() { return _components__WEBPACK_IMPORTED_MODULE_3__["ResponsiveLayout"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "SetComponent", function() { return _components__WEBPACK_IMPORTED_MODULE_3__["SetComponent"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "SetError", function() { return _components__WEBPACK_IMPORTED_MODULE_3__["SetError"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "SetErrors", function() { return _components__WEBPACK_IMPORTED_MODULE_3__["SetErrors"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "SetLayout", function() { return _components__WEBPACK_IMPORTED_MODULE_3__["SetLayout"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "SetProvider", function() { return _components__WEBPACK_IMPORTED_MODULE_3__["SetProvider"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "SetRedirect", function() { return _components__WEBPACK_IMPORTED_MODULE_3__["SetRedirect"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "SetRoute", function() { return _components__WEBPACK_IMPORTED_MODULE_3__["SetRoute"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "SwitchErrorInfo", function() { return _components__WEBPACK_IMPORTED_MODULE_3__["SwitchErrorInfo"]; });
+
+/* harmony import */ var _hooks__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./hooks */ "../../common/temp/node_modules/piral/node_modules/piral-core/esm/hooks/index.js");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "useAction", function() { return _hooks__WEBPACK_IMPORTED_MODULE_4__["useAction"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "useActions", function() { return _hooks__WEBPACK_IMPORTED_MODULE_4__["useActions"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "useGlobalStateContext", function() { return _hooks__WEBPACK_IMPORTED_MODULE_4__["useGlobalStateContext"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "useGlobalState", function() { return _hooks__WEBPACK_IMPORTED_MODULE_4__["useGlobalState"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "useMedia", function() { return _hooks__WEBPACK_IMPORTED_MODULE_4__["useMedia"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "useSetter", function() { return _hooks__WEBPACK_IMPORTED_MODULE_4__["useSetter"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "useSharedData", function() { return _hooks__WEBPACK_IMPORTED_MODULE_4__["useSharedData"]; });
+
+/* harmony import */ var _state__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./state */ "../../common/temp/node_modules/piral/node_modules/piral-core/esm/state/index.js");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "includeActions", function() { return _state__WEBPACK_IMPORTED_MODULE_5__["includeActions"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "createActions", function() { return _state__WEBPACK_IMPORTED_MODULE_5__["createActions"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "createGlobalState", function() { return _state__WEBPACK_IMPORTED_MODULE_5__["createGlobalState"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "StateContext", function() { return _state__WEBPACK_IMPORTED_MODULE_5__["StateContext"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "withApi", function() { return _state__WEBPACK_IMPORTED_MODULE_5__["withApi"]; });
+
+/* harmony import */ var _utils__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./utils */ "../../common/temp/node_modules/piral/node_modules/piral-core/esm/utils/index.js");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "compare", function() { return _utils__WEBPACK_IMPORTED_MODULE_6__["compare"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "createDataView", function() { return _utils__WEBPACK_IMPORTED_MODULE_6__["createDataView"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "createDataOptions", function() { return _utils__WEBPACK_IMPORTED_MODULE_6__["createDataOptions"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "getDataExpiration", function() { return _utils__WEBPACK_IMPORTED_MODULE_6__["getDataExpiration"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "toExtension", function() { return _utils__WEBPACK_IMPORTED_MODULE_6__["toExtension"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "attachDomPortal", function() { return _utils__WEBPACK_IMPORTED_MODULE_6__["attachDomPortal"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "changeDomPortal", function() { return _utils__WEBPACK_IMPORTED_MODULE_6__["changeDomPortal"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "convertComponent", function() { return _utils__WEBPACK_IMPORTED_MODULE_6__["convertComponent"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "renderInDom", function() { return _utils__WEBPACK_IMPORTED_MODULE_6__["renderInDom"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "generateId", function() { return _utils__WEBPACK_IMPORTED_MODULE_6__["generateId"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "buildName", function() { return _utils__WEBPACK_IMPORTED_MODULE_6__["buildName"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "removeIndicator", function() { return _utils__WEBPACK_IMPORTED_MODULE_6__["removeIndicator"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "none", function() { return _utils__WEBPACK_IMPORTED_MODULE_6__["none"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "noop", function() { return _utils__WEBPACK_IMPORTED_MODULE_6__["noop"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "prependItem", function() { return _utils__WEBPACK_IMPORTED_MODULE_6__["prependItem"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "appendItem", function() { return _utils__WEBPACK_IMPORTED_MODULE_6__["appendItem"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "prependItems", function() { return _utils__WEBPACK_IMPORTED_MODULE_6__["prependItems"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "appendItems", function() { return _utils__WEBPACK_IMPORTED_MODULE_6__["appendItems"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "excludeItem", function() { return _utils__WEBPACK_IMPORTED_MODULE_6__["excludeItem"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "includeItem", function() { return _utils__WEBPACK_IMPORTED_MODULE_6__["includeItem"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "replaceOrAddItem", function() { return _utils__WEBPACK_IMPORTED_MODULE_6__["replaceOrAddItem"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "removeNested", function() { return _utils__WEBPACK_IMPORTED_MODULE_6__["removeNested"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "excludeOn", function() { return _utils__WEBPACK_IMPORTED_MODULE_6__["excludeOn"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "updateKey", function() { return _utils__WEBPACK_IMPORTED_MODULE_6__["updateKey"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "withKey", function() { return _utils__WEBPACK_IMPORTED_MODULE_6__["withKey"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "withoutKey", function() { return _utils__WEBPACK_IMPORTED_MODULE_6__["withoutKey"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "tryParseJson", function() { return _utils__WEBPACK_IMPORTED_MODULE_6__["tryParseJson"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "defaultLayouts", function() { return _utils__WEBPACK_IMPORTED_MODULE_6__["defaultLayouts"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "defaultBreakpoints", function() { return _utils__WEBPACK_IMPORTED_MODULE_6__["defaultBreakpoints"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "getCurrentLayout", function() { return _utils__WEBPACK_IMPORTED_MODULE_6__["getCurrentLayout"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "defaultRender", function() { return _utils__WEBPACK_IMPORTED_MODULE_6__["defaultRender"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "withAll", function() { return _utils__WEBPACK_IMPORTED_MODULE_6__["withAll"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "withPage", function() { return _utils__WEBPACK_IMPORTED_MODULE_6__["withPage"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "withoutPage", function() { return _utils__WEBPACK_IMPORTED_MODULE_6__["withoutPage"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "withExtension", function() { return _utils__WEBPACK_IMPORTED_MODULE_6__["withExtension"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "withoutExtension", function() { return _utils__WEBPACK_IMPORTED_MODULE_6__["withoutExtension"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "withRootExtension", function() { return _utils__WEBPACK_IMPORTED_MODULE_6__["withRootExtension"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "withProvider", function() { return _utils__WEBPACK_IMPORTED_MODULE_6__["withProvider"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "withRoute", function() { return _utils__WEBPACK_IMPORTED_MODULE_6__["withRoute"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "storage", function() { return _utils__WEBPACK_IMPORTED_MODULE_6__["storage"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "cookie", function() { return _utils__WEBPACK_IMPORTED_MODULE_6__["cookie"]; });
+
+/* harmony import */ var _types__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ./types */ "../../common/temp/node_modules/piral/node_modules/piral-core/esm/types/index.js");
+/* empty/unused harmony star reexport */
+
+
+
+
+
+
+
+//# sourceMappingURL=index.js.map
+
+/***/ }),
+
+/***/ "../../common/temp/node_modules/piral/node_modules/piral-core/esm/modules/api.js":
+/*!****************************************************************************************************************!*\
+  !*** C:/dev/_try/piral_monorepo_mvp/common/temp/node_modules/piral/node_modules/piral-core/esm/modules/api.js ***!
+  \****************************************************************************************************************/
+/*! exports provided: createCoreApi, createExtenders, defaultApiFactory */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "createCoreApi", function() { return createCoreApi; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "createExtenders", function() { return createExtenders; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "defaultApiFactory", function() { return defaultApiFactory; });
+/* harmony import */ var piral_base__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! piral-base */ "../../common/temp/node_modules/piral/node_modules/piral-base/esm/index.js");
+/* harmony import */ var _state__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../state */ "../../common/temp/node_modules/piral/node_modules/piral-core/esm/state/index.js");
+/* harmony import */ var _components__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../components */ "../../common/temp/node_modules/piral/node_modules/piral-core/esm/components/index.js");
+/* harmony import */ var _utils__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../utils */ "../../common/temp/node_modules/piral/node_modules/piral-core/esm/utils/index.js");
+
+
+
+
+if (typeof window !== 'undefined' && 'customElements' in window) {
+    class PiralExtension extends HTMLElement {
+        constructor() {
+            super(...arguments);
+            this.dispose = _utils__WEBPACK_IMPORTED_MODULE_3__["noop"];
+            this.update = _utils__WEBPACK_IMPORTED_MODULE_3__["noop"];
+        }
+        getProps() {
+            const name = this.getAttribute('name');
+            const params = Object(_utils__WEBPACK_IMPORTED_MODULE_3__["tryParseJson"])(this.getAttribute('params'));
+            return { name, params };
+        }
+        connectedCallback() {
+            if (this.isConnected) {
+                this.dispatchEvent(new CustomEvent('render-html', {
+                    bubbles: true,
+                    detail: {
+                        target: this,
+                        props: this.getProps(),
+                    },
+                }));
+            }
+        }
+        disconnectedCallback() {
+            this.dispose();
+            this.dispose = _utils__WEBPACK_IMPORTED_MODULE_3__["noop"];
+            this.update = _utils__WEBPACK_IMPORTED_MODULE_3__["noop"];
+        }
+        attributeChangedCallback() {
+            this.update(this.getProps());
+        }
+        static get observedAttributes() {
+            return ['name', 'params'];
+        }
+    }
+    customElements.define('piral-extension', PiralExtension);
+}
+function render(context, element, props) {
+    let [id, portal] = Object(_utils__WEBPACK_IMPORTED_MODULE_3__["renderInDom"])(context, element, _components__WEBPACK_IMPORTED_MODULE_2__["ExtensionSlot"], props);
+    const evName = 'extension-props-changed';
+    const handler = (ev) => update(ev.detail);
+    const dispose = () => {
+        context.hidePortal(id, portal);
+        element.removeEventListener(evName, handler);
+    };
+    const update = (newProps) => {
+        [id, portal] = Object(_utils__WEBPACK_IMPORTED_MODULE_3__["changeDomPortal"])(id, portal, context, element, _components__WEBPACK_IMPORTED_MODULE_2__["ExtensionSlot"], newProps);
+    };
+    element.addEventListener(evName, handler);
+    return [dispose, update];
+}
+function createCoreApi(context) {
+    if (typeof document !== 'undefined') {
+        document.body.addEventListener('render-html', (ev) => {
+            ev.stopPropagation();
+            const container = ev.detail.target;
+            const [dispose, update] = render(context, container, ev.detail.props);
+            container.dispose = dispose;
+            container.update = update;
+        }, false);
+    }
+    return (api, target) => {
+        const pilet = target.name;
+        return {
+            getData(name) {
+                return context.readDataValue(name);
+            },
+            setData(name, value, options) {
+                const { target = 'memory', expires } = Object(_utils__WEBPACK_IMPORTED_MODULE_3__["createDataOptions"])(options);
+                const expiration = Object(_utils__WEBPACK_IMPORTED_MODULE_3__["getDataExpiration"])(expires);
+                return context.tryWriteDataItem(name, value, pilet, target, expiration);
+            },
+            registerPage(route, arg, meta) {
+                context.registerPage(route, {
+                    pilet,
+                    meta,
+                    component: Object(_state__WEBPACK_IMPORTED_MODULE_1__["withApi"])(context, arg, api, 'page'),
+                });
+                return () => api.unregisterPage(route);
+            },
+            unregisterPage(route) {
+                context.unregisterPage(route);
+            },
+            registerExtension(name, arg, defaults) {
+                context.registerExtension(name, {
+                    pilet,
+                    component: Object(_state__WEBPACK_IMPORTED_MODULE_1__["withApi"])(context, arg, api, 'extension'),
+                    reference: arg,
+                    defaults,
+                });
+                return () => api.unregisterExtension(name, arg);
+            },
+            unregisterExtension(name, arg) {
+                context.unregisterExtension(name, arg);
+            },
+            renderHtmlExtension(element, props) {
+                const [dispose] = render(context, element, props);
+                return dispose;
+            },
+            Extension: _components__WEBPACK_IMPORTED_MODULE_2__["ExtensionSlot"],
+        };
+    };
+}
+function createExtenders(context, apis) {
+    const creators = [createCoreApi, ...apis.filter(piral_base__WEBPACK_IMPORTED_MODULE_0__["isfunc"])];
+    return creators.map((c) => {
+        const ctx = c(context);
+        if (Object(piral_base__WEBPACK_IMPORTED_MODULE_0__["isfunc"])(ctx)) {
+            return ctx;
+        }
+        else {
+            return () => (Object.assign({}, ctx));
+        }
+    });
+}
+function defaultApiFactory(context, apis) {
+    const extenders = createExtenders(context, apis);
+    return (target) => {
+        const api = Object(piral_base__WEBPACK_IMPORTED_MODULE_0__["initializeApi"])(target, context);
+        context.apis[target.name] = api;
+        return Object(piral_base__WEBPACK_IMPORTED_MODULE_0__["mergeApis"])(api, extenders, target);
+    };
+}
+//# sourceMappingURL=api.js.map
+
+/***/ }),
+
+/***/ "../../common/temp/node_modules/piral/node_modules/piral-core/esm/modules/dependencies.js":
+/*!*************************************************************************************************************************!*\
+  !*** C:/dev/_try/piral_monorepo_mvp/common/temp/node_modules/piral/node_modules/piral-core/esm/modules/dependencies.js ***!
+  \*************************************************************************************************************************/
+/*! exports provided: globalDependencies, defaultDependencySelector, defaultModuleRequester */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "globalDependencies", function() { return globalDependencies; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "defaultDependencySelector", function() { return defaultDependencySelector; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "defaultModuleRequester", function() { return defaultModuleRequester; });
+/* harmony import */ var piral_base__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! piral-base */ "../../common/temp/node_modules/piral/node_modules/piral-base/esm/index.js");
+/* harmony import */ var tslib__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! tslib */ "../../common/temp/node_modules/tslib/tslib.es6.js");
+
+
+/**
+ * The global dependencies, which represent the dependencies
+ * shared from the app shell itself.
+ */
+const globalDependencies = {};
+if (true) {
+    const fillDependencies = __webpack_require__(/*! ../../dependencies.codegen */ "../../common/temp/node_modules/piral/node_modules/piral-core/dependencies.codegen");
+    if (Object(piral_base__WEBPACK_IMPORTED_MODULE_0__["isfunc"])(fillDependencies)) {
+        fillDependencies(globalDependencies);
+    }
+    else {
+        // fall back to the default list if the codegen is invalid / not supported
+        Object(tslib__WEBPACK_IMPORTED_MODULE_1__["__assign"])(globalDependencies, {
+            react: __webpack_require__(/*! react */ "../../common/temp/node_modules/react/index.js"),
+            'react-dom': __webpack_require__(/*! react-dom */ "../../common/temp/node_modules/react-dom/index.js"),
+            'react-router': __webpack_require__(/*! react-router */ "../../common/temp/node_modules/react-router/esm/react-router.js"),
+            'react-router-dom': __webpack_require__(/*! react-router-dom */ "../../common/temp/node_modules/react-router-dom/esm/react-router-dom.js"),
+            history: __webpack_require__(/*! history */ "../../common/temp/node_modules/history/esm/history.js"),
+            tslib: __webpack_require__(/*! tslib */ "../../common/temp/node_modules/tslib/tslib.es6.js"),
+            'path-to-regexp': __webpack_require__(/*! path-to-regexp */ "../../common/temp/node_modules/path-to-regexp/index.js"),
+            '@libre/atom': __webpack_require__(/*! @libre/atom */ "../../common/temp/node_modules/@libre/atom/dist/index.esm.js"),
+            '@dbeining/react-atom': __webpack_require__(/*! @dbeining/react-atom */ "../../common/temp/node_modules/@dbeining/react-atom/dist/react-atom.js"),
+        });
+    }
+}
+else {}
+/**
+ * The default dependency selector, which just returns the provided
+ * dependencies.
+ */
+function defaultDependencySelector(dependencies) {
+    return dependencies;
+}
+/**
+ * The default pilet requester, which just returns an empty array.
+ * Use your own code to connect to the feed service.
+ *
+ * @example
+```js
+return fetch('https://feed.piral.cloud/api/v1/pilet/sample')
+  .then(res => res.json())
+  .then(res => res.items);
+```
+ */
+function defaultModuleRequester() {
+    return Promise.resolve([]);
+}
+//# sourceMappingURL=dependencies.js.map
+
+/***/ }),
+
+/***/ "../../common/temp/node_modules/piral/node_modules/piral-core/esm/modules/index.js":
+/*!******************************************************************************************************************!*\
+  !*** C:/dev/_try/piral_monorepo_mvp/common/temp/node_modules/piral/node_modules/piral-core/esm/modules/index.js ***!
+  \******************************************************************************************************************/
+/*! exports provided: createCoreApi, createExtenders, defaultApiFactory, globalDependencies, defaultDependencySelector, defaultModuleRequester */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _api__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./api */ "../../common/temp/node_modules/piral/node_modules/piral-core/esm/modules/api.js");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "createCoreApi", function() { return _api__WEBPACK_IMPORTED_MODULE_0__["createCoreApi"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "createExtenders", function() { return _api__WEBPACK_IMPORTED_MODULE_0__["createExtenders"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "defaultApiFactory", function() { return _api__WEBPACK_IMPORTED_MODULE_0__["defaultApiFactory"]; });
+
+/* harmony import */ var _dependencies__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./dependencies */ "../../common/temp/node_modules/piral/node_modules/piral-core/esm/modules/dependencies.js");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "globalDependencies", function() { return _dependencies__WEBPACK_IMPORTED_MODULE_1__["globalDependencies"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "defaultDependencySelector", function() { return _dependencies__WEBPACK_IMPORTED_MODULE_1__["defaultDependencySelector"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "defaultModuleRequester", function() { return _dependencies__WEBPACK_IMPORTED_MODULE_1__["defaultModuleRequester"]; });
+
+
+
+//# sourceMappingURL=index.js.map
+
+/***/ }),
+
+/***/ "../../common/temp/node_modules/piral/node_modules/piral-core/esm/state/createActions.js":
+/*!************************************************************************************************************************!*\
+  !*** C:/dev/_try/piral_monorepo_mvp/common/temp/node_modules/piral/node_modules/piral-core/esm/state/createActions.js ***!
+  \************************************************************************************************************************/
+/*! exports provided: includeActions, createActions */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "includeActions", function() { return includeActions; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "createActions", function() { return createActions; });
+/* harmony import */ var _actions__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../actions */ "../../common/temp/node_modules/piral/node_modules/piral-core/esm/actions/index.js");
+
+function createContext(state, events) {
+    const ctx = Object.assign(Object.assign({}, events), { apis: {}, converters: {
+            html: ({ component }) => component,
+        }, state });
+    return ctx;
+}
+function includeActions(ctx, actions) {
+    const actionNames = Object.keys(actions);
+    for (const actionName of actionNames) {
+        const action = actions[actionName];
+        ctx[actionName] = action.bind(ctx, ctx);
+    }
+}
+function createActions(state, events) {
+    const context = createContext(state, events);
+    includeActions(context, _actions__WEBPACK_IMPORTED_MODULE_0__);
+    return context;
+}
+//# sourceMappingURL=createActions.js.map
+
+/***/ }),
+
+/***/ "../../common/temp/node_modules/piral/node_modules/piral-core/esm/state/createGlobalState.js":
+/*!****************************************************************************************************************************!*\
+  !*** C:/dev/_try/piral_monorepo_mvp/common/temp/node_modules/piral/node_modules/piral-core/esm/state/createGlobalState.js ***!
+  \****************************************************************************************************************************/
+/*! exports provided: createGlobalState */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "createGlobalState", function() { return createGlobalState; });
+/* harmony import */ var _dbeining_react_atom__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @dbeining/react-atom */ "../../common/temp/node_modules/@dbeining/react-atom/dist/react-atom.js");
+/* harmony import */ var _dbeining_react_atom__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_dbeining_react_atom__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var _components__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../components */ "../../common/temp/node_modules/piral/node_modules/piral-core/esm/components/index.js");
+
+
+function extend(defaultState, customState) {
+    for (const key of Object.keys(customState)) {
+        if (key === '__proto__' || key === 'constructor') {
+            continue;
+        }
+        const value = customState[key];
+        const original = defaultState[key];
+        const nested = typeof original === 'object' && typeof value === 'object';
+        defaultState[key] = nested ? extend(original, value) : value;
+    }
+    return defaultState;
+}
+function createGlobalState(customState = {}) {
+    const defaultState = {
+        app: {
+            error: undefined,
+            loading: typeof window !== 'undefined',
+            layout: 'desktop',
+            publicPath: "/" || false,
+        },
+        components: {
+            ErrorInfo: _components__WEBPACK_IMPORTED_MODULE_1__["DefaultErrorInfo"],
+            LoadingIndicator: _components__WEBPACK_IMPORTED_MODULE_1__["DefaultLoadingIndicator"],
+            Router: _components__WEBPACK_IMPORTED_MODULE_1__["DefaultRouter"],
+            Layout: _components__WEBPACK_IMPORTED_MODULE_1__["DefaultLayout"],
+        },
+        errorComponents: {},
+        registry: {
+            extensions: {},
+            pages: {},
+            wrappers: {},
+        },
+        routes: {},
+        data: {},
+        portals: {},
+        modules: [],
+    };
+    return _dbeining_react_atom__WEBPACK_IMPORTED_MODULE_0__["Atom"].of(extend(defaultState, customState));
+}
+//# sourceMappingURL=createGlobalState.js.map
+
+/***/ }),
+
+/***/ "../../common/temp/node_modules/piral/node_modules/piral-core/esm/state/index.js":
+/*!****************************************************************************************************************!*\
+  !*** C:/dev/_try/piral_monorepo_mvp/common/temp/node_modules/piral/node_modules/piral-core/esm/state/index.js ***!
+  \****************************************************************************************************************/
+/*! exports provided: includeActions, createActions, createGlobalState, StateContext, withApi */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _createActions__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./createActions */ "../../common/temp/node_modules/piral/node_modules/piral-core/esm/state/createActions.js");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "includeActions", function() { return _createActions__WEBPACK_IMPORTED_MODULE_0__["includeActions"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "createActions", function() { return _createActions__WEBPACK_IMPORTED_MODULE_0__["createActions"]; });
+
+/* harmony import */ var _createGlobalState__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./createGlobalState */ "../../common/temp/node_modules/piral/node_modules/piral-core/esm/state/createGlobalState.js");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "createGlobalState", function() { return _createGlobalState__WEBPACK_IMPORTED_MODULE_1__["createGlobalState"]; });
+
+/* harmony import */ var _stateContext__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./stateContext */ "../../common/temp/node_modules/piral/node_modules/piral-core/esm/state/stateContext.js");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "StateContext", function() { return _stateContext__WEBPACK_IMPORTED_MODULE_2__["StateContext"]; });
+
+/* harmony import */ var _withApi__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./withApi */ "../../common/temp/node_modules/piral/node_modules/piral-core/esm/state/withApi.js");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "withApi", function() { return _withApi__WEBPACK_IMPORTED_MODULE_3__["withApi"]; });
+
+
+
+
+
+//# sourceMappingURL=index.js.map
+
+/***/ }),
+
+/***/ "../../common/temp/node_modules/piral/node_modules/piral-core/esm/state/stateContext.js":
+/*!***********************************************************************************************************************!*\
+  !*** C:/dev/_try/piral_monorepo_mvp/common/temp/node_modules/piral/node_modules/piral-core/esm/state/stateContext.js ***!
+  \***********************************************************************************************************************/
+/*! exports provided: StateContext, default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "StateContext", function() { return StateContext; });
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "../../common/temp/node_modules/react/index.js");
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
+
+const StateContext = react__WEBPACK_IMPORTED_MODULE_0__["createContext"](undefined);
+/* harmony default export */ __webpack_exports__["default"] = (StateContext);
+//# sourceMappingURL=stateContext.js.map
+
+/***/ }),
+
+/***/ "../../common/temp/node_modules/piral/node_modules/piral-core/esm/state/withApi.js":
+/*!******************************************************************************************************************!*\
+  !*** C:/dev/_try/piral_monorepo_mvp/common/temp/node_modules/piral/node_modules/piral-core/esm/state/withApi.js ***!
+  \******************************************************************************************************************/
+/*! exports provided: withApi */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "withApi", function() { return withApi; });
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "../../common/temp/node_modules/react/index.js");
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var piral_base__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! piral-base */ "../../common/temp/node_modules/piral/node_modules/piral-base/esm/index.js");
+/* harmony import */ var react_router__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! react-router */ "../../common/temp/node_modules/react-router/esm/react-router.js");
+/* harmony import */ var _components__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../components */ "../../common/temp/node_modules/piral/node_modules/piral-core/esm/components/index.js");
+/* harmony import */ var _hooks__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../hooks */ "../../common/temp/node_modules/piral/node_modules/piral-core/esm/hooks/index.js");
+/* harmony import */ var _utils__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../utils */ "../../common/temp/node_modules/piral/node_modules/piral-core/esm/utils/index.js");
+
+
+
+
+
+
+// this is an arbitrary start number to have 6 digits
+let portalIdBase = 123456;
+const DefaultWrapper = (props) => Object(_utils__WEBPACK_IMPORTED_MODULE_5__["defaultRender"])(props.children);
+class ForeignComponentContainer extends react__WEBPACK_IMPORTED_MODULE_0__["Component"] {
+    constructor() {
+        super(...arguments);
+        this.handler = (ev) => {
+            const { innerProps } = this.props;
+            ev.stopPropagation();
+            innerProps.piral.renderHtmlExtension(ev.detail.target, ev.detail.props);
+        };
+        this.setNode = (node) => {
+            this.current = node;
+        };
+    }
+    componentDidMount() {
+        const node = this.current;
+        const { $component, $context, innerProps } = this.props;
+        const { mount } = $component;
+        if (node && Object(piral_base__WEBPACK_IMPORTED_MODULE_1__["isfunc"])(mount)) {
+            mount(node, innerProps, $context);
+            node.addEventListener('render-html', this.handler, false);
+        }
+        this.previous = node;
+    }
+    componentDidUpdate() {
+        const { current, previous } = this;
+        const { $component, $context, innerProps } = this.props;
+        const { update } = $component;
+        if (current !== previous) {
+            previous && this.componentWillUnmount();
+            current && this.componentDidMount();
+        }
+        else if (Object(piral_base__WEBPACK_IMPORTED_MODULE_1__["isfunc"])(update)) {
+            update(current, innerProps, $context);
+        }
+    }
+    componentWillUnmount() {
+        const node = this.previous;
+        const { $component } = this.props;
+        const { unmount } = $component;
+        if (node && Object(piral_base__WEBPACK_IMPORTED_MODULE_1__["isfunc"])(unmount)) {
+            unmount(node);
+            node.removeEventListener('render-html', this.handler, false);
+        }
+        this.previous = undefined;
+    }
+    render() {
+        const { $portalId } = this.props;
+        return react__WEBPACK_IMPORTED_MODULE_0__["createElement"]("div", { "data-portal-id": $portalId, ref: this.setNode });
+    }
+}
+function wrapReactComponent(Component, stasisOptions, piral, Wrapper) {
+    return (props) => (react__WEBPACK_IMPORTED_MODULE_0__["createElement"](Wrapper, Object.assign({}, props, { piral: piral }),
+        react__WEBPACK_IMPORTED_MODULE_0__["createElement"](_components__WEBPACK_IMPORTED_MODULE_3__["ErrorBoundary"], Object.assign({}, stasisOptions, { renderProps: props }),
+            react__WEBPACK_IMPORTED_MODULE_0__["createElement"](Component, Object.assign({}, props, { piral: piral })))));
+}
+function wrapForeignComponent(component, stasisOptions, piral, Wrapper) {
+    return react__WEBPACK_IMPORTED_MODULE_0__["memo"]((props) => {
+        const { destroyPortal } = Object(_hooks__WEBPACK_IMPORTED_MODULE_4__["useActions"])();
+        const { state, readState } = Object(_hooks__WEBPACK_IMPORTED_MODULE_4__["useGlobalStateContext"])();
+        const router = react__WEBPACK_IMPORTED_MODULE_0__["useContext"](react_router__WEBPACK_IMPORTED_MODULE_2__["__RouterContext"]);
+        const id = react__WEBPACK_IMPORTED_MODULE_0__["useMemo"](() => (portalIdBase++).toString(26), _utils__WEBPACK_IMPORTED_MODULE_5__["none"]);
+        const context = react__WEBPACK_IMPORTED_MODULE_0__["useMemo"](() => ({ router, state, readState }), [router, state]);
+        const innerProps = react__WEBPACK_IMPORTED_MODULE_0__["useMemo"](() => (Object.assign(Object.assign({}, props), { piral })), [props]);
+        react__WEBPACK_IMPORTED_MODULE_0__["useEffect"](() => () => destroyPortal(id), _utils__WEBPACK_IMPORTED_MODULE_5__["none"]);
+        return (react__WEBPACK_IMPORTED_MODULE_0__["createElement"](Wrapper, Object.assign({}, innerProps),
+            react__WEBPACK_IMPORTED_MODULE_0__["createElement"](_components__WEBPACK_IMPORTED_MODULE_3__["ErrorBoundary"], Object.assign({}, stasisOptions, { renderProps: props }),
+                react__WEBPACK_IMPORTED_MODULE_0__["createElement"](_components__WEBPACK_IMPORTED_MODULE_3__["PortalRenderer"], { id: id }),
+                react__WEBPACK_IMPORTED_MODULE_0__["createElement"](ForeignComponentContainer, { innerProps: innerProps, "$portalId": id, "$component": component, "$context": context }))));
+    });
+}
+function isNotExotic(component) {
+    return !component.$$typeof;
+}
+function wrapComponent(converters, component, piral, Wrapper, stasisOptions) {
+    if (!component) {
+        console.error('The given value is not a valid component.');
+        // tslint:disable-next-line:no-null-keyword
+        component = () => null;
+    }
+    if (typeof component === 'object' && isNotExotic(component)) {
+        const result = Object(_utils__WEBPACK_IMPORTED_MODULE_5__["convertComponent"])(converters[component.type], component);
+        return wrapForeignComponent(result, stasisOptions, piral, Wrapper);
+    }
+    return wrapReactComponent(component, stasisOptions, piral, Wrapper);
+}
+function getWrapper(wrappers, wrapperType) {
+    return wrappers[wrapperType] || wrappers['*'] || DefaultWrapper;
+}
+function withApi(context, component, piral, errorType, wrapperType = errorType) {
+    const converters = context.converters;
+    const Wrapper = context.readState((m) => getWrapper(m.registry.wrappers, wrapperType));
+    return wrapComponent(converters, component, piral, Wrapper, {
+        onError(error) {
+            console.error(piral, error);
+        },
+        renderChild(child) {
+            return react__WEBPACK_IMPORTED_MODULE_0__["createElement"](react__WEBPACK_IMPORTED_MODULE_0__["Suspense"], { fallback: react__WEBPACK_IMPORTED_MODULE_0__["createElement"](_components__WEBPACK_IMPORTED_MODULE_3__["PiralLoadingIndicator"], null) }, child);
+        },
+        renderError(error, props) {
+            return react__WEBPACK_IMPORTED_MODULE_0__["createElement"](_components__WEBPACK_IMPORTED_MODULE_3__["PiralError"], Object.assign({ type: errorType, error: error }, props));
+        },
+    });
+}
+//# sourceMappingURL=withApi.js.map
+
+/***/ }),
+
+/***/ "../../common/temp/node_modules/piral/node_modules/piral-core/esm/types/api.js":
+/*!**************************************************************************************************************!*\
+  !*** C:/dev/_try/piral_monorepo_mvp/common/temp/node_modules/piral/node_modules/piral-core/esm/types/api.js ***!
+  \**************************************************************************************************************/
+/*! no exports provided */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+
+//# sourceMappingURL=api.js.map
+
+/***/ }),
+
+/***/ "../../common/temp/node_modules/piral/node_modules/piral-core/esm/types/common.js":
+/*!*****************************************************************************************************************!*\
+  !*** C:/dev/_try/piral_monorepo_mvp/common/temp/node_modules/piral/node_modules/piral-core/esm/types/common.js ***!
+  \*****************************************************************************************************************/
+/*! no exports provided */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+
+//# sourceMappingURL=common.js.map
+
+/***/ }),
+
+/***/ "../../common/temp/node_modules/piral/node_modules/piral-core/esm/types/components.js":
+/*!*********************************************************************************************************************!*\
+  !*** C:/dev/_try/piral_monorepo_mvp/common/temp/node_modules/piral/node_modules/piral-core/esm/types/components.js ***!
+  \*********************************************************************************************************************/
+/*! no exports provided */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+
+//# sourceMappingURL=components.js.map
+
+/***/ }),
+
+/***/ "../../common/temp/node_modules/piral/node_modules/piral-core/esm/types/config.js":
+/*!*****************************************************************************************************************!*\
+  !*** C:/dev/_try/piral_monorepo_mvp/common/temp/node_modules/piral/node_modules/piral-core/esm/types/config.js ***!
+  \*****************************************************************************************************************/
+/*! no exports provided */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+
+//# sourceMappingURL=config.js.map
+
+/***/ }),
+
+/***/ "../../common/temp/node_modules/piral/node_modules/piral-core/esm/types/custom.js":
+/*!*****************************************************************************************************************!*\
+  !*** C:/dev/_try/piral_monorepo_mvp/common/temp/node_modules/piral/node_modules/piral-core/esm/types/custom.js ***!
+  \*****************************************************************************************************************/
+/*! no exports provided */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+
+//# sourceMappingURL=custom.js.map
+
+/***/ }),
+
+/***/ "../../common/temp/node_modules/piral/node_modules/piral-core/esm/types/data.js":
+/*!***************************************************************************************************************!*\
+  !*** C:/dev/_try/piral_monorepo_mvp/common/temp/node_modules/piral/node_modules/piral-core/esm/types/data.js ***!
+  \***************************************************************************************************************/
+/*! no exports provided */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+
+//# sourceMappingURL=data.js.map
+
+/***/ }),
+
+/***/ "../../common/temp/node_modules/piral/node_modules/piral-core/esm/types/extension.js":
+/*!********************************************************************************************************************!*\
+  !*** C:/dev/_try/piral_monorepo_mvp/common/temp/node_modules/piral/node_modules/piral-core/esm/types/extension.js ***!
+  \********************************************************************************************************************/
+/*! no exports provided */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+
+//# sourceMappingURL=extension.js.map
+
+/***/ }),
+
+/***/ "../../common/temp/node_modules/piral/node_modules/piral-core/esm/types/index.js":
+/*!****************************************************************************************************************!*\
+  !*** C:/dev/_try/piral_monorepo_mvp/common/temp/node_modules/piral/node_modules/piral-core/esm/types/index.js ***!
+  \****************************************************************************************************************/
+/*! no exports provided */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _api__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./api */ "../../common/temp/node_modules/piral/node_modules/piral-core/esm/types/api.js");
+/* empty/unused harmony star reexport *//* harmony import */ var _common__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./common */ "../../common/temp/node_modules/piral/node_modules/piral-core/esm/types/common.js");
+/* empty/unused harmony star reexport *//* harmony import */ var _components__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./components */ "../../common/temp/node_modules/piral/node_modules/piral-core/esm/types/components.js");
+/* empty/unused harmony star reexport *//* harmony import */ var _config__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./config */ "../../common/temp/node_modules/piral/node_modules/piral-core/esm/types/config.js");
+/* empty/unused harmony star reexport *//* harmony import */ var _custom__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./custom */ "../../common/temp/node_modules/piral/node_modules/piral-core/esm/types/custom.js");
+/* empty/unused harmony star reexport *//* harmony import */ var _data__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./data */ "../../common/temp/node_modules/piral/node_modules/piral-core/esm/types/data.js");
+/* empty/unused harmony star reexport *//* harmony import */ var _extension__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./extension */ "../../common/temp/node_modules/piral/node_modules/piral-core/esm/types/extension.js");
+/* empty/unused harmony star reexport *//* harmony import */ var _instance__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ./instance */ "../../common/temp/node_modules/piral/node_modules/piral-core/esm/types/instance.js");
+/* empty/unused harmony star reexport *//* harmony import */ var _layout__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ./layout */ "../../common/temp/node_modules/piral/node_modules/piral-core/esm/types/layout.js");
+/* empty/unused harmony star reexport *//* harmony import */ var _plugin__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ./plugin */ "../../common/temp/node_modules/piral/node_modules/piral-core/esm/types/plugin.js");
+/* empty/unused harmony star reexport *//* harmony import */ var _state__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! ./state */ "../../common/temp/node_modules/piral/node_modules/piral-core/esm/types/state.js");
+/* empty/unused harmony star reexport *//* harmony import */ var _utils__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! ./utils */ "../../common/temp/node_modules/piral/node_modules/piral-core/esm/types/utils.js");
+/* empty/unused harmony star reexport */
+
+
+
+
+
+
+
+
+
+
+
+//# sourceMappingURL=index.js.map
+
+/***/ }),
+
+/***/ "../../common/temp/node_modules/piral/node_modules/piral-core/esm/types/instance.js":
+/*!*******************************************************************************************************************!*\
+  !*** C:/dev/_try/piral_monorepo_mvp/common/temp/node_modules/piral/node_modules/piral-core/esm/types/instance.js ***!
+  \*******************************************************************************************************************/
+/*! no exports provided */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+
+//# sourceMappingURL=instance.js.map
+
+/***/ }),
+
+/***/ "../../common/temp/node_modules/piral/node_modules/piral-core/esm/types/layout.js":
+/*!*****************************************************************************************************************!*\
+  !*** C:/dev/_try/piral_monorepo_mvp/common/temp/node_modules/piral/node_modules/piral-core/esm/types/layout.js ***!
+  \*****************************************************************************************************************/
+/*! no exports provided */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+
+//# sourceMappingURL=layout.js.map
+
+/***/ }),
+
+/***/ "../../common/temp/node_modules/piral/node_modules/piral-core/esm/types/plugin.js":
+/*!*****************************************************************************************************************!*\
+  !*** C:/dev/_try/piral_monorepo_mvp/common/temp/node_modules/piral/node_modules/piral-core/esm/types/plugin.js ***!
+  \*****************************************************************************************************************/
+/*! no exports provided */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+
+//# sourceMappingURL=plugin.js.map
+
+/***/ }),
+
+/***/ "../../common/temp/node_modules/piral/node_modules/piral-core/esm/types/state.js":
+/*!****************************************************************************************************************!*\
+  !*** C:/dev/_try/piral_monorepo_mvp/common/temp/node_modules/piral/node_modules/piral-core/esm/types/state.js ***!
+  \****************************************************************************************************************/
+/*! no exports provided */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+
+//# sourceMappingURL=state.js.map
+
+/***/ }),
+
+/***/ "../../common/temp/node_modules/piral/node_modules/piral-core/esm/types/utils.js":
+/*!****************************************************************************************************************!*\
+  !*** C:/dev/_try/piral_monorepo_mvp/common/temp/node_modules/piral/node_modules/piral-core/esm/types/utils.js ***!
+  \****************************************************************************************************************/
+/*! no exports provided */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+
+//# sourceMappingURL=utils.js.map
+
+/***/ }),
+
+/***/ "../../common/temp/node_modules/piral/node_modules/piral-core/esm/utils/compare.js":
+/*!******************************************************************************************************************!*\
+  !*** C:/dev/_try/piral_monorepo_mvp/common/temp/node_modules/piral/node_modules/piral-core/esm/utils/compare.js ***!
+  \******************************************************************************************************************/
+/*! exports provided: compare */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "compare", function() { return compare; });
+function compareObjects(a, b) {
+    for (const i in a) {
+        if (!(i in b)) {
+            return false;
+        }
+    }
+    for (const i in b) {
+        if (!compare(a[i], b[i])) {
+            return false;
+        }
+    }
+    return true;
+}
+function compare(a, b) {
+    if (a !== b) {
+        const ta = typeof a;
+        const tb = typeof b;
+        if (ta === tb && ta === 'object' && a && b) {
+            return compareObjects(a, b);
+        }
+        return false;
+    }
+    return true;
+}
+//# sourceMappingURL=compare.js.map
+
+/***/ }),
+
+/***/ "../../common/temp/node_modules/piral/node_modules/piral-core/esm/utils/data.js":
+/*!***************************************************************************************************************!*\
+  !*** C:/dev/_try/piral_monorepo_mvp/common/temp/node_modules/piral/node_modules/piral-core/esm/utils/data.js ***!
+  \***************************************************************************************************************/
+/*! exports provided: createDataView, createDataOptions, getDataExpiration */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "createDataView", function() { return createDataView; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "createDataOptions", function() { return createDataOptions; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "getDataExpiration", function() { return getDataExpiration; });
+const defaultTarget = 'memory';
+function createDataView(data) {
+    const proxyName = 'Proxy';
+    return (window[proxyName] &&
+        new Proxy(data, {
+            get(target, name) {
+                const item = target[name];
+                return item && item.value;
+            },
+            set(_target, _name, _value) {
+                return true;
+            },
+        }));
+}
+function createDataOptions(options = defaultTarget) {
+    if (typeof options === 'string') {
+        return {
+            target: options,
+        };
+    }
+    else if (options && typeof options === 'object' && !Array.isArray(options)) {
+        return options;
+    }
+    else {
+        return {
+            target: defaultTarget,
+        };
+    }
+}
+function getDataExpiration(expires) {
+    if (typeof expires === 'number') {
+        return expires;
+    }
+    else if (expires instanceof Date) {
+        return expires.valueOf();
+    }
+    return -1;
+}
+//# sourceMappingURL=data.js.map
+
+/***/ }),
+
+/***/ "../../common/temp/node_modules/piral/node_modules/piral-core/esm/utils/extension.js":
+/*!********************************************************************************************************************!*\
+  !*** C:/dev/_try/piral_monorepo_mvp/common/temp/node_modules/piral/node_modules/piral-core/esm/utils/extension.js ***!
+  \********************************************************************************************************************/
+/*! exports provided: toExtension */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "toExtension", function() { return toExtension; });
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "../../common/temp/node_modules/react/index.js");
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
+
+function toExtension(Component) {
+    return (props) => react__WEBPACK_IMPORTED_MODULE_0__["createElement"](Component, Object.assign({}, props.params));
+}
+//# sourceMappingURL=extension.js.map
+
+/***/ }),
+
+/***/ "../../common/temp/node_modules/piral/node_modules/piral-core/esm/utils/foreign.js":
+/*!******************************************************************************************************************!*\
+  !*** C:/dev/_try/piral_monorepo_mvp/common/temp/node_modules/piral/node_modules/piral-core/esm/utils/foreign.js ***!
+  \******************************************************************************************************************/
+/*! exports provided: attachDomPortal, changeDomPortal, convertComponent, renderInDom */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "attachDomPortal", function() { return attachDomPortal; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "changeDomPortal", function() { return changeDomPortal; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "convertComponent", function() { return convertComponent; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "renderInDom", function() { return renderInDom; });
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "../../common/temp/node_modules/react/index.js");
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var react_dom__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! react-dom */ "../../common/temp/node_modules/react-dom/index.js");
+/* harmony import */ var react_dom__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(react_dom__WEBPACK_IMPORTED_MODULE_1__);
+
+
+function attachDomPortal(id, context, element, component, props) {
+    const portal = Object(react_dom__WEBPACK_IMPORTED_MODULE_1__["createPortal"])(Object(react__WEBPACK_IMPORTED_MODULE_0__["createElement"])(component, props), element);
+    context.showPortal(id, portal);
+    return [id, portal];
+}
+function changeDomPortal(id, current, context, element, component, props) {
+    const next = Object(react_dom__WEBPACK_IMPORTED_MODULE_1__["createPortal"])(Object(react__WEBPACK_IMPORTED_MODULE_0__["createElement"])(component, props), element);
+    context.updatePortal(id, current, next);
+    return [id, next];
+}
+function convertComponent(converter, component) {
+    if (typeof converter !== 'function') {
+        throw new Error(`No converter for component of type "${component.type}" registered.`);
+    }
+    return converter(component);
+}
+function renderInDom(context, element, component, props) {
+    const portalId = 'data-portal-id';
+    let parent = element;
+    while (parent) {
+        if (parent instanceof Element && parent.hasAttribute(portalId)) {
+            const id = parent.getAttribute(portalId);
+            return attachDomPortal(id, context, element, component, props);
+        }
+        parent = parent.parentNode || parent.host;
+    }
+    return attachDomPortal('root', context, element, component, props);
+}
+//# sourceMappingURL=foreign.js.map
+
+/***/ }),
+
+/***/ "../../common/temp/node_modules/piral/node_modules/piral-core/esm/utils/guid.js":
+/*!***************************************************************************************************************!*\
+  !*** C:/dev/_try/piral_monorepo_mvp/common/temp/node_modules/piral/node_modules/piral-core/esm/utils/guid.js ***!
+  \***************************************************************************************************************/
+/*! exports provided: generateId, buildName */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "generateId", function() { return generateId; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "buildName", function() { return buildName; });
+function rand(c) {
+    const r = (Math.random() * 16) | 0;
+    const v = c === 'x' ? r : (r & 0x3) | 0x8;
+    return v.toString(16);
+}
+function generateId() {
+    return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, rand);
+}
+function buildName(prefix, name) {
+    return `${prefix}://${name}`;
+}
+//# sourceMappingURL=guid.js.map
+
+/***/ }),
+
+/***/ "../../common/temp/node_modules/piral/node_modules/piral-core/esm/utils/helpers.js":
+/*!******************************************************************************************************************!*\
+  !*** C:/dev/_try/piral_monorepo_mvp/common/temp/node_modules/piral/node_modules/piral-core/esm/utils/helpers.js ***!
+  \******************************************************************************************************************/
+/*! exports provided: removeIndicator, none, noop, prependItem, appendItem, prependItems, appendItems, excludeItem, includeItem, replaceOrAddItem, removeNested, excludeOn, updateKey, withKey, withoutKey, tryParseJson */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "removeIndicator", function() { return removeIndicator; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "none", function() { return none; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "noop", function() { return noop; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "prependItem", function() { return prependItem; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "appendItem", function() { return appendItem; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "prependItems", function() { return prependItems; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "appendItems", function() { return appendItems; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "excludeItem", function() { return excludeItem; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "includeItem", function() { return includeItem; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "replaceOrAddItem", function() { return replaceOrAddItem; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "removeNested", function() { return removeNested; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "excludeOn", function() { return excludeOn; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "updateKey", function() { return updateKey; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "withKey", function() { return withKey; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "withoutKey", function() { return withoutKey; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "tryParseJson", function() { return tryParseJson; });
+/* harmony import */ var tslib__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! tslib */ "../../common/temp/node_modules/tslib/tslib.es6.js");
+
+// tslint:disable-next-line
+const removeIndicator = null;
+// to avoid creating unnecessary empty arrays
+const none = [];
+// to avoid creating unnecessary empty functions
+const noop = () => { };
+function prependItem(items, item) {
+    return [item, ...(items || none)];
+}
+function appendItem(items, item) {
+    return [...(items || none), item];
+}
+function prependItems(items, newItems) {
+    return [...newItems, ...(items || none)];
+}
+function appendItems(items, newItems) {
+    return [...(items || none), ...newItems];
+}
+function excludeItem(items, item) {
+    return (items || none).filter((m) => m !== item);
+}
+function includeItem(items, item) {
+    return appendItem(excludeItem(items, item), item);
+}
+function replaceOrAddItem(items, item, predicate) {
+    const newItems = [...(items || none)];
+    for (let i = 0; i < newItems.length; i++) {
+        if (predicate(newItems[i])) {
+            newItems[i] = item;
+            return newItems;
+        }
+    }
+    newItems.push(item);
+    return newItems;
+}
+function removeNested(obj, predicate) {
+    return Object.keys(obj).reduce((entries, key) => {
+        const item = obj[key];
+        entries[key] = Object.keys(item).reduce((all, key) => {
+            const value = item[key];
+            if (Array.isArray(value)) {
+                all[key] = excludeOn(value, predicate);
+            }
+            else if (!value || !predicate(value)) {
+                all[key] = value;
+            }
+            return all;
+        }, {});
+        return entries;
+    }, {});
+}
+function excludeOn(items, predicate) {
+    return (items || none).filter((m) => !predicate(m));
+}
+function updateKey(obj, key, value) {
+    return value === removeIndicator ? withoutKey(obj, key) : withKey(obj, key, value);
+}
+function withKey(obj, key, value) {
+    return Object.assign(Object.assign({}, obj), { [key]: value });
+}
+function withoutKey(obj, key) {
+    const _a = obj || {}, _b = key, _ = _a[_b], newObj = Object(tslib__WEBPACK_IMPORTED_MODULE_0__["__rest"])(_a, [typeof _b === "symbol" ? _b : _b + ""]);
+    return newObj;
+}
+function tryParseJson(content) {
+    try {
+        return JSON.parse(content);
+    }
+    catch (_a) {
+        return {};
+    }
+}
+//# sourceMappingURL=helpers.js.map
+
+/***/ }),
+
+/***/ "../../common/temp/node_modules/piral/node_modules/piral-core/esm/utils/index.js":
+/*!****************************************************************************************************************!*\
+  !*** C:/dev/_try/piral_monorepo_mvp/common/temp/node_modules/piral/node_modules/piral-core/esm/utils/index.js ***!
+  \****************************************************************************************************************/
+/*! exports provided: compare, createDataView, createDataOptions, getDataExpiration, toExtension, attachDomPortal, changeDomPortal, convertComponent, renderInDom, generateId, buildName, removeIndicator, none, noop, prependItem, appendItem, prependItems, appendItems, excludeItem, includeItem, replaceOrAddItem, removeNested, excludeOn, updateKey, withKey, withoutKey, tryParseJson, defaultLayouts, defaultBreakpoints, getCurrentLayout, defaultRender, withAll, withPage, withoutPage, withExtension, withoutExtension, withRootExtension, withProvider, withRoute, storage, cookie */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _compare__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./compare */ "../../common/temp/node_modules/piral/node_modules/piral-core/esm/utils/compare.js");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "compare", function() { return _compare__WEBPACK_IMPORTED_MODULE_0__["compare"]; });
+
+/* harmony import */ var _data__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./data */ "../../common/temp/node_modules/piral/node_modules/piral-core/esm/utils/data.js");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "createDataView", function() { return _data__WEBPACK_IMPORTED_MODULE_1__["createDataView"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "createDataOptions", function() { return _data__WEBPACK_IMPORTED_MODULE_1__["createDataOptions"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "getDataExpiration", function() { return _data__WEBPACK_IMPORTED_MODULE_1__["getDataExpiration"]; });
+
+/* harmony import */ var _extension__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./extension */ "../../common/temp/node_modules/piral/node_modules/piral-core/esm/utils/extension.js");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "toExtension", function() { return _extension__WEBPACK_IMPORTED_MODULE_2__["toExtension"]; });
+
+/* harmony import */ var _foreign__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./foreign */ "../../common/temp/node_modules/piral/node_modules/piral-core/esm/utils/foreign.js");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "attachDomPortal", function() { return _foreign__WEBPACK_IMPORTED_MODULE_3__["attachDomPortal"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "changeDomPortal", function() { return _foreign__WEBPACK_IMPORTED_MODULE_3__["changeDomPortal"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "convertComponent", function() { return _foreign__WEBPACK_IMPORTED_MODULE_3__["convertComponent"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "renderInDom", function() { return _foreign__WEBPACK_IMPORTED_MODULE_3__["renderInDom"]; });
+
+/* harmony import */ var _guid__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./guid */ "../../common/temp/node_modules/piral/node_modules/piral-core/esm/utils/guid.js");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "generateId", function() { return _guid__WEBPACK_IMPORTED_MODULE_4__["generateId"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "buildName", function() { return _guid__WEBPACK_IMPORTED_MODULE_4__["buildName"]; });
+
+/* harmony import */ var _helpers__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./helpers */ "../../common/temp/node_modules/piral/node_modules/piral-core/esm/utils/helpers.js");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "removeIndicator", function() { return _helpers__WEBPACK_IMPORTED_MODULE_5__["removeIndicator"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "none", function() { return _helpers__WEBPACK_IMPORTED_MODULE_5__["none"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "noop", function() { return _helpers__WEBPACK_IMPORTED_MODULE_5__["noop"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "prependItem", function() { return _helpers__WEBPACK_IMPORTED_MODULE_5__["prependItem"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "appendItem", function() { return _helpers__WEBPACK_IMPORTED_MODULE_5__["appendItem"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "prependItems", function() { return _helpers__WEBPACK_IMPORTED_MODULE_5__["prependItems"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "appendItems", function() { return _helpers__WEBPACK_IMPORTED_MODULE_5__["appendItems"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "excludeItem", function() { return _helpers__WEBPACK_IMPORTED_MODULE_5__["excludeItem"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "includeItem", function() { return _helpers__WEBPACK_IMPORTED_MODULE_5__["includeItem"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "replaceOrAddItem", function() { return _helpers__WEBPACK_IMPORTED_MODULE_5__["replaceOrAddItem"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "removeNested", function() { return _helpers__WEBPACK_IMPORTED_MODULE_5__["removeNested"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "excludeOn", function() { return _helpers__WEBPACK_IMPORTED_MODULE_5__["excludeOn"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "updateKey", function() { return _helpers__WEBPACK_IMPORTED_MODULE_5__["updateKey"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "withKey", function() { return _helpers__WEBPACK_IMPORTED_MODULE_5__["withKey"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "withoutKey", function() { return _helpers__WEBPACK_IMPORTED_MODULE_5__["withoutKey"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "tryParseJson", function() { return _helpers__WEBPACK_IMPORTED_MODULE_5__["tryParseJson"]; });
+
+/* harmony import */ var _media__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./media */ "../../common/temp/node_modules/piral/node_modules/piral-core/esm/utils/media.js");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "defaultLayouts", function() { return _media__WEBPACK_IMPORTED_MODULE_6__["defaultLayouts"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "defaultBreakpoints", function() { return _media__WEBPACK_IMPORTED_MODULE_6__["defaultBreakpoints"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "getCurrentLayout", function() { return _media__WEBPACK_IMPORTED_MODULE_6__["getCurrentLayout"]; });
+
+/* harmony import */ var _react__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ./react */ "../../common/temp/node_modules/piral/node_modules/piral-core/esm/utils/react.js");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "defaultRender", function() { return _react__WEBPACK_IMPORTED_MODULE_7__["defaultRender"]; });
+
+/* harmony import */ var _state__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ./state */ "../../common/temp/node_modules/piral/node_modules/piral-core/esm/utils/state.js");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "withAll", function() { return _state__WEBPACK_IMPORTED_MODULE_8__["withAll"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "withPage", function() { return _state__WEBPACK_IMPORTED_MODULE_8__["withPage"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "withoutPage", function() { return _state__WEBPACK_IMPORTED_MODULE_8__["withoutPage"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "withExtension", function() { return _state__WEBPACK_IMPORTED_MODULE_8__["withExtension"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "withoutExtension", function() { return _state__WEBPACK_IMPORTED_MODULE_8__["withoutExtension"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "withRootExtension", function() { return _state__WEBPACK_IMPORTED_MODULE_8__["withRootExtension"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "withProvider", function() { return _state__WEBPACK_IMPORTED_MODULE_8__["withProvider"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "withRoute", function() { return _state__WEBPACK_IMPORTED_MODULE_8__["withRoute"]; });
+
+/* harmony import */ var _storage__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ./storage */ "../../common/temp/node_modules/piral/node_modules/piral-core/esm/utils/storage.js");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "storage", function() { return _storage__WEBPACK_IMPORTED_MODULE_9__["storage"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "cookie", function() { return _storage__WEBPACK_IMPORTED_MODULE_9__["cookie"]; });
+
+
+
+
+
+
+
+
+
+
+
+//# sourceMappingURL=index.js.map
+
+/***/ }),
+
+/***/ "../../common/temp/node_modules/piral/node_modules/piral-core/esm/utils/media.js":
+/*!****************************************************************************************************************!*\
+  !*** C:/dev/_try/piral_monorepo_mvp/common/temp/node_modules/piral/node_modules/piral-core/esm/utils/media.js ***!
+  \****************************************************************************************************************/
+/*! exports provided: defaultLayouts, defaultBreakpoints, getCurrentLayout */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "defaultLayouts", function() { return defaultLayouts; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "defaultBreakpoints", function() { return defaultBreakpoints; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "getCurrentLayout", function() { return getCurrentLayout; });
+/* harmony import */ var piral_base__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! piral-base */ "../../common/temp/node_modules/piral/node_modules/piral-base/esm/index.js");
+/* harmony import */ var _helpers__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./helpers */ "../../common/temp/node_modules/piral/node_modules/piral-core/esm/utils/helpers.js");
+
+
+const defaultLayouts = ['desktop', 'tablet', 'mobile'];
+const defaultBreakpoints = ['(min-width: 991px)', '(min-width: 481px)', '(max-width: 480px)'];
+const mm = typeof window === 'undefined' || !Object(piral_base__WEBPACK_IMPORTED_MODULE_0__["isfunc"])(window.matchMedia)
+    ? () => ({ matches: _helpers__WEBPACK_IMPORTED_MODULE_1__["none"] })
+    : (q) => window.matchMedia(q);
+function getCurrentLayout(breakpoints, layouts, defaultLayout) {
+    const query = breakpoints.findIndex((q) => mm(q).matches);
+    const layout = layouts[query];
+    return layout !== undefined ? layout : defaultLayout;
+}
+//# sourceMappingURL=media.js.map
+
+/***/ }),
+
+/***/ "../../common/temp/node_modules/piral/node_modules/piral-core/esm/utils/react.js":
+/*!****************************************************************************************************************!*\
+  !*** C:/dev/_try/piral_monorepo_mvp/common/temp/node_modules/piral/node_modules/piral-core/esm/utils/react.js ***!
+  \****************************************************************************************************************/
+/*! exports provided: defaultRender */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "defaultRender", function() { return defaultRender; });
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "../../common/temp/node_modules/react/index.js");
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
+
+function defaultRender(children, key) {
+    return react__WEBPACK_IMPORTED_MODULE_0__["createElement"](react__WEBPACK_IMPORTED_MODULE_0__["Fragment"], { key: key }, children);
+}
+//# sourceMappingURL=react.js.map
+
+/***/ }),
+
+/***/ "../../common/temp/node_modules/piral/node_modules/piral-core/esm/utils/state.js":
+/*!****************************************************************************************************************!*\
+  !*** C:/dev/_try/piral_monorepo_mvp/common/temp/node_modules/piral/node_modules/piral-core/esm/utils/state.js ***!
+  \****************************************************************************************************************/
+/*! exports provided: withAll, withPage, withoutPage, withExtension, withoutExtension, withRootExtension, withProvider, withRoute */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "withAll", function() { return withAll; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "withPage", function() { return withPage; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "withoutPage", function() { return withoutPage; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "withExtension", function() { return withExtension; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "withoutExtension", function() { return withoutExtension; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "withRootExtension", function() { return withRootExtension; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "withProvider", function() { return withProvider; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "withRoute", function() { return withRoute; });
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "../../common/temp/node_modules/react/index.js");
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var _extension__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./extension */ "../../common/temp/node_modules/piral/node_modules/piral-core/esm/utils/extension.js");
+/* harmony import */ var _helpers__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./helpers */ "../../common/temp/node_modules/piral/node_modules/piral-core/esm/utils/helpers.js");
+
+
+
+/**
+ * Returns a dispatcher that includes all mentioned dispatchers.
+ * @param dispatchers The dispatchers to include.
+ */
+function withAll(...dispatchers) {
+    return (state) => {
+        for (const dispatcher of dispatchers) {
+            state = dispatcher(state);
+        }
+        return state;
+    };
+}
+/**
+ * Returns a dispatcher that adds a page registration.
+ * @param name The path of the page to register.
+ * @param value The value of the page to register.
+ * @returns The dispatcher.
+ */
+function withPage(name, value) {
+    return (state) => (Object.assign(Object.assign({}, state), { registry: Object.assign(Object.assign({}, state.registry), { pages: Object(_helpers__WEBPACK_IMPORTED_MODULE_2__["withKey"])(state.registry.pages, name, value) }) }));
+}
+/**
+ * Returns a dispatcher that removes a page registration.
+ * @param name The path of the page to unregister.
+ * @returns The dispatcher.
+ */
+function withoutPage(name) {
+    return (state) => (Object.assign(Object.assign({}, state), { registry: Object.assign(Object.assign({}, state.registry), { pages: Object(_helpers__WEBPACK_IMPORTED_MODULE_2__["withoutKey"])(state.registry.pages, name) }) }));
+}
+/**
+ * Returns a dispatcher that adds an extension registration.
+ * @param name The name of the extension to register.
+ * @param value The value of the extension to register.
+ * @returns The dispatcher.
+ */
+function withExtension(name, value) {
+    return (state) => (Object.assign(Object.assign({}, state), { registry: Object.assign(Object.assign({}, state.registry), { extensions: Object(_helpers__WEBPACK_IMPORTED_MODULE_2__["withKey"])(state.registry.extensions, name, Object(_helpers__WEBPACK_IMPORTED_MODULE_2__["appendItem"])(state.registry.extensions[name], value)) }) }));
+}
+/**
+ * Returns a dispatcher that removes an extension registration.
+ * @param name The name of the extension to unregister.
+ * @param reference The reference for the extension.
+ * @returns The dispatcher.
+ */
+function withoutExtension(name, reference) {
+    return (state) => (Object.assign(Object.assign({}, state), { registry: Object.assign(Object.assign({}, state.registry), { extensions: Object(_helpers__WEBPACK_IMPORTED_MODULE_2__["withKey"])(state.registry.extensions, name, Object(_helpers__WEBPACK_IMPORTED_MODULE_2__["excludeOn"])(state.registry.extensions[name], (m) => m.reference === reference)) }) }));
+}
+/**
+ * Returns a dispatcher that adds an extension registration from the root (no Pilet API).
+ * @param name The name of the extension to register.
+ * @param component The extension's component to use.
+ * @returns The dispatcher.
+ */
+function withRootExtension(name, component) {
+    return withExtension(name, {
+        component: Object(_extension__WEBPACK_IMPORTED_MODULE_1__["toExtension"])(component),
+        defaults: {},
+        pilet: '',
+        reference: component,
+    });
+}
+/**
+ * Returns a dispatcher that adds another provider.
+ * @param provider The provider to include.
+ * @returns The dispatcher.
+ */
+function withProvider(provider) {
+    const wrapper = (props) => Object(react__WEBPACK_IMPORTED_MODULE_0__["cloneElement"])(provider, props);
+    return (state) => (Object.assign(Object.assign({}, state), { provider: !state.provider ? wrapper : (props) => Object(react__WEBPACK_IMPORTED_MODULE_0__["createElement"])(state.provider, undefined, wrapper(props)) }));
+}
+/**
+ * Returns a dispatcher that registers another route.
+ * @param path The path of the route to register.
+ * @param component The component representing the route.
+ * @returns The dispatcher.
+ */
+function withRoute(path, component) {
+    return (state) => (Object.assign(Object.assign({}, state), { routes: Object(_helpers__WEBPACK_IMPORTED_MODULE_2__["withKey"])(state.routes, path, component) }));
+}
+//# sourceMappingURL=state.js.map
+
+/***/ }),
+
+/***/ "../../common/temp/node_modules/piral/node_modules/piral-core/esm/utils/storage.js":
+/*!******************************************************************************************************************!*\
+  !*** C:/dev/_try/piral_monorepo_mvp/common/temp/node_modules/piral/node_modules/piral-core/esm/utils/storage.js ***!
+  \******************************************************************************************************************/
+/*! exports provided: storage, cookie */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "storage", function() { return storage; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "cookie", function() { return cookie; });
+const crx = /\s*(.*?)=(.*?)($|;|,(?! ))/g;
+const storage = {
+    setItem(name, data) {
+        return localStorage.setItem(name, data);
+    },
+    getItem(name) {
+        return localStorage.getItem(name);
+    },
+    removeItem(name) {
+        return localStorage.removeItem(name);
+    },
+};
+const cookie = {
+    setItem(name, data, expires = '') {
+        const domain = location.hostname;
+        const domainPart = domain ? `domain=.${domain};` : '';
+        document.cookie = `${name}=${encodeURIComponent(data)};expires="${expires}";path=/;${domainPart}`;
+    },
+    getItem(name) {
+        return document.cookie.replace(crx, (_m, p1, p2) => (name === p1 ? p2 : ''));
+    },
+    removeItem(name) {
+        this.setItem(name, '', '-1');
+    },
+};
+//# sourceMappingURL=storage.js.map
+
+/***/ }),
+
+/***/ "../../common/temp/node_modules/piral/node_modules/piral-debug-utils/esm/DebugTracker.js":
+/*!************************************************************************************************************************!*\
+  !*** C:/dev/_try/piral_monorepo_mvp/common/temp/node_modules/piral/node_modules/piral-debug-utils/esm/DebugTracker.js ***!
+  \************************************************************************************************************************/
+/*! exports provided: DebugTracker */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "DebugTracker", function() { return DebugTracker; });
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "../../common/temp/node_modules/react/index.js");
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var react_router__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! react-router */ "../../common/temp/node_modules/react-router/esm/react-router.js");
+/* harmony import */ var _state__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./state */ "../../common/temp/node_modules/piral/node_modules/piral-debug-utils/esm/state.js");
+
+
+
+const DebugTracker = () => {
+    const route = Object(_state__WEBPACK_IMPORTED_MODULE_2__["useDebugState"])((s) => s.route);
+    const history = Object(react_router__WEBPACK_IMPORTED_MODULE_1__["useHistory"])();
+    react__WEBPACK_IMPORTED_MODULE_0__["useEffect"](() => {
+        if (route) {
+            history.push(route.path, route.state);
+        }
+    }, [route]);
+    // tslint:disable-next-line:no-null-keyword
+    return null;
+};
+//# sourceMappingURL=DebugTracker.js.map
+
+/***/ }),
+
+/***/ "../../common/temp/node_modules/piral/node_modules/piral-debug-utils/esm/ExtensionCatalogue.js":
+/*!******************************************************************************************************************************!*\
+  !*** C:/dev/_try/piral_monorepo_mvp/common/temp/node_modules/piral/node_modules/piral-debug-utils/esm/ExtensionCatalogue.js ***!
+  \******************************************************************************************************************************/
+/*! exports provided: ExtensionCatalogue */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "ExtensionCatalogue", function() { return ExtensionCatalogue; });
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "../../common/temp/node_modules/react/index.js");
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var react_router__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! react-router */ "../../common/temp/node_modules/react-router/esm/react-router.js");
+
+
+const ExtensionCatalogue = () => {
+    const { state } = Object(react_router__WEBPACK_IMPORTED_MODULE_1__["useLocation"])();
+    if (state) {
+        const { name = '', params = {} } = state;
+        return react__WEBPACK_IMPORTED_MODULE_0__["createElement"]("piral-extension", { name: name, params: JSON.stringify(params) });
+    }
+    return null;
+};
+//# sourceMappingURL=ExtensionCatalogue.js.map
+
+/***/ }),
+
+/***/ "../../common/temp/node_modules/piral/node_modules/piral-debug-utils/esm/VisualizationWrapper.js":
+/*!********************************************************************************************************************************!*\
+  !*** C:/dev/_try/piral_monorepo_mvp/common/temp/node_modules/piral/node_modules/piral-debug-utils/esm/VisualizationWrapper.js ***!
+  \********************************************************************************************************************************/
+/*! exports provided: VisualizationWrapper */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "VisualizationWrapper", function() { return VisualizationWrapper; });
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "../../common/temp/node_modules/react/index.js");
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var _state__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./state */ "../../common/temp/node_modules/piral/node_modules/piral-debug-utils/esm/state.js");
+
+
+const moduleColor = {};
+const Visualizer = ({ pilet, force, active }) => {
+    const colors = [
+        '#001F3F',
+        '#0074D9',
+        '#7FDBFF',
+        '#39CCCC',
+        '#3D9970',
+        '#2ECC40',
+        '#01FF70',
+        '#FFDC00',
+        '#FF851B',
+        '#FF4136',
+        '#85144B',
+        '#F012BE',
+        '#B10DC9',
+    ];
+    const container = react__WEBPACK_IMPORTED_MODULE_0__["useRef"]();
+    const color = react__WEBPACK_IMPORTED_MODULE_0__["useMemo"](() => moduleColor[pilet] || (moduleColor[pilet] = colors[Object.keys(moduleColor).length % colors.length]), [pilet]);
+    react__WEBPACK_IMPORTED_MODULE_0__["useEffect"](() => {
+        let sibling = container.current && container.current.nextElementSibling;
+        if (sibling && active) {
+            const target = container.current.parentNode;
+            const mouseIn = () => {
+                if (container.current && sibling) {
+                    const style = container.current.style;
+                    style.display = 'block';
+                    style.left = '0px';
+                    style.top = '0px';
+                    style.bottom = '0px';
+                    style.right = '0px';
+                    const targetRect = sibling.getBoundingClientRect();
+                    const sourceRect = container.current.getBoundingClientRect();
+                    style.left = targetRect.left - sourceRect.left + 'px';
+                    style.top = targetRect.top - sourceRect.top + 'px';
+                    style.bottom = -(targetRect.bottom - sourceRect.bottom) + 'px';
+                    style.right = -(targetRect.right - sourceRect.right) + 'px';
+                }
+            };
+            const mouseOut = () => {
+                if (container.current) {
+                    const style = container.current.style;
+                    style.display = 'none';
+                }
+            };
+            const append = () => {
+                if (force) {
+                    mouseIn();
+                }
+                else if (sibling) {
+                    sibling.addEventListener('mouseover', mouseIn);
+                    sibling.addEventListener('mouseout', mouseOut);
+                }
+            };
+            const remove = () => {
+                if (force) {
+                    mouseOut();
+                }
+                else if (sibling) {
+                    sibling.removeEventListener('mouseover', mouseIn);
+                    sibling.removeEventListener('mouseout', mouseOut);
+                }
+            };
+            const observer = new MutationObserver(() => {
+                var _a;
+                const newSibling = (_a = container.current) === null || _a === void 0 ? void 0 : _a.nextElementSibling;
+                if (newSibling !== sibling) {
+                    remove();
+                    sibling = newSibling;
+                    append();
+                }
+            });
+            append();
+            observer.observe(target, { childList: true });
+            return () => {
+                remove();
+                observer.disconnect();
+            };
+        }
+    }, [active, force]);
+    if (active) {
+        const rect = {
+            border: '1px solid red',
+            display: 'none',
+            position: 'absolute',
+            top: 0,
+            bottom: 0,
+            right: 0,
+            left: 0,
+            zIndex: 99999999999,
+            pointerEvents: 'none',
+            borderColor: color,
+        };
+        const info = {
+            color: 'white',
+            position: 'absolute',
+            right: 0,
+            top: 0,
+            fontSize: '8px',
+            background: color,
+        };
+        return (react__WEBPACK_IMPORTED_MODULE_0__["createElement"]("div", { style: rect, ref: container },
+            react__WEBPACK_IMPORTED_MODULE_0__["createElement"]("div", { style: info }, pilet)));
+    }
+    // tslint:disable-next-line:no-null-keyword
+    return null;
+};
+const VisualizationWrapper = ({ piral, children }) => {
+    const { active, force } = Object(_state__WEBPACK_IMPORTED_MODULE_1__["useDebugState"])((m) => m.visualize);
+    return (react__WEBPACK_IMPORTED_MODULE_0__["createElement"](react__WEBPACK_IMPORTED_MODULE_0__["Fragment"], null,
+        react__WEBPACK_IMPORTED_MODULE_0__["createElement"](Visualizer, { pilet: piral.meta.name, force: force, active: active }),
+        children));
+};
+//# sourceMappingURL=VisualizationWrapper.js.map
+
+/***/ }),
+
+/***/ "../../common/temp/node_modules/piral/node_modules/piral-debug-utils/esm/debug.js":
+/*!*****************************************************************************************************************!*\
+  !*** C:/dev/_try/piral_monorepo_mvp/common/temp/node_modules/piral/node_modules/piral-debug-utils/esm/debug.js ***!
+  \*****************************************************************************************************************/
+/*! exports provided: installPiralDebug */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "installPiralDebug", function() { return installPiralDebug; });
+/* harmony import */ var _DebugTracker__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./DebugTracker */ "../../common/temp/node_modules/piral/node_modules/piral-debug-utils/esm/DebugTracker.js");
+/* harmony import */ var _VisualizationWrapper__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./VisualizationWrapper */ "../../common/temp/node_modules/piral/node_modules/piral-debug-utils/esm/VisualizationWrapper.js");
+/* harmony import */ var _ExtensionCatalogue__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./ExtensionCatalogue */ "../../common/temp/node_modules/piral/node_modules/piral-debug-utils/esm/ExtensionCatalogue.js");
+/* harmony import */ var _decycle__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./decycle */ "../../common/temp/node_modules/piral/node_modules/piral-debug-utils/esm/decycle.js");
+/* harmony import */ var _state__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./state */ "../../common/temp/node_modules/piral/node_modules/piral-debug-utils/esm/state.js");
+
+
+
+
+
+function installPiralDebug(options) {
+    const { injectPilet, getGlobalState, getExtensions, getDependencies, getRoutes, getPilets, setPilets, fireEvent, integrate, createApi, loadPilet, customSettings = {}, } = options;
+    const events = [];
+    const legacyBrowser = !new Error().stack;
+    const excludedRoutes = [_state__WEBPACK_IMPORTED_MODULE_4__["initialSettings"].cataloguePath];
+    const selfSource = 'piral-debug-api';
+    const debugApiVersion = 'v1';
+    const settings = Object.assign(Object.assign({}, customSettings), { viewState: {
+            value: _state__WEBPACK_IMPORTED_MODULE_4__["initialSettings"].viewState,
+            type: 'boolean',
+            label: 'State container logging',
+            onChange(value) {
+                sessionStorage.setItem('dbg:view-state', value ? 'on' : 'off');
+            },
+        }, loadPilets: {
+            value: _state__WEBPACK_IMPORTED_MODULE_4__["initialSettings"].loadPilets,
+            type: 'boolean',
+            label: 'Load available pilets',
+            onChange(value) {
+                sessionStorage.setItem('dbg:load-pilets', value ? 'on' : 'off');
+            },
+        }, hardRefresh: {
+            value: _state__WEBPACK_IMPORTED_MODULE_4__["initialSettings"].hardRefresh,
+            type: 'boolean',
+            label: 'Full refresh on change',
+            onChange(value) {
+                sessionStorage.setItem('dbg:hard-refresh', value ? 'on' : 'off');
+            },
+        }, viewOrigins: {
+            value: _state__WEBPACK_IMPORTED_MODULE_4__["initialSettings"].viewOrigins,
+            type: 'boolean',
+            label: 'Visualize component origins',
+            onChange(value, prev) {
+                sessionStorage.setItem('dbg:view-origins', value ? 'on' : 'off');
+                if (prev !== value) {
+                    updateVisualize(value);
+                }
+            },
+        }, extensionCatalogue: {
+            value: _state__WEBPACK_IMPORTED_MODULE_4__["initialSettings"].extensionCatalogue,
+            type: 'boolean',
+            label: 'Enable extension catalogue',
+            onChange(value) {
+                sessionStorage.setItem('dbg:extension-catalogue', value ? 'on' : 'off');
+            },
+        } });
+    const sendMessage = (content) => {
+        window.postMessage({
+            content,
+            source: selfSource,
+            version: debugApiVersion,
+        }, '*');
+    };
+    const getSettings = () => {
+        return Object.keys(settings).reduce((obj, key) => {
+            const setting = settings[key];
+            if (setting &&
+                typeof setting === 'object' &&
+                typeof setting.label === 'string' &&
+                typeof setting.type === 'string' &&
+                ['boolean', 'string', 'number'].includes(typeof setting.value)) {
+                obj[key] = {
+                    label: setting.label,
+                    value: setting.value,
+                    type: setting.type,
+                };
+            }
+            return obj;
+        }, {});
+    };
+    const updateSettings = (values) => {
+        Object.keys(values).forEach((key) => {
+            const setting = settings[key];
+            switch (setting.type) {
+                case 'boolean': {
+                    const prev = setting.value;
+                    const value = values[key];
+                    setting.value = value;
+                    setting.onChange(value, prev);
+                    break;
+                }
+                case 'number': {
+                    const prev = setting.value;
+                    const value = values[key];
+                    setting.value = value;
+                    setting.onChange(value, prev);
+                    break;
+                }
+                case 'string': {
+                    const prev = setting.value;
+                    const value = values[key];
+                    setting.value = value;
+                    setting.onChange(value, prev);
+                    break;
+                }
+            }
+        });
+        sendMessage({
+            settings: getSettings(),
+            type: 'settings',
+        });
+    };
+    const togglePilet = (name) => {
+        const pilet = getPilets().find((m) => m.name === name);
+        if (pilet.disabled) {
+            try {
+                const { createApi } = options;
+                const newApi = createApi(pilet);
+                injectPilet(pilet.original);
+                pilet.original.setup(newApi);
+            }
+            catch (error) {
+                console.error(error);
+            }
+        }
+        else {
+            injectPilet({ name, disabled: true, original: pilet });
+        }
+    };
+    const removePilet = (name) => {
+        const pilets = getPilets().filter((m) => m.name !== name);
+        injectPilet({ name });
+        setPilets(pilets);
+    };
+    const appendPilet = (meta) => {
+        const { createApi, loadPilet } = options;
+        loadPilet(meta).then((pilet) => {
+            try {
+                const newApi = createApi(pilet);
+                injectPilet(pilet);
+                pilet.setup(newApi);
+            }
+            catch (error) {
+                console.error(error);
+            }
+        });
+    };
+    const toggleVisualize = () => {
+        Object(_state__WEBPACK_IMPORTED_MODULE_4__["setState"])((s) => (Object.assign(Object.assign({}, s), { visualize: Object.assign(Object.assign({}, s.visualize), { force: !s.visualize.force }) })));
+    };
+    const updateVisualize = (active) => {
+        Object(_state__WEBPACK_IMPORTED_MODULE_4__["setState"])((s) => (Object.assign(Object.assign({}, s), { visualize: Object.assign(Object.assign({}, s.visualize), { active }) })));
+    };
+    const goToRoute = (path, state) => {
+        Object(_state__WEBPACK_IMPORTED_MODULE_4__["setState"])((s) => (Object.assign(Object.assign({}, s), { route: {
+                path,
+                state,
+            } })));
+    };
+    const eventDispatcher = document.body.dispatchEvent;
+    const debugApi = {
+        debug: debugApiVersion,
+        instance: {
+            name: "app-shell",
+            version: "0.0.1",
+            dependencies: "react,react-dom,react-router,react-router-dom,history,tslib,path-to-regexp,@libre/atom,@dbeining/react-atom",
+        },
+        build: {
+            date: "2022-01-18T08:15:47.928Z",
+            cli: "0.14.7",
+            compat: "0.14",
+        },
+        pilets: {
+            loadPilet,
+            createApi,
+        },
+    };
+    const start = () => {
+        const container = Object(_decycle__WEBPACK_IMPORTED_MODULE_3__["decycle"])(getGlobalState());
+        const routes = getRoutes().filter((r) => !excludedRoutes.includes(r));
+        const extensions = getExtensions();
+        const settings = getSettings();
+        const dependencies = getDependencies();
+        const pilets = getPilets().map((pilet) => ({
+            name: pilet.name,
+            version: pilet.version,
+            disabled: pilet.disabled,
+        }));
+        sendMessage({
+            type: 'available',
+            name: debugApi.instance.name,
+            version: debugApi.instance.version,
+            kind: debugApiVersion,
+            mode:  false ? undefined : 'development',
+            capabilities: ['events', 'container', 'routes', 'pilets', 'settings', 'extensions', 'dependencies'],
+            state: {
+                routes,
+                pilets,
+                container,
+                settings,
+                events,
+                extensions,
+                dependencies,
+            },
+        });
+    };
+    document.body.dispatchEvent = function (ev) {
+        if (ev.type.startsWith('piral-')) {
+            events.unshift({
+                id: events.length.toString(),
+                name: ev.type.replace('piral-', ''),
+                args: Object(_decycle__WEBPACK_IMPORTED_MODULE_3__["decycle"])(ev.detail.arg),
+                time: Date.now(),
+            });
+            sendMessage({
+                events,
+                type: 'events',
+            });
+        }
+        return eventDispatcher.call(this, ev);
+    };
+    window.addEventListener('storage', (event) => {
+        if (!legacyBrowser && event.storageArea === sessionStorage) {
+            // potentially unknowingly updated settings
+            updateSettings({
+                viewState: sessionStorage.getItem('dbg:view-state') !== 'off',
+                loadPilets: sessionStorage.getItem('dbg:load-pilets') === 'on',
+                hardRefresh: sessionStorage.getItem('dbg:hard-refresh') === 'on',
+                viewOrigins: sessionStorage.getItem('dbg:view-origins') === 'on',
+                extensionCatalogue: sessionStorage.getItem('dbg:extension-catalogue') !== 'off',
+            });
+        }
+    });
+    window.addEventListener('message', (event) => {
+        const { source, version, content } = event.data;
+        if (source !== selfSource && version === debugApiVersion) {
+            switch (content.type) {
+                case 'init':
+                    return start();
+                case 'update-settings':
+                    return updateSettings(content.settings);
+                case 'append-pilet':
+                    return appendPilet(content.meta);
+                case 'remove-pilet':
+                    return removePilet(content.name);
+                case 'toggle-pilet':
+                    return togglePilet(content.name);
+                case 'emit-event':
+                    return fireEvent(content.name, content.args);
+                case 'goto-route':
+                    return goToRoute(content.route, content.state);
+                case 'visualize-all':
+                    return toggleVisualize();
+            }
+        }
+    });
+    integrate({
+        components: {
+            Debug: _DebugTracker__WEBPACK_IMPORTED_MODULE_0__["DebugTracker"],
+        },
+        routes: {
+            [_state__WEBPACK_IMPORTED_MODULE_4__["initialSettings"].cataloguePath]: _ExtensionCatalogue__WEBPACK_IMPORTED_MODULE_2__["ExtensionCatalogue"],
+        },
+        wrappers: {
+            '*': _VisualizationWrapper__WEBPACK_IMPORTED_MODULE_1__["VisualizationWrapper"],
+        },
+        onChange(previous, current, changed) {
+            if (changed.state) {
+                if (settings.viewState.value) {
+                    if (!legacyBrowser) {
+                        // Chrome, Firefox, ... (full capability)
+                        const err = new Error();
+                        const lastLine = err.stack.split('\n')[7];
+                        if (lastLine) {
+                            const action = lastLine.replace(/^\s+at\s+(Atom\.|Object\.)?/, '');
+                            console.group(`%c Piral State Change %c ${new Date().toLocaleTimeString()}`, 'color: gray; font-weight: lighter;', 'color: black; font-weight: bold;');
+                            console.log('%c Previous', `color: #9E9E9E; font-weight: bold`, previous);
+                            console.log('%c Action', `color: #03A9F4; font-weight: bold`, action);
+                            console.log('%c Next', `color: #4CAF50; font-weight: bold`, current);
+                            console.groupEnd();
+                        }
+                    }
+                    else {
+                        // IE 11, ... (does not know colors etc.)
+                        console.log('Changed state', previous, current);
+                    }
+                }
+                sendMessage({
+                    type: 'container',
+                    container: Object(_decycle__WEBPACK_IMPORTED_MODULE_3__["decycle"])(getGlobalState()),
+                });
+            }
+            if (changed.pilets) {
+                sendMessage({
+                    type: 'pilets',
+                    pilets: getPilets().map((pilet) => ({
+                        name: pilet.name,
+                        version: pilet.version,
+                        disabled: !!pilet.disabled,
+                    })),
+                });
+            }
+            if (changed.pages) {
+                sendMessage({
+                    type: 'routes',
+                    routes: getRoutes().filter((r) => !excludedRoutes.includes(r)),
+                });
+            }
+            if (changed.extensions) {
+                sendMessage({
+                    type: 'extensions',
+                    extensions: getExtensions(),
+                });
+            }
+            if (changed.dependencies) {
+                sendMessage({
+                    type: 'dependencies',
+                    dependencies: getDependencies(),
+                });
+            }
+        },
+    });
+    window['dbg:piral'] = debugApi;
+    start();
+}
+//# sourceMappingURL=debug.js.map
+
+/***/ }),
+
+/***/ "../../common/temp/node_modules/piral/node_modules/piral-debug-utils/esm/decycle.js":
+/*!*******************************************************************************************************************!*\
+  !*** C:/dev/_try/piral_monorepo_mvp/common/temp/node_modules/piral/node_modules/piral-debug-utils/esm/decycle.js ***!
+  \*******************************************************************************************************************/
+/*! exports provided: decycle */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "decycle", function() { return decycle; });
+function decycle(obj) {
+    const objects = [];
+    const paths = [];
+    const derez = (value, path) => {
+        const _value = value && value.toJSON instanceof Function ? value.toJSON() : value;
+        if (_value === null || _value === undefined) {
+            return undefined;
+        }
+        else if (typeof _value === 'function') {
+            return `<function>`;
+        }
+        else if (_value instanceof Error) {
+            return `<error>`;
+        }
+        else if (_value instanceof Node) {
+            return `<node>`;
+        }
+        else if (typeof _value === 'object') {
+            for (let i = 0; i < objects.length; i++) {
+                if (objects[i] === _value) {
+                    return { $ref: paths[i] };
+                }
+            }
+            objects.push(_value);
+            paths.push(path);
+            if (Array.isArray(_value)) {
+                const nu = [];
+                for (let i = 0; i < _value.length; i += 1) {
+                    nu[i] = derez(_value[i], `${path}[${i}]`);
+                }
+                return nu;
+            }
+            else {
+                const nu = {};
+                for (const name in _value) {
+                    if (Object.prototype.hasOwnProperty.call(_value, name)) {
+                        nu[name] = derez(_value[name], `${path}[${JSON.stringify(name)}]`);
+                    }
+                }
+                return nu;
+            }
+        }
+        else if (typeof _value === 'symbol') {
+            return '<symbol>';
+        }
+        else if (typeof _value === 'bigint') {
+            return '<bigint>';
+        }
+        return _value;
+    };
+    return derez(obj, '$');
+}
+//# sourceMappingURL=decycle.js.map
+
+/***/ }),
+
+/***/ "../../common/temp/node_modules/piral/node_modules/piral-debug-utils/esm/emulator.js":
+/*!********************************************************************************************************************!*\
+  !*** C:/dev/_try/piral_monorepo_mvp/common/temp/node_modules/piral/node_modules/piral-debug-utils/esm/emulator.js ***!
+  \********************************************************************************************************************/
+/*! exports provided: withEmulatorPilets */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "withEmulatorPilets", function() { return withEmulatorPilets; });
+/* harmony import */ var piral_base__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! piral-base */ "../../common/temp/node_modules/piral/node_modules/piral-base/esm/index.js");
+
+function withEmulatorPilets(requestPilets, options) {
+    const { loadPilet, createApi, injectPilet, piletApiFallback = '/$pilet-api' } = options;
+    // check if pilets should be loaded
+    const loadPilets = sessionStorage.getItem('dbg:load-pilets') === 'on';
+    const noPilets = () => Promise.resolve([]);
+    const requester = loadPilets ? requestPilets : noPilets;
+    return () => {
+        const promise = requester();
+        // the window['dbg:pilet-api'] should point to an API address used as a proxy, fall back to '/$pilet-api' if unavailable
+        const piletApi = window['dbg:pilet-api'] || piletApiFallback;
+        // either take a full URI or make it an absolute path relative to the current origin
+        const initialTarget = /^https?:/.test(piletApi)
+            ? piletApi
+            : `${location.origin}${piletApi[0] === '/' ? '' : '/'}${piletApi}`;
+        const updateTarget = initialTarget.replace('http', 'ws');
+        const ws = new WebSocket(updateTarget);
+        const appendix = fetch(initialTarget)
+            .then((res) => res.json())
+            .then((item) => (Array.isArray(item) ? item : [item]));
+        ws.onmessage = ({ data }) => {
+            const hardRefresh = sessionStorage.getItem('dbg:hard-refresh') === 'on';
+            if (!hardRefresh) {
+                // standard setting is to just perform an inject
+                const meta = JSON.parse(data);
+                // tear down pilet
+                injectPilet({ name: meta.name });
+                // load and evaluate pilet
+                loadPilet(meta).then((pilet) => {
+                    try {
+                        if (Object(piral_base__WEBPACK_IMPORTED_MODULE_0__["isfunc"])(injectPilet)) {
+                            injectPilet(pilet);
+                        }
+                        Object(piral_base__WEBPACK_IMPORTED_MODULE_0__["setupPilet"])(pilet, createApi);
+                    }
+                    catch (error) {
+                        console.error(error);
+                    }
+                });
+            }
+            else {
+                location.reload();
+            }
+        };
+        return promise
+            .catch((err) => {
+            console.error(`Requesting the pilets failed. We'll continue loading without pilets (DEBUG only).`, err);
+            return [];
+        })
+            .then((pilets) => appendix.then((debugPilets) => [...pilets, ...debugPilets]));
+    };
+}
+//# sourceMappingURL=emulator.js.map
+
+/***/ }),
+
+/***/ "../../common/temp/node_modules/piral/node_modules/piral-debug-utils/esm/index.js":
+/*!*****************************************************************************************************************!*\
+  !*** C:/dev/_try/piral_monorepo_mvp/common/temp/node_modules/piral/node_modules/piral-debug-utils/esm/index.js ***!
+  \*****************************************************************************************************************/
+/*! exports provided: installPiralDebug, withEmulatorPilets */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _debug__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./debug */ "../../common/temp/node_modules/piral/node_modules/piral-debug-utils/esm/debug.js");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "installPiralDebug", function() { return _debug__WEBPACK_IMPORTED_MODULE_0__["installPiralDebug"]; });
+
+/* harmony import */ var _emulator__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./emulator */ "../../common/temp/node_modules/piral/node_modules/piral-debug-utils/esm/emulator.js");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "withEmulatorPilets", function() { return _emulator__WEBPACK_IMPORTED_MODULE_1__["withEmulatorPilets"]; });
+
+/* harmony import */ var _types__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./types */ "../../common/temp/node_modules/piral/node_modules/piral-debug-utils/esm/types.js");
+/* empty/unused harmony star reexport */
+
+
+//# sourceMappingURL=index.js.map
+
+/***/ }),
+
+/***/ "../../common/temp/node_modules/piral/node_modules/piral-debug-utils/esm/state.js":
+/*!*****************************************************************************************************************!*\
+  !*** C:/dev/_try/piral_monorepo_mvp/common/temp/node_modules/piral/node_modules/piral-debug-utils/esm/state.js ***!
+  \*****************************************************************************************************************/
+/*! exports provided: initialSettings, setState, getState, subscribe, useDebugState */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "initialSettings", function() { return initialSettings; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "setState", function() { return setState; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "getState", function() { return getState; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "subscribe", function() { return subscribe; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "useDebugState", function() { return useDebugState; });
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "../../common/temp/node_modules/react/index.js");
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
+
+const initialSettings = {
+    viewState: sessionStorage.getItem('dbg:view-state') !== 'off',
+    loadPilets: sessionStorage.getItem('dbg:load-pilets') === 'on',
+    hardRefresh: sessionStorage.getItem('dbg:hard-refresh') === 'on',
+    viewOrigins: sessionStorage.getItem('dbg:view-origins') === 'on',
+    extensionCatalogue: sessionStorage.getItem('dbg:extension-catalogue') !== 'off',
+    cataloguePath: '/$debug-extension-catalogue',
+};
+const listeners = [];
+let state = {
+    visualize: {
+        active: initialSettings.viewOrigins,
+        force: false,
+    },
+    catalogue: {
+        active: initialSettings.extensionCatalogue,
+        path: initialSettings.cataloguePath,
+    },
+    route: undefined,
+};
+function setState(dispatch) {
+    const newState = dispatch(state);
+    if (newState !== state) {
+        state = newState;
+        listeners.forEach((listener) => listener());
+    }
+}
+function getState() {
+    return state;
+}
+function subscribe(select, notify) {
+    let prevState = select(state);
+    const cb = () => {
+        const nextState = select(state);
+        if (prevState !== nextState) {
+            prevState = nextState;
+            notify(nextState);
+        }
+    };
+    const unsubscribe = () => {
+        const idx = listeners.indexOf(cb);
+        if (idx !== -1) {
+            listeners.splice(idx, 1);
+        }
+    };
+    listeners.push(cb);
+    return unsubscribe;
+}
+function useDebugState(select) {
+    const [state, setState] = Object(react__WEBPACK_IMPORTED_MODULE_0__["useState"])(() => select(getState()));
+    Object(react__WEBPACK_IMPORTED_MODULE_0__["useEffect"])(() => subscribe(select, setState), []);
+    return state;
+}
+//# sourceMappingURL=state.js.map
+
+/***/ }),
+
+/***/ "../../common/temp/node_modules/piral/node_modules/piral-debug-utils/esm/types.js":
+/*!*****************************************************************************************************************!*\
+  !*** C:/dev/_try/piral_monorepo_mvp/common/temp/node_modules/piral/node_modules/piral-debug-utils/esm/types.js ***!
+  \*****************************************************************************************************************/
+/*! no exports provided */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+
+//# sourceMappingURL=types.js.map
 
 /***/ }),
 
@@ -65546,7 +70116,7 @@ var colors = {
   darkgrey: '6d7891',
 };
 
-var htmlEntities = __webpack_require__(/*! html-entities */ "../../common/temp/node_modules/html-entities/lib/index.js");
+var htmlEntities = __webpack_require__(/*! html-entities */ "../../common/temp/node_modules/webpack-hot-middleware/node_modules/html-entities/lib/index.js");
 
 function showProblems(type, lines) {
   clientOverlay.innerHTML = '';
@@ -65948,6 +70518,244 @@ module.exports = ({onlyFirst = false} = {}) => {
 	return new RegExp(pattern, onlyFirst ? undefined : 'g');
 };
 
+
+/***/ }),
+
+/***/ "../../common/temp/node_modules/webpack-hot-middleware/node_modules/html-entities/lib/index.js":
+/*!************************************************************************!*\
+  !*** (webpack)-hot-middleware/node_modules/html-entities/lib/index.js ***!
+  \************************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+var __assign = (this && this.__assign) || function () {
+    __assign = Object.assign || function(t) {
+        for (var s, i = 1, n = arguments.length; i < n; i++) {
+            s = arguments[i];
+            for (var p in s) if (Object.prototype.hasOwnProperty.call(s, p))
+                t[p] = s[p];
+        }
+        return t;
+    };
+    return __assign.apply(this, arguments);
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+var named_references_1 = __webpack_require__(/*! ./named-references */ "../../common/temp/node_modules/webpack-hot-middleware/node_modules/html-entities/lib/named-references.js");
+var numeric_unicode_map_1 = __webpack_require__(/*! ./numeric-unicode-map */ "../../common/temp/node_modules/webpack-hot-middleware/node_modules/html-entities/lib/numeric-unicode-map.js");
+var surrogate_pairs_1 = __webpack_require__(/*! ./surrogate-pairs */ "../../common/temp/node_modules/webpack-hot-middleware/node_modules/html-entities/lib/surrogate-pairs.js");
+var allNamedReferences = __assign(__assign({}, named_references_1.namedReferences), { all: named_references_1.namedReferences.html5 });
+var encodeRegExps = {
+    specialChars: /[<>'"&]/g,
+    nonAscii: /(?:[<>'"&\u0080-\uD7FF\uE000-\uFFFF]|[\uD800-\uDBFF][\uDC00-\uDFFF]|[\uD800-\uDBFF](?![\uDC00-\uDFFF])|(?:[^\uD800-\uDBFF]|^)[\uDC00-\uDFFF])/g,
+    nonAsciiPrintable: /(?:[<>'"&\x01-\x08\x11-\x15\x17-\x1F\x7f-\uD7FF\uE000-\uFFFF]|[\uD800-\uDBFF][\uDC00-\uDFFF]|[\uD800-\uDBFF](?![\uDC00-\uDFFF])|(?:[^\uD800-\uDBFF]|^)[\uDC00-\uDFFF])/g,
+    extensive: /(?:[\x01-\x0c\x0e-\x1f\x21-\x2c\x2e-\x2f\x3a-\x40\x5b-\x60\x7b-\x7d\x7f-\uD7FF\uE000-\uFFFF]|[\uD800-\uDBFF][\uDC00-\uDFFF]|[\uD800-\uDBFF](?![\uDC00-\uDFFF])|(?:[^\uD800-\uDBFF]|^)[\uDC00-\uDFFF])/g
+};
+var defaultEncodeOptions = {
+    mode: 'specialChars',
+    level: 'all',
+    numeric: 'decimal'
+};
+/** Encodes all the necessary (specified by `level`) characters in the text */
+function encode(text, _a) {
+    var _b = _a === void 0 ? defaultEncodeOptions : _a, _c = _b.mode, mode = _c === void 0 ? 'specialChars' : _c, _d = _b.numeric, numeric = _d === void 0 ? 'decimal' : _d, _e = _b.level, level = _e === void 0 ? 'all' : _e;
+    if (!text) {
+        return '';
+    }
+    var encodeRegExp = encodeRegExps[mode];
+    var references = allNamedReferences[level].characters;
+    var isHex = numeric === 'hexadecimal';
+    encodeRegExp.lastIndex = 0;
+    var _b = encodeRegExp.exec(text);
+    var _c;
+    if (_b) {
+        _c = '';
+        var _d = 0;
+        do {
+            if (_d !== _b.index) {
+                _c += text.substring(_d, _b.index);
+            }
+            var _e = _b[0];
+            var result_1 = references[_e];
+            if (!result_1) {
+                var code_1 = _e.length > 1 ? surrogate_pairs_1.getCodePoint(_e, 0) : _e.charCodeAt(0);
+                result_1 = (isHex ? '&#x' + code_1.toString(16) : '&#' + code_1) + ';';
+            }
+            _c += result_1;
+            _d = _b.index + _e.length;
+        } while ((_b = encodeRegExp.exec(text)));
+        if (_d !== text.length) {
+            _c += text.substring(_d);
+        }
+    }
+    else {
+        _c =
+            text;
+    }
+    return _c;
+}
+exports.encode = encode;
+var defaultDecodeOptions = {
+    scope: 'body',
+    level: 'all'
+};
+var strict = /&(?:#\d+|#[xX][\da-fA-F]+|[0-9a-zA-Z]+);/g;
+var attribute = /&(?:#\d+|#[xX][\da-fA-F]+|[0-9a-zA-Z]+)[;=]?/g;
+var baseDecodeRegExps = {
+    xml: {
+        strict: strict,
+        attribute: attribute,
+        body: named_references_1.bodyRegExps.xml
+    },
+    html4: {
+        strict: strict,
+        attribute: attribute,
+        body: named_references_1.bodyRegExps.html4
+    },
+    html5: {
+        strict: strict,
+        attribute: attribute,
+        body: named_references_1.bodyRegExps.html5
+    }
+};
+var decodeRegExps = __assign(__assign({}, baseDecodeRegExps), { all: baseDecodeRegExps.html5 });
+var fromCharCode = String.fromCharCode;
+var outOfBoundsChar = fromCharCode(65533);
+var defaultDecodeEntityOptions = {
+    level: 'all'
+};
+/** Decodes a single entity */
+function decodeEntity(entity, _a) {
+    var _b = (_a === void 0 ? defaultDecodeEntityOptions : _a).level, level = _b === void 0 ? 'all' : _b;
+    if (!entity) {
+        return '';
+    }
+    var _b = entity;
+    var decodeEntityLastChar_1 = entity[entity.length - 1];
+    if (false) {}
+    else if (false) {}
+    else {
+        var decodeResultByReference_1 = allNamedReferences[level].entities[entity];
+        if (decodeResultByReference_1) {
+            _b = decodeResultByReference_1;
+        }
+        else if (entity[0] === '&' && entity[1] === '#') {
+            var decodeSecondChar_1 = entity[2];
+            var decodeCode_1 = decodeSecondChar_1 == 'x' || decodeSecondChar_1 == 'X'
+                ? parseInt(entity.substr(3), 16)
+                : parseInt(entity.substr(2));
+            _b =
+                decodeCode_1 >= 0x10ffff
+                    ? outOfBoundsChar
+                    : decodeCode_1 > 65535
+                        ? surrogate_pairs_1.fromCodePoint(decodeCode_1)
+                        : fromCharCode(numeric_unicode_map_1.numericUnicodeMap[decodeCode_1] || decodeCode_1);
+        }
+    }
+    return _b;
+}
+exports.decodeEntity = decodeEntity;
+/** Decodes all entities in the text */
+function decode(text, _a) {
+    var decodeSecondChar_1 = _a === void 0 ? defaultDecodeOptions : _a, decodeCode_1 = decodeSecondChar_1.level, level = decodeCode_1 === void 0 ? 'all' : decodeCode_1, _b = decodeSecondChar_1.scope, scope = _b === void 0 ? level === 'xml' ? 'strict' : 'body' : _b;
+    if (!text) {
+        return '';
+    }
+    var decodeRegExp = decodeRegExps[level][scope];
+    var references = allNamedReferences[level].entities;
+    var isAttribute = scope === 'attribute';
+    var isStrict = scope === 'strict';
+    decodeRegExp.lastIndex = 0;
+    var replaceMatch_1 = decodeRegExp.exec(text);
+    var replaceResult_1;
+    if (replaceMatch_1) {
+        replaceResult_1 = '';
+        var replaceLastIndex_1 = 0;
+        do {
+            if (replaceLastIndex_1 !== replaceMatch_1.index) {
+                replaceResult_1 += text.substring(replaceLastIndex_1, replaceMatch_1.index);
+            }
+            var replaceInput_1 = replaceMatch_1[0];
+            var decodeResult_1 = replaceInput_1;
+            var decodeEntityLastChar_2 = replaceInput_1[replaceInput_1.length - 1];
+            if (isAttribute
+                && decodeEntityLastChar_2 === '=') {
+                decodeResult_1 = replaceInput_1;
+            }
+            else if (isStrict
+                && decodeEntityLastChar_2 !== ';') {
+                decodeResult_1 = replaceInput_1;
+            }
+            else {
+                var decodeResultByReference_2 = references[replaceInput_1];
+                if (decodeResultByReference_2) {
+                    decodeResult_1 = decodeResultByReference_2;
+                }
+                else if (replaceInput_1[0] === '&' && replaceInput_1[1] === '#') {
+                    var decodeSecondChar_2 = replaceInput_1[2];
+                    var decodeCode_2 = decodeSecondChar_2 == 'x' || decodeSecondChar_2 == 'X'
+                        ? parseInt(replaceInput_1.substr(3), 16)
+                        : parseInt(replaceInput_1.substr(2));
+                    decodeResult_1 =
+                        decodeCode_2 >= 0x10ffff
+                            ? outOfBoundsChar
+                            : decodeCode_2 > 65535
+                                ? surrogate_pairs_1.fromCodePoint(decodeCode_2)
+                                : fromCharCode(numeric_unicode_map_1.numericUnicodeMap[decodeCode_2] || decodeCode_2);
+                }
+            }
+            replaceResult_1 += decodeResult_1;
+            replaceLastIndex_1 = replaceMatch_1.index + replaceInput_1.length;
+        } while ((replaceMatch_1 = decodeRegExp.exec(text)));
+        if (replaceLastIndex_1 !== text.length) {
+            replaceResult_1 += text.substring(replaceLastIndex_1);
+        }
+    }
+    else {
+        replaceResult_1 =
+            text;
+    }
+    return replaceResult_1;
+}
+exports.decode = decode;
+
+
+/***/ }),
+
+/***/ "../../common/temp/node_modules/webpack-hot-middleware/node_modules/html-entities/lib/named-references.js":
+/*!***********************************************************************************!*\
+  !*** (webpack)-hot-middleware/node_modules/html-entities/lib/named-references.js ***!
+  \***********************************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+Object.defineProperty(exports,"__esModule",{value:true});exports.bodyRegExps={xml:/&(?:#\d+|#[xX][\da-fA-F]+|[0-9a-zA-Z]+);?/g,html4:/&(?:nbsp|iexcl|cent|pound|curren|yen|brvbar|sect|uml|copy|ordf|laquo|not|shy|reg|macr|deg|plusmn|sup2|sup3|acute|micro|para|middot|cedil|sup1|ordm|raquo|frac14|frac12|frac34|iquest|Agrave|Aacute|Acirc|Atilde|Auml|Aring|AElig|Ccedil|Egrave|Eacute|Ecirc|Euml|Igrave|Iacute|Icirc|Iuml|ETH|Ntilde|Ograve|Oacute|Ocirc|Otilde|Ouml|times|Oslash|Ugrave|Uacute|Ucirc|Uuml|Yacute|THORN|szlig|agrave|aacute|acirc|atilde|auml|aring|aelig|ccedil|egrave|eacute|ecirc|euml|igrave|iacute|icirc|iuml|eth|ntilde|ograve|oacute|ocirc|otilde|ouml|divide|oslash|ugrave|uacute|ucirc|uuml|yacute|thorn|yuml|quot|amp|lt|gt|#\d+|#[xX][\da-fA-F]+|[0-9a-zA-Z]+);?/g,html5:/&(?:AElig|AMP|Aacute|Acirc|Agrave|Aring|Atilde|Auml|COPY|Ccedil|ETH|Eacute|Ecirc|Egrave|Euml|GT|Iacute|Icirc|Igrave|Iuml|LT|Ntilde|Oacute|Ocirc|Ograve|Oslash|Otilde|Ouml|QUOT|REG|THORN|Uacute|Ucirc|Ugrave|Uuml|Yacute|aacute|acirc|acute|aelig|agrave|amp|aring|atilde|auml|brvbar|ccedil|cedil|cent|copy|curren|deg|divide|eacute|ecirc|egrave|eth|euml|frac12|frac14|frac34|gt|iacute|icirc|iexcl|igrave|iquest|iuml|laquo|lt|macr|micro|middot|nbsp|not|ntilde|oacute|ocirc|ograve|ordf|ordm|oslash|otilde|ouml|para|plusmn|pound|quot|raquo|reg|sect|shy|sup1|sup2|sup3|szlig|thorn|times|uacute|ucirc|ugrave|uml|uuml|yacute|yen|yuml|#\d+|#[xX][\da-fA-F]+|[0-9a-zA-Z]+);?/g};exports.namedReferences={xml:{entities:{"&lt;":"<","&gt;":">","&quot;":'"',"&apos;":"'","&amp;":"&"},characters:{"<":"&lt;",">":"&gt;",'"':"&quot;","'":"&apos;","&":"&amp;"}},html4:{entities:{"&apos;":"'","&nbsp":" ","&nbsp;":" ","&iexcl":"¡","&iexcl;":"¡","&cent":"¢","&cent;":"¢","&pound":"£","&pound;":"£","&curren":"¤","&curren;":"¤","&yen":"¥","&yen;":"¥","&brvbar":"¦","&brvbar;":"¦","&sect":"§","&sect;":"§","&uml":"¨","&uml;":"¨","&copy":"©","&copy;":"©","&ordf":"ª","&ordf;":"ª","&laquo":"«","&laquo;":"«","&not":"¬","&not;":"¬","&shy":"­","&shy;":"­","&reg":"®","&reg;":"®","&macr":"¯","&macr;":"¯","&deg":"°","&deg;":"°","&plusmn":"±","&plusmn;":"±","&sup2":"²","&sup2;":"²","&sup3":"³","&sup3;":"³","&acute":"´","&acute;":"´","&micro":"µ","&micro;":"µ","&para":"¶","&para;":"¶","&middot":"·","&middot;":"·","&cedil":"¸","&cedil;":"¸","&sup1":"¹","&sup1;":"¹","&ordm":"º","&ordm;":"º","&raquo":"»","&raquo;":"»","&frac14":"¼","&frac14;":"¼","&frac12":"½","&frac12;":"½","&frac34":"¾","&frac34;":"¾","&iquest":"¿","&iquest;":"¿","&Agrave":"À","&Agrave;":"À","&Aacute":"Á","&Aacute;":"Á","&Acirc":"Â","&Acirc;":"Â","&Atilde":"Ã","&Atilde;":"Ã","&Auml":"Ä","&Auml;":"Ä","&Aring":"Å","&Aring;":"Å","&AElig":"Æ","&AElig;":"Æ","&Ccedil":"Ç","&Ccedil;":"Ç","&Egrave":"È","&Egrave;":"È","&Eacute":"É","&Eacute;":"É","&Ecirc":"Ê","&Ecirc;":"Ê","&Euml":"Ë","&Euml;":"Ë","&Igrave":"Ì","&Igrave;":"Ì","&Iacute":"Í","&Iacute;":"Í","&Icirc":"Î","&Icirc;":"Î","&Iuml":"Ï","&Iuml;":"Ï","&ETH":"Ð","&ETH;":"Ð","&Ntilde":"Ñ","&Ntilde;":"Ñ","&Ograve":"Ò","&Ograve;":"Ò","&Oacute":"Ó","&Oacute;":"Ó","&Ocirc":"Ô","&Ocirc;":"Ô","&Otilde":"Õ","&Otilde;":"Õ","&Ouml":"Ö","&Ouml;":"Ö","&times":"×","&times;":"×","&Oslash":"Ø","&Oslash;":"Ø","&Ugrave":"Ù","&Ugrave;":"Ù","&Uacute":"Ú","&Uacute;":"Ú","&Ucirc":"Û","&Ucirc;":"Û","&Uuml":"Ü","&Uuml;":"Ü","&Yacute":"Ý","&Yacute;":"Ý","&THORN":"Þ","&THORN;":"Þ","&szlig":"ß","&szlig;":"ß","&agrave":"à","&agrave;":"à","&aacute":"á","&aacute;":"á","&acirc":"â","&acirc;":"â","&atilde":"ã","&atilde;":"ã","&auml":"ä","&auml;":"ä","&aring":"å","&aring;":"å","&aelig":"æ","&aelig;":"æ","&ccedil":"ç","&ccedil;":"ç","&egrave":"è","&egrave;":"è","&eacute":"é","&eacute;":"é","&ecirc":"ê","&ecirc;":"ê","&euml":"ë","&euml;":"ë","&igrave":"ì","&igrave;":"ì","&iacute":"í","&iacute;":"í","&icirc":"î","&icirc;":"î","&iuml":"ï","&iuml;":"ï","&eth":"ð","&eth;":"ð","&ntilde":"ñ","&ntilde;":"ñ","&ograve":"ò","&ograve;":"ò","&oacute":"ó","&oacute;":"ó","&ocirc":"ô","&ocirc;":"ô","&otilde":"õ","&otilde;":"õ","&ouml":"ö","&ouml;":"ö","&divide":"÷","&divide;":"÷","&oslash":"ø","&oslash;":"ø","&ugrave":"ù","&ugrave;":"ù","&uacute":"ú","&uacute;":"ú","&ucirc":"û","&ucirc;":"û","&uuml":"ü","&uuml;":"ü","&yacute":"ý","&yacute;":"ý","&thorn":"þ","&thorn;":"þ","&yuml":"ÿ","&yuml;":"ÿ","&quot":'"',"&quot;":'"',"&amp":"&","&amp;":"&","&lt":"<","&lt;":"<","&gt":">","&gt;":">","&OElig;":"Œ","&oelig;":"œ","&Scaron;":"Š","&scaron;":"š","&Yuml;":"Ÿ","&circ;":"ˆ","&tilde;":"˜","&ensp;":" ","&emsp;":" ","&thinsp;":" ","&zwnj;":"‌","&zwj;":"‍","&lrm;":"‎","&rlm;":"‏","&ndash;":"–","&mdash;":"—","&lsquo;":"‘","&rsquo;":"’","&sbquo;":"‚","&ldquo;":"“","&rdquo;":"”","&bdquo;":"„","&dagger;":"†","&Dagger;":"‡","&permil;":"‰","&lsaquo;":"‹","&rsaquo;":"›","&euro;":"€","&fnof;":"ƒ","&Alpha;":"Α","&Beta;":"Β","&Gamma;":"Γ","&Delta;":"Δ","&Epsilon;":"Ε","&Zeta;":"Ζ","&Eta;":"Η","&Theta;":"Θ","&Iota;":"Ι","&Kappa;":"Κ","&Lambda;":"Λ","&Mu;":"Μ","&Nu;":"Ν","&Xi;":"Ξ","&Omicron;":"Ο","&Pi;":"Π","&Rho;":"Ρ","&Sigma;":"Σ","&Tau;":"Τ","&Upsilon;":"Υ","&Phi;":"Φ","&Chi;":"Χ","&Psi;":"Ψ","&Omega;":"Ω","&alpha;":"α","&beta;":"β","&gamma;":"γ","&delta;":"δ","&epsilon;":"ε","&zeta;":"ζ","&eta;":"η","&theta;":"θ","&iota;":"ι","&kappa;":"κ","&lambda;":"λ","&mu;":"μ","&nu;":"ν","&xi;":"ξ","&omicron;":"ο","&pi;":"π","&rho;":"ρ","&sigmaf;":"ς","&sigma;":"σ","&tau;":"τ","&upsilon;":"υ","&phi;":"φ","&chi;":"χ","&psi;":"ψ","&omega;":"ω","&thetasym;":"ϑ","&upsih;":"ϒ","&piv;":"ϖ","&bull;":"•","&hellip;":"…","&prime;":"′","&Prime;":"″","&oline;":"‾","&frasl;":"⁄","&weierp;":"℘","&image;":"ℑ","&real;":"ℜ","&trade;":"™","&alefsym;":"ℵ","&larr;":"←","&uarr;":"↑","&rarr;":"→","&darr;":"↓","&harr;":"↔","&crarr;":"↵","&lArr;":"⇐","&uArr;":"⇑","&rArr;":"⇒","&dArr;":"⇓","&hArr;":"⇔","&forall;":"∀","&part;":"∂","&exist;":"∃","&empty;":"∅","&nabla;":"∇","&isin;":"∈","&notin;":"∉","&ni;":"∋","&prod;":"∏","&sum;":"∑","&minus;":"−","&lowast;":"∗","&radic;":"√","&prop;":"∝","&infin;":"∞","&ang;":"∠","&and;":"∧","&or;":"∨","&cap;":"∩","&cup;":"∪","&int;":"∫","&there4;":"∴","&sim;":"∼","&cong;":"≅","&asymp;":"≈","&ne;":"≠","&equiv;":"≡","&le;":"≤","&ge;":"≥","&sub;":"⊂","&sup;":"⊃","&nsub;":"⊄","&sube;":"⊆","&supe;":"⊇","&oplus;":"⊕","&otimes;":"⊗","&perp;":"⊥","&sdot;":"⋅","&lceil;":"⌈","&rceil;":"⌉","&lfloor;":"⌊","&rfloor;":"⌋","&lang;":"〈","&rang;":"〉","&loz;":"◊","&spades;":"♠","&clubs;":"♣","&hearts;":"♥","&diams;":"♦"},characters:{"'":"&apos;"," ":"&nbsp;","¡":"&iexcl;","¢":"&cent;","£":"&pound;","¤":"&curren;","¥":"&yen;","¦":"&brvbar;","§":"&sect;","¨":"&uml;","©":"&copy;","ª":"&ordf;","«":"&laquo;","¬":"&not;","­":"&shy;","®":"&reg;","¯":"&macr;","°":"&deg;","±":"&plusmn;","²":"&sup2;","³":"&sup3;","´":"&acute;","µ":"&micro;","¶":"&para;","·":"&middot;","¸":"&cedil;","¹":"&sup1;","º":"&ordm;","»":"&raquo;","¼":"&frac14;","½":"&frac12;","¾":"&frac34;","¿":"&iquest;","À":"&Agrave;","Á":"&Aacute;","Â":"&Acirc;","Ã":"&Atilde;","Ä":"&Auml;","Å":"&Aring;","Æ":"&AElig;","Ç":"&Ccedil;","È":"&Egrave;","É":"&Eacute;","Ê":"&Ecirc;","Ë":"&Euml;","Ì":"&Igrave;","Í":"&Iacute;","Î":"&Icirc;","Ï":"&Iuml;","Ð":"&ETH;","Ñ":"&Ntilde;","Ò":"&Ograve;","Ó":"&Oacute;","Ô":"&Ocirc;","Õ":"&Otilde;","Ö":"&Ouml;","×":"&times;","Ø":"&Oslash;","Ù":"&Ugrave;","Ú":"&Uacute;","Û":"&Ucirc;","Ü":"&Uuml;","Ý":"&Yacute;","Þ":"&THORN;","ß":"&szlig;","à":"&agrave;","á":"&aacute;","â":"&acirc;","ã":"&atilde;","ä":"&auml;","å":"&aring;","æ":"&aelig;","ç":"&ccedil;","è":"&egrave;","é":"&eacute;","ê":"&ecirc;","ë":"&euml;","ì":"&igrave;","í":"&iacute;","î":"&icirc;","ï":"&iuml;","ð":"&eth;","ñ":"&ntilde;","ò":"&ograve;","ó":"&oacute;","ô":"&ocirc;","õ":"&otilde;","ö":"&ouml;","÷":"&divide;","ø":"&oslash;","ù":"&ugrave;","ú":"&uacute;","û":"&ucirc;","ü":"&uuml;","ý":"&yacute;","þ":"&thorn;","ÿ":"&yuml;",'"':"&quot;","&":"&amp;","<":"&lt;",">":"&gt;","Œ":"&OElig;","œ":"&oelig;","Š":"&Scaron;","š":"&scaron;","Ÿ":"&Yuml;","ˆ":"&circ;","˜":"&tilde;"," ":"&ensp;"," ":"&emsp;"," ":"&thinsp;","‌":"&zwnj;","‍":"&zwj;","‎":"&lrm;","‏":"&rlm;","–":"&ndash;","—":"&mdash;","‘":"&lsquo;","’":"&rsquo;","‚":"&sbquo;","“":"&ldquo;","”":"&rdquo;","„":"&bdquo;","†":"&dagger;","‡":"&Dagger;","‰":"&permil;","‹":"&lsaquo;","›":"&rsaquo;","€":"&euro;","ƒ":"&fnof;","Α":"&Alpha;","Β":"&Beta;","Γ":"&Gamma;","Δ":"&Delta;","Ε":"&Epsilon;","Ζ":"&Zeta;","Η":"&Eta;","Θ":"&Theta;","Ι":"&Iota;","Κ":"&Kappa;","Λ":"&Lambda;","Μ":"&Mu;","Ν":"&Nu;","Ξ":"&Xi;","Ο":"&Omicron;","Π":"&Pi;","Ρ":"&Rho;","Σ":"&Sigma;","Τ":"&Tau;","Υ":"&Upsilon;","Φ":"&Phi;","Χ":"&Chi;","Ψ":"&Psi;","Ω":"&Omega;","α":"&alpha;","β":"&beta;","γ":"&gamma;","δ":"&delta;","ε":"&epsilon;","ζ":"&zeta;","η":"&eta;","θ":"&theta;","ι":"&iota;","κ":"&kappa;","λ":"&lambda;","μ":"&mu;","ν":"&nu;","ξ":"&xi;","ο":"&omicron;","π":"&pi;","ρ":"&rho;","ς":"&sigmaf;","σ":"&sigma;","τ":"&tau;","υ":"&upsilon;","φ":"&phi;","χ":"&chi;","ψ":"&psi;","ω":"&omega;","ϑ":"&thetasym;","ϒ":"&upsih;","ϖ":"&piv;","•":"&bull;","…":"&hellip;","′":"&prime;","″":"&Prime;","‾":"&oline;","⁄":"&frasl;","℘":"&weierp;","ℑ":"&image;","ℜ":"&real;","™":"&trade;","ℵ":"&alefsym;","←":"&larr;","↑":"&uarr;","→":"&rarr;","↓":"&darr;","↔":"&harr;","↵":"&crarr;","⇐":"&lArr;","⇑":"&uArr;","⇒":"&rArr;","⇓":"&dArr;","⇔":"&hArr;","∀":"&forall;","∂":"&part;","∃":"&exist;","∅":"&empty;","∇":"&nabla;","∈":"&isin;","∉":"&notin;","∋":"&ni;","∏":"&prod;","∑":"&sum;","−":"&minus;","∗":"&lowast;","√":"&radic;","∝":"&prop;","∞":"&infin;","∠":"&ang;","∧":"&and;","∨":"&or;","∩":"&cap;","∪":"&cup;","∫":"&int;","∴":"&there4;","∼":"&sim;","≅":"&cong;","≈":"&asymp;","≠":"&ne;","≡":"&equiv;","≤":"&le;","≥":"&ge;","⊂":"&sub;","⊃":"&sup;","⊄":"&nsub;","⊆":"&sube;","⊇":"&supe;","⊕":"&oplus;","⊗":"&otimes;","⊥":"&perp;","⋅":"&sdot;","⌈":"&lceil;","⌉":"&rceil;","⌊":"&lfloor;","⌋":"&rfloor;","〈":"&lang;","〉":"&rang;","◊":"&loz;","♠":"&spades;","♣":"&clubs;","♥":"&hearts;","♦":"&diams;"}},html5:{entities:{"&AElig":"Æ","&AElig;":"Æ","&AMP":"&","&AMP;":"&","&Aacute":"Á","&Aacute;":"Á","&Abreve;":"Ă","&Acirc":"Â","&Acirc;":"Â","&Acy;":"А","&Afr;":"𝔄","&Agrave":"À","&Agrave;":"À","&Alpha;":"Α","&Amacr;":"Ā","&And;":"⩓","&Aogon;":"Ą","&Aopf;":"𝔸","&ApplyFunction;":"⁡","&Aring":"Å","&Aring;":"Å","&Ascr;":"𝒜","&Assign;":"≔","&Atilde":"Ã","&Atilde;":"Ã","&Auml":"Ä","&Auml;":"Ä","&Backslash;":"∖","&Barv;":"⫧","&Barwed;":"⌆","&Bcy;":"Б","&Because;":"∵","&Bernoullis;":"ℬ","&Beta;":"Β","&Bfr;":"𝔅","&Bopf;":"𝔹","&Breve;":"˘","&Bscr;":"ℬ","&Bumpeq;":"≎","&CHcy;":"Ч","&COPY":"©","&COPY;":"©","&Cacute;":"Ć","&Cap;":"⋒","&CapitalDifferentialD;":"ⅅ","&Cayleys;":"ℭ","&Ccaron;":"Č","&Ccedil":"Ç","&Ccedil;":"Ç","&Ccirc;":"Ĉ","&Cconint;":"∰","&Cdot;":"Ċ","&Cedilla;":"¸","&CenterDot;":"·","&Cfr;":"ℭ","&Chi;":"Χ","&CircleDot;":"⊙","&CircleMinus;":"⊖","&CirclePlus;":"⊕","&CircleTimes;":"⊗","&ClockwiseContourIntegral;":"∲","&CloseCurlyDoubleQuote;":"”","&CloseCurlyQuote;":"’","&Colon;":"∷","&Colone;":"⩴","&Congruent;":"≡","&Conint;":"∯","&ContourIntegral;":"∮","&Copf;":"ℂ","&Coproduct;":"∐","&CounterClockwiseContourIntegral;":"∳","&Cross;":"⨯","&Cscr;":"𝒞","&Cup;":"⋓","&CupCap;":"≍","&DD;":"ⅅ","&DDotrahd;":"⤑","&DJcy;":"Ђ","&DScy;":"Ѕ","&DZcy;":"Џ","&Dagger;":"‡","&Darr;":"↡","&Dashv;":"⫤","&Dcaron;":"Ď","&Dcy;":"Д","&Del;":"∇","&Delta;":"Δ","&Dfr;":"𝔇","&DiacriticalAcute;":"´","&DiacriticalDot;":"˙","&DiacriticalDoubleAcute;":"˝","&DiacriticalGrave;":"`","&DiacriticalTilde;":"˜","&Diamond;":"⋄","&DifferentialD;":"ⅆ","&Dopf;":"𝔻","&Dot;":"¨","&DotDot;":"⃜","&DotEqual;":"≐","&DoubleContourIntegral;":"∯","&DoubleDot;":"¨","&DoubleDownArrow;":"⇓","&DoubleLeftArrow;":"⇐","&DoubleLeftRightArrow;":"⇔","&DoubleLeftTee;":"⫤","&DoubleLongLeftArrow;":"⟸","&DoubleLongLeftRightArrow;":"⟺","&DoubleLongRightArrow;":"⟹","&DoubleRightArrow;":"⇒","&DoubleRightTee;":"⊨","&DoubleUpArrow;":"⇑","&DoubleUpDownArrow;":"⇕","&DoubleVerticalBar;":"∥","&DownArrow;":"↓","&DownArrowBar;":"⤓","&DownArrowUpArrow;":"⇵","&DownBreve;":"̑","&DownLeftRightVector;":"⥐","&DownLeftTeeVector;":"⥞","&DownLeftVector;":"↽","&DownLeftVectorBar;":"⥖","&DownRightTeeVector;":"⥟","&DownRightVector;":"⇁","&DownRightVectorBar;":"⥗","&DownTee;":"⊤","&DownTeeArrow;":"↧","&Downarrow;":"⇓","&Dscr;":"𝒟","&Dstrok;":"Đ","&ENG;":"Ŋ","&ETH":"Ð","&ETH;":"Ð","&Eacute":"É","&Eacute;":"É","&Ecaron;":"Ě","&Ecirc":"Ê","&Ecirc;":"Ê","&Ecy;":"Э","&Edot;":"Ė","&Efr;":"𝔈","&Egrave":"È","&Egrave;":"È","&Element;":"∈","&Emacr;":"Ē","&EmptySmallSquare;":"◻","&EmptyVerySmallSquare;":"▫","&Eogon;":"Ę","&Eopf;":"𝔼","&Epsilon;":"Ε","&Equal;":"⩵","&EqualTilde;":"≂","&Equilibrium;":"⇌","&Escr;":"ℰ","&Esim;":"⩳","&Eta;":"Η","&Euml":"Ë","&Euml;":"Ë","&Exists;":"∃","&ExponentialE;":"ⅇ","&Fcy;":"Ф","&Ffr;":"𝔉","&FilledSmallSquare;":"◼","&FilledVerySmallSquare;":"▪","&Fopf;":"𝔽","&ForAll;":"∀","&Fouriertrf;":"ℱ","&Fscr;":"ℱ","&GJcy;":"Ѓ","&GT":">","&GT;":">","&Gamma;":"Γ","&Gammad;":"Ϝ","&Gbreve;":"Ğ","&Gcedil;":"Ģ","&Gcirc;":"Ĝ","&Gcy;":"Г","&Gdot;":"Ġ","&Gfr;":"𝔊","&Gg;":"⋙","&Gopf;":"𝔾","&GreaterEqual;":"≥","&GreaterEqualLess;":"⋛","&GreaterFullEqual;":"≧","&GreaterGreater;":"⪢","&GreaterLess;":"≷","&GreaterSlantEqual;":"⩾","&GreaterTilde;":"≳","&Gscr;":"𝒢","&Gt;":"≫","&HARDcy;":"Ъ","&Hacek;":"ˇ","&Hat;":"^","&Hcirc;":"Ĥ","&Hfr;":"ℌ","&HilbertSpace;":"ℋ","&Hopf;":"ℍ","&HorizontalLine;":"─","&Hscr;":"ℋ","&Hstrok;":"Ħ","&HumpDownHump;":"≎","&HumpEqual;":"≏","&IEcy;":"Е","&IJlig;":"Ĳ","&IOcy;":"Ё","&Iacute":"Í","&Iacute;":"Í","&Icirc":"Î","&Icirc;":"Î","&Icy;":"И","&Idot;":"İ","&Ifr;":"ℑ","&Igrave":"Ì","&Igrave;":"Ì","&Im;":"ℑ","&Imacr;":"Ī","&ImaginaryI;":"ⅈ","&Implies;":"⇒","&Int;":"∬","&Integral;":"∫","&Intersection;":"⋂","&InvisibleComma;":"⁣","&InvisibleTimes;":"⁢","&Iogon;":"Į","&Iopf;":"𝕀","&Iota;":"Ι","&Iscr;":"ℐ","&Itilde;":"Ĩ","&Iukcy;":"І","&Iuml":"Ï","&Iuml;":"Ï","&Jcirc;":"Ĵ","&Jcy;":"Й","&Jfr;":"𝔍","&Jopf;":"𝕁","&Jscr;":"𝒥","&Jsercy;":"Ј","&Jukcy;":"Є","&KHcy;":"Х","&KJcy;":"Ќ","&Kappa;":"Κ","&Kcedil;":"Ķ","&Kcy;":"К","&Kfr;":"𝔎","&Kopf;":"𝕂","&Kscr;":"𝒦","&LJcy;":"Љ","&LT":"<","&LT;":"<","&Lacute;":"Ĺ","&Lambda;":"Λ","&Lang;":"⟪","&Laplacetrf;":"ℒ","&Larr;":"↞","&Lcaron;":"Ľ","&Lcedil;":"Ļ","&Lcy;":"Л","&LeftAngleBracket;":"⟨","&LeftArrow;":"←","&LeftArrowBar;":"⇤","&LeftArrowRightArrow;":"⇆","&LeftCeiling;":"⌈","&LeftDoubleBracket;":"⟦","&LeftDownTeeVector;":"⥡","&LeftDownVector;":"⇃","&LeftDownVectorBar;":"⥙","&LeftFloor;":"⌊","&LeftRightArrow;":"↔","&LeftRightVector;":"⥎","&LeftTee;":"⊣","&LeftTeeArrow;":"↤","&LeftTeeVector;":"⥚","&LeftTriangle;":"⊲","&LeftTriangleBar;":"⧏","&LeftTriangleEqual;":"⊴","&LeftUpDownVector;":"⥑","&LeftUpTeeVector;":"⥠","&LeftUpVector;":"↿","&LeftUpVectorBar;":"⥘","&LeftVector;":"↼","&LeftVectorBar;":"⥒","&Leftarrow;":"⇐","&Leftrightarrow;":"⇔","&LessEqualGreater;":"⋚","&LessFullEqual;":"≦","&LessGreater;":"≶","&LessLess;":"⪡","&LessSlantEqual;":"⩽","&LessTilde;":"≲","&Lfr;":"𝔏","&Ll;":"⋘","&Lleftarrow;":"⇚","&Lmidot;":"Ŀ","&LongLeftArrow;":"⟵","&LongLeftRightArrow;":"⟷","&LongRightArrow;":"⟶","&Longleftarrow;":"⟸","&Longleftrightarrow;":"⟺","&Longrightarrow;":"⟹","&Lopf;":"𝕃","&LowerLeftArrow;":"↙","&LowerRightArrow;":"↘","&Lscr;":"ℒ","&Lsh;":"↰","&Lstrok;":"Ł","&Lt;":"≪","&Map;":"⤅","&Mcy;":"М","&MediumSpace;":" ","&Mellintrf;":"ℳ","&Mfr;":"𝔐","&MinusPlus;":"∓","&Mopf;":"𝕄","&Mscr;":"ℳ","&Mu;":"Μ","&NJcy;":"Њ","&Nacute;":"Ń","&Ncaron;":"Ň","&Ncedil;":"Ņ","&Ncy;":"Н","&NegativeMediumSpace;":"​","&NegativeThickSpace;":"​","&NegativeThinSpace;":"​","&NegativeVeryThinSpace;":"​","&NestedGreaterGreater;":"≫","&NestedLessLess;":"≪","&NewLine;":"\n","&Nfr;":"𝔑","&NoBreak;":"⁠","&NonBreakingSpace;":" ","&Nopf;":"ℕ","&Not;":"⫬","&NotCongruent;":"≢","&NotCupCap;":"≭","&NotDoubleVerticalBar;":"∦","&NotElement;":"∉","&NotEqual;":"≠","&NotEqualTilde;":"≂̸","&NotExists;":"∄","&NotGreater;":"≯","&NotGreaterEqual;":"≱","&NotGreaterFullEqual;":"≧̸","&NotGreaterGreater;":"≫̸","&NotGreaterLess;":"≹","&NotGreaterSlantEqual;":"⩾̸","&NotGreaterTilde;":"≵","&NotHumpDownHump;":"≎̸","&NotHumpEqual;":"≏̸","&NotLeftTriangle;":"⋪","&NotLeftTriangleBar;":"⧏̸","&NotLeftTriangleEqual;":"⋬","&NotLess;":"≮","&NotLessEqual;":"≰","&NotLessGreater;":"≸","&NotLessLess;":"≪̸","&NotLessSlantEqual;":"⩽̸","&NotLessTilde;":"≴","&NotNestedGreaterGreater;":"⪢̸","&NotNestedLessLess;":"⪡̸","&NotPrecedes;":"⊀","&NotPrecedesEqual;":"⪯̸","&NotPrecedesSlantEqual;":"⋠","&NotReverseElement;":"∌","&NotRightTriangle;":"⋫","&NotRightTriangleBar;":"⧐̸","&NotRightTriangleEqual;":"⋭","&NotSquareSubset;":"⊏̸","&NotSquareSubsetEqual;":"⋢","&NotSquareSuperset;":"⊐̸","&NotSquareSupersetEqual;":"⋣","&NotSubset;":"⊂⃒","&NotSubsetEqual;":"⊈","&NotSucceeds;":"⊁","&NotSucceedsEqual;":"⪰̸","&NotSucceedsSlantEqual;":"⋡","&NotSucceedsTilde;":"≿̸","&NotSuperset;":"⊃⃒","&NotSupersetEqual;":"⊉","&NotTilde;":"≁","&NotTildeEqual;":"≄","&NotTildeFullEqual;":"≇","&NotTildeTilde;":"≉","&NotVerticalBar;":"∤","&Nscr;":"𝒩","&Ntilde":"Ñ","&Ntilde;":"Ñ","&Nu;":"Ν","&OElig;":"Œ","&Oacute":"Ó","&Oacute;":"Ó","&Ocirc":"Ô","&Ocirc;":"Ô","&Ocy;":"О","&Odblac;":"Ő","&Ofr;":"𝔒","&Ograve":"Ò","&Ograve;":"Ò","&Omacr;":"Ō","&Omega;":"Ω","&Omicron;":"Ο","&Oopf;":"𝕆","&OpenCurlyDoubleQuote;":"“","&OpenCurlyQuote;":"‘","&Or;":"⩔","&Oscr;":"𝒪","&Oslash":"Ø","&Oslash;":"Ø","&Otilde":"Õ","&Otilde;":"Õ","&Otimes;":"⨷","&Ouml":"Ö","&Ouml;":"Ö","&OverBar;":"‾","&OverBrace;":"⏞","&OverBracket;":"⎴","&OverParenthesis;":"⏜","&PartialD;":"∂","&Pcy;":"П","&Pfr;":"𝔓","&Phi;":"Φ","&Pi;":"Π","&PlusMinus;":"±","&Poincareplane;":"ℌ","&Popf;":"ℙ","&Pr;":"⪻","&Precedes;":"≺","&PrecedesEqual;":"⪯","&PrecedesSlantEqual;":"≼","&PrecedesTilde;":"≾","&Prime;":"″","&Product;":"∏","&Proportion;":"∷","&Proportional;":"∝","&Pscr;":"𝒫","&Psi;":"Ψ","&QUOT":'"',"&QUOT;":'"',"&Qfr;":"𝔔","&Qopf;":"ℚ","&Qscr;":"𝒬","&RBarr;":"⤐","&REG":"®","&REG;":"®","&Racute;":"Ŕ","&Rang;":"⟫","&Rarr;":"↠","&Rarrtl;":"⤖","&Rcaron;":"Ř","&Rcedil;":"Ŗ","&Rcy;":"Р","&Re;":"ℜ","&ReverseElement;":"∋","&ReverseEquilibrium;":"⇋","&ReverseUpEquilibrium;":"⥯","&Rfr;":"ℜ","&Rho;":"Ρ","&RightAngleBracket;":"⟩","&RightArrow;":"→","&RightArrowBar;":"⇥","&RightArrowLeftArrow;":"⇄","&RightCeiling;":"⌉","&RightDoubleBracket;":"⟧","&RightDownTeeVector;":"⥝","&RightDownVector;":"⇂","&RightDownVectorBar;":"⥕","&RightFloor;":"⌋","&RightTee;":"⊢","&RightTeeArrow;":"↦","&RightTeeVector;":"⥛","&RightTriangle;":"⊳","&RightTriangleBar;":"⧐","&RightTriangleEqual;":"⊵","&RightUpDownVector;":"⥏","&RightUpTeeVector;":"⥜","&RightUpVector;":"↾","&RightUpVectorBar;":"⥔","&RightVector;":"⇀","&RightVectorBar;":"⥓","&Rightarrow;":"⇒","&Ropf;":"ℝ","&RoundImplies;":"⥰","&Rrightarrow;":"⇛","&Rscr;":"ℛ","&Rsh;":"↱","&RuleDelayed;":"⧴","&SHCHcy;":"Щ","&SHcy;":"Ш","&SOFTcy;":"Ь","&Sacute;":"Ś","&Sc;":"⪼","&Scaron;":"Š","&Scedil;":"Ş","&Scirc;":"Ŝ","&Scy;":"С","&Sfr;":"𝔖","&ShortDownArrow;":"↓","&ShortLeftArrow;":"←","&ShortRightArrow;":"→","&ShortUpArrow;":"↑","&Sigma;":"Σ","&SmallCircle;":"∘","&Sopf;":"𝕊","&Sqrt;":"√","&Square;":"□","&SquareIntersection;":"⊓","&SquareSubset;":"⊏","&SquareSubsetEqual;":"⊑","&SquareSuperset;":"⊐","&SquareSupersetEqual;":"⊒","&SquareUnion;":"⊔","&Sscr;":"𝒮","&Star;":"⋆","&Sub;":"⋐","&Subset;":"⋐","&SubsetEqual;":"⊆","&Succeeds;":"≻","&SucceedsEqual;":"⪰","&SucceedsSlantEqual;":"≽","&SucceedsTilde;":"≿","&SuchThat;":"∋","&Sum;":"∑","&Sup;":"⋑","&Superset;":"⊃","&SupersetEqual;":"⊇","&Supset;":"⋑","&THORN":"Þ","&THORN;":"Þ","&TRADE;":"™","&TSHcy;":"Ћ","&TScy;":"Ц","&Tab;":"\t","&Tau;":"Τ","&Tcaron;":"Ť","&Tcedil;":"Ţ","&Tcy;":"Т","&Tfr;":"𝔗","&Therefore;":"∴","&Theta;":"Θ","&ThickSpace;":"  ","&ThinSpace;":" ","&Tilde;":"∼","&TildeEqual;":"≃","&TildeFullEqual;":"≅","&TildeTilde;":"≈","&Topf;":"𝕋","&TripleDot;":"⃛","&Tscr;":"𝒯","&Tstrok;":"Ŧ","&Uacute":"Ú","&Uacute;":"Ú","&Uarr;":"↟","&Uarrocir;":"⥉","&Ubrcy;":"Ў","&Ubreve;":"Ŭ","&Ucirc":"Û","&Ucirc;":"Û","&Ucy;":"У","&Udblac;":"Ű","&Ufr;":"𝔘","&Ugrave":"Ù","&Ugrave;":"Ù","&Umacr;":"Ū","&UnderBar;":"_","&UnderBrace;":"⏟","&UnderBracket;":"⎵","&UnderParenthesis;":"⏝","&Union;":"⋃","&UnionPlus;":"⊎","&Uogon;":"Ų","&Uopf;":"𝕌","&UpArrow;":"↑","&UpArrowBar;":"⤒","&UpArrowDownArrow;":"⇅","&UpDownArrow;":"↕","&UpEquilibrium;":"⥮","&UpTee;":"⊥","&UpTeeArrow;":"↥","&Uparrow;":"⇑","&Updownarrow;":"⇕","&UpperLeftArrow;":"↖","&UpperRightArrow;":"↗","&Upsi;":"ϒ","&Upsilon;":"Υ","&Uring;":"Ů","&Uscr;":"𝒰","&Utilde;":"Ũ","&Uuml":"Ü","&Uuml;":"Ü","&VDash;":"⊫","&Vbar;":"⫫","&Vcy;":"В","&Vdash;":"⊩","&Vdashl;":"⫦","&Vee;":"⋁","&Verbar;":"‖","&Vert;":"‖","&VerticalBar;":"∣","&VerticalLine;":"|","&VerticalSeparator;":"❘","&VerticalTilde;":"≀","&VeryThinSpace;":" ","&Vfr;":"𝔙","&Vopf;":"𝕍","&Vscr;":"𝒱","&Vvdash;":"⊪","&Wcirc;":"Ŵ","&Wedge;":"⋀","&Wfr;":"𝔚","&Wopf;":"𝕎","&Wscr;":"𝒲","&Xfr;":"𝔛","&Xi;":"Ξ","&Xopf;":"𝕏","&Xscr;":"𝒳","&YAcy;":"Я","&YIcy;":"Ї","&YUcy;":"Ю","&Yacute":"Ý","&Yacute;":"Ý","&Ycirc;":"Ŷ","&Ycy;":"Ы","&Yfr;":"𝔜","&Yopf;":"𝕐","&Yscr;":"𝒴","&Yuml;":"Ÿ","&ZHcy;":"Ж","&Zacute;":"Ź","&Zcaron;":"Ž","&Zcy;":"З","&Zdot;":"Ż","&ZeroWidthSpace;":"​","&Zeta;":"Ζ","&Zfr;":"ℨ","&Zopf;":"ℤ","&Zscr;":"𝒵","&aacute":"á","&aacute;":"á","&abreve;":"ă","&ac;":"∾","&acE;":"∾̳","&acd;":"∿","&acirc":"â","&acirc;":"â","&acute":"´","&acute;":"´","&acy;":"а","&aelig":"æ","&aelig;":"æ","&af;":"⁡","&afr;":"𝔞","&agrave":"à","&agrave;":"à","&alefsym;":"ℵ","&aleph;":"ℵ","&alpha;":"α","&amacr;":"ā","&amalg;":"⨿","&amp":"&","&amp;":"&","&and;":"∧","&andand;":"⩕","&andd;":"⩜","&andslope;":"⩘","&andv;":"⩚","&ang;":"∠","&ange;":"⦤","&angle;":"∠","&angmsd;":"∡","&angmsdaa;":"⦨","&angmsdab;":"⦩","&angmsdac;":"⦪","&angmsdad;":"⦫","&angmsdae;":"⦬","&angmsdaf;":"⦭","&angmsdag;":"⦮","&angmsdah;":"⦯","&angrt;":"∟","&angrtvb;":"⊾","&angrtvbd;":"⦝","&angsph;":"∢","&angst;":"Å","&angzarr;":"⍼","&aogon;":"ą","&aopf;":"𝕒","&ap;":"≈","&apE;":"⩰","&apacir;":"⩯","&ape;":"≊","&apid;":"≋","&apos;":"'","&approx;":"≈","&approxeq;":"≊","&aring":"å","&aring;":"å","&ascr;":"𝒶","&ast;":"*","&asymp;":"≈","&asympeq;":"≍","&atilde":"ã","&atilde;":"ã","&auml":"ä","&auml;":"ä","&awconint;":"∳","&awint;":"⨑","&bNot;":"⫭","&backcong;":"≌","&backepsilon;":"϶","&backprime;":"‵","&backsim;":"∽","&backsimeq;":"⋍","&barvee;":"⊽","&barwed;":"⌅","&barwedge;":"⌅","&bbrk;":"⎵","&bbrktbrk;":"⎶","&bcong;":"≌","&bcy;":"б","&bdquo;":"„","&becaus;":"∵","&because;":"∵","&bemptyv;":"⦰","&bepsi;":"϶","&bernou;":"ℬ","&beta;":"β","&beth;":"ℶ","&between;":"≬","&bfr;":"𝔟","&bigcap;":"⋂","&bigcirc;":"◯","&bigcup;":"⋃","&bigodot;":"⨀","&bigoplus;":"⨁","&bigotimes;":"⨂","&bigsqcup;":"⨆","&bigstar;":"★","&bigtriangledown;":"▽","&bigtriangleup;":"△","&biguplus;":"⨄","&bigvee;":"⋁","&bigwedge;":"⋀","&bkarow;":"⤍","&blacklozenge;":"⧫","&blacksquare;":"▪","&blacktriangle;":"▴","&blacktriangledown;":"▾","&blacktriangleleft;":"◂","&blacktriangleright;":"▸","&blank;":"␣","&blk12;":"▒","&blk14;":"░","&blk34;":"▓","&block;":"█","&bne;":"=⃥","&bnequiv;":"≡⃥","&bnot;":"⌐","&bopf;":"𝕓","&bot;":"⊥","&bottom;":"⊥","&bowtie;":"⋈","&boxDL;":"╗","&boxDR;":"╔","&boxDl;":"╖","&boxDr;":"╓","&boxH;":"═","&boxHD;":"╦","&boxHU;":"╩","&boxHd;":"╤","&boxHu;":"╧","&boxUL;":"╝","&boxUR;":"╚","&boxUl;":"╜","&boxUr;":"╙","&boxV;":"║","&boxVH;":"╬","&boxVL;":"╣","&boxVR;":"╠","&boxVh;":"╫","&boxVl;":"╢","&boxVr;":"╟","&boxbox;":"⧉","&boxdL;":"╕","&boxdR;":"╒","&boxdl;":"┐","&boxdr;":"┌","&boxh;":"─","&boxhD;":"╥","&boxhU;":"╨","&boxhd;":"┬","&boxhu;":"┴","&boxminus;":"⊟","&boxplus;":"⊞","&boxtimes;":"⊠","&boxuL;":"╛","&boxuR;":"╘","&boxul;":"┘","&boxur;":"└","&boxv;":"│","&boxvH;":"╪","&boxvL;":"╡","&boxvR;":"╞","&boxvh;":"┼","&boxvl;":"┤","&boxvr;":"├","&bprime;":"‵","&breve;":"˘","&brvbar":"¦","&brvbar;":"¦","&bscr;":"𝒷","&bsemi;":"⁏","&bsim;":"∽","&bsime;":"⋍","&bsol;":"\\","&bsolb;":"⧅","&bsolhsub;":"⟈","&bull;":"•","&bullet;":"•","&bump;":"≎","&bumpE;":"⪮","&bumpe;":"≏","&bumpeq;":"≏","&cacute;":"ć","&cap;":"∩","&capand;":"⩄","&capbrcup;":"⩉","&capcap;":"⩋","&capcup;":"⩇","&capdot;":"⩀","&caps;":"∩︀","&caret;":"⁁","&caron;":"ˇ","&ccaps;":"⩍","&ccaron;":"č","&ccedil":"ç","&ccedil;":"ç","&ccirc;":"ĉ","&ccups;":"⩌","&ccupssm;":"⩐","&cdot;":"ċ","&cedil":"¸","&cedil;":"¸","&cemptyv;":"⦲","&cent":"¢","&cent;":"¢","&centerdot;":"·","&cfr;":"𝔠","&chcy;":"ч","&check;":"✓","&checkmark;":"✓","&chi;":"χ","&cir;":"○","&cirE;":"⧃","&circ;":"ˆ","&circeq;":"≗","&circlearrowleft;":"↺","&circlearrowright;":"↻","&circledR;":"®","&circledS;":"Ⓢ","&circledast;":"⊛","&circledcirc;":"⊚","&circleddash;":"⊝","&cire;":"≗","&cirfnint;":"⨐","&cirmid;":"⫯","&cirscir;":"⧂","&clubs;":"♣","&clubsuit;":"♣","&colon;":":","&colone;":"≔","&coloneq;":"≔","&comma;":",","&commat;":"@","&comp;":"∁","&compfn;":"∘","&complement;":"∁","&complexes;":"ℂ","&cong;":"≅","&congdot;":"⩭","&conint;":"∮","&copf;":"𝕔","&coprod;":"∐","&copy":"©","&copy;":"©","&copysr;":"℗","&crarr;":"↵","&cross;":"✗","&cscr;":"𝒸","&csub;":"⫏","&csube;":"⫑","&csup;":"⫐","&csupe;":"⫒","&ctdot;":"⋯","&cudarrl;":"⤸","&cudarrr;":"⤵","&cuepr;":"⋞","&cuesc;":"⋟","&cularr;":"↶","&cularrp;":"⤽","&cup;":"∪","&cupbrcap;":"⩈","&cupcap;":"⩆","&cupcup;":"⩊","&cupdot;":"⊍","&cupor;":"⩅","&cups;":"∪︀","&curarr;":"↷","&curarrm;":"⤼","&curlyeqprec;":"⋞","&curlyeqsucc;":"⋟","&curlyvee;":"⋎","&curlywedge;":"⋏","&curren":"¤","&curren;":"¤","&curvearrowleft;":"↶","&curvearrowright;":"↷","&cuvee;":"⋎","&cuwed;":"⋏","&cwconint;":"∲","&cwint;":"∱","&cylcty;":"⌭","&dArr;":"⇓","&dHar;":"⥥","&dagger;":"†","&daleth;":"ℸ","&darr;":"↓","&dash;":"‐","&dashv;":"⊣","&dbkarow;":"⤏","&dblac;":"˝","&dcaron;":"ď","&dcy;":"д","&dd;":"ⅆ","&ddagger;":"‡","&ddarr;":"⇊","&ddotseq;":"⩷","&deg":"°","&deg;":"°","&delta;":"δ","&demptyv;":"⦱","&dfisht;":"⥿","&dfr;":"𝔡","&dharl;":"⇃","&dharr;":"⇂","&diam;":"⋄","&diamond;":"⋄","&diamondsuit;":"♦","&diams;":"♦","&die;":"¨","&digamma;":"ϝ","&disin;":"⋲","&div;":"÷","&divide":"÷","&divide;":"÷","&divideontimes;":"⋇","&divonx;":"⋇","&djcy;":"ђ","&dlcorn;":"⌞","&dlcrop;":"⌍","&dollar;":"$","&dopf;":"𝕕","&dot;":"˙","&doteq;":"≐","&doteqdot;":"≑","&dotminus;":"∸","&dotplus;":"∔","&dotsquare;":"⊡","&doublebarwedge;":"⌆","&downarrow;":"↓","&downdownarrows;":"⇊","&downharpoonleft;":"⇃","&downharpoonright;":"⇂","&drbkarow;":"⤐","&drcorn;":"⌟","&drcrop;":"⌌","&dscr;":"𝒹","&dscy;":"ѕ","&dsol;":"⧶","&dstrok;":"đ","&dtdot;":"⋱","&dtri;":"▿","&dtrif;":"▾","&duarr;":"⇵","&duhar;":"⥯","&dwangle;":"⦦","&dzcy;":"џ","&dzigrarr;":"⟿","&eDDot;":"⩷","&eDot;":"≑","&eacute":"é","&eacute;":"é","&easter;":"⩮","&ecaron;":"ě","&ecir;":"≖","&ecirc":"ê","&ecirc;":"ê","&ecolon;":"≕","&ecy;":"э","&edot;":"ė","&ee;":"ⅇ","&efDot;":"≒","&efr;":"𝔢","&eg;":"⪚","&egrave":"è","&egrave;":"è","&egs;":"⪖","&egsdot;":"⪘","&el;":"⪙","&elinters;":"⏧","&ell;":"ℓ","&els;":"⪕","&elsdot;":"⪗","&emacr;":"ē","&empty;":"∅","&emptyset;":"∅","&emptyv;":"∅","&emsp13;":" ","&emsp14;":" ","&emsp;":" ","&eng;":"ŋ","&ensp;":" ","&eogon;":"ę","&eopf;":"𝕖","&epar;":"⋕","&eparsl;":"⧣","&eplus;":"⩱","&epsi;":"ε","&epsilon;":"ε","&epsiv;":"ϵ","&eqcirc;":"≖","&eqcolon;":"≕","&eqsim;":"≂","&eqslantgtr;":"⪖","&eqslantless;":"⪕","&equals;":"=","&equest;":"≟","&equiv;":"≡","&equivDD;":"⩸","&eqvparsl;":"⧥","&erDot;":"≓","&erarr;":"⥱","&escr;":"ℯ","&esdot;":"≐","&esim;":"≂","&eta;":"η","&eth":"ð","&eth;":"ð","&euml":"ë","&euml;":"ë","&euro;":"€","&excl;":"!","&exist;":"∃","&expectation;":"ℰ","&exponentiale;":"ⅇ","&fallingdotseq;":"≒","&fcy;":"ф","&female;":"♀","&ffilig;":"ﬃ","&fflig;":"ﬀ","&ffllig;":"ﬄ","&ffr;":"𝔣","&filig;":"ﬁ","&fjlig;":"fj","&flat;":"♭","&fllig;":"ﬂ","&fltns;":"▱","&fnof;":"ƒ","&fopf;":"𝕗","&forall;":"∀","&fork;":"⋔","&forkv;":"⫙","&fpartint;":"⨍","&frac12":"½","&frac12;":"½","&frac13;":"⅓","&frac14":"¼","&frac14;":"¼","&frac15;":"⅕","&frac16;":"⅙","&frac18;":"⅛","&frac23;":"⅔","&frac25;":"⅖","&frac34":"¾","&frac34;":"¾","&frac35;":"⅗","&frac38;":"⅜","&frac45;":"⅘","&frac56;":"⅚","&frac58;":"⅝","&frac78;":"⅞","&frasl;":"⁄","&frown;":"⌢","&fscr;":"𝒻","&gE;":"≧","&gEl;":"⪌","&gacute;":"ǵ","&gamma;":"γ","&gammad;":"ϝ","&gap;":"⪆","&gbreve;":"ğ","&gcirc;":"ĝ","&gcy;":"г","&gdot;":"ġ","&ge;":"≥","&gel;":"⋛","&geq;":"≥","&geqq;":"≧","&geqslant;":"⩾","&ges;":"⩾","&gescc;":"⪩","&gesdot;":"⪀","&gesdoto;":"⪂","&gesdotol;":"⪄","&gesl;":"⋛︀","&gesles;":"⪔","&gfr;":"𝔤","&gg;":"≫","&ggg;":"⋙","&gimel;":"ℷ","&gjcy;":"ѓ","&gl;":"≷","&glE;":"⪒","&gla;":"⪥","&glj;":"⪤","&gnE;":"≩","&gnap;":"⪊","&gnapprox;":"⪊","&gne;":"⪈","&gneq;":"⪈","&gneqq;":"≩","&gnsim;":"⋧","&gopf;":"𝕘","&grave;":"`","&gscr;":"ℊ","&gsim;":"≳","&gsime;":"⪎","&gsiml;":"⪐","&gt":">","&gt;":">","&gtcc;":"⪧","&gtcir;":"⩺","&gtdot;":"⋗","&gtlPar;":"⦕","&gtquest;":"⩼","&gtrapprox;":"⪆","&gtrarr;":"⥸","&gtrdot;":"⋗","&gtreqless;":"⋛","&gtreqqless;":"⪌","&gtrless;":"≷","&gtrsim;":"≳","&gvertneqq;":"≩︀","&gvnE;":"≩︀","&hArr;":"⇔","&hairsp;":" ","&half;":"½","&hamilt;":"ℋ","&hardcy;":"ъ","&harr;":"↔","&harrcir;":"⥈","&harrw;":"↭","&hbar;":"ℏ","&hcirc;":"ĥ","&hearts;":"♥","&heartsuit;":"♥","&hellip;":"…","&hercon;":"⊹","&hfr;":"𝔥","&hksearow;":"⤥","&hkswarow;":"⤦","&hoarr;":"⇿","&homtht;":"∻","&hookleftarrow;":"↩","&hookrightarrow;":"↪","&hopf;":"𝕙","&horbar;":"―","&hscr;":"𝒽","&hslash;":"ℏ","&hstrok;":"ħ","&hybull;":"⁃","&hyphen;":"‐","&iacute":"í","&iacute;":"í","&ic;":"⁣","&icirc":"î","&icirc;":"î","&icy;":"и","&iecy;":"е","&iexcl":"¡","&iexcl;":"¡","&iff;":"⇔","&ifr;":"𝔦","&igrave":"ì","&igrave;":"ì","&ii;":"ⅈ","&iiiint;":"⨌","&iiint;":"∭","&iinfin;":"⧜","&iiota;":"℩","&ijlig;":"ĳ","&imacr;":"ī","&image;":"ℑ","&imagline;":"ℐ","&imagpart;":"ℑ","&imath;":"ı","&imof;":"⊷","&imped;":"Ƶ","&in;":"∈","&incare;":"℅","&infin;":"∞","&infintie;":"⧝","&inodot;":"ı","&int;":"∫","&intcal;":"⊺","&integers;":"ℤ","&intercal;":"⊺","&intlarhk;":"⨗","&intprod;":"⨼","&iocy;":"ё","&iogon;":"į","&iopf;":"𝕚","&iota;":"ι","&iprod;":"⨼","&iquest":"¿","&iquest;":"¿","&iscr;":"𝒾","&isin;":"∈","&isinE;":"⋹","&isindot;":"⋵","&isins;":"⋴","&isinsv;":"⋳","&isinv;":"∈","&it;":"⁢","&itilde;":"ĩ","&iukcy;":"і","&iuml":"ï","&iuml;":"ï","&jcirc;":"ĵ","&jcy;":"й","&jfr;":"𝔧","&jmath;":"ȷ","&jopf;":"𝕛","&jscr;":"𝒿","&jsercy;":"ј","&jukcy;":"є","&kappa;":"κ","&kappav;":"ϰ","&kcedil;":"ķ","&kcy;":"к","&kfr;":"𝔨","&kgreen;":"ĸ","&khcy;":"х","&kjcy;":"ќ","&kopf;":"𝕜","&kscr;":"𝓀","&lAarr;":"⇚","&lArr;":"⇐","&lAtail;":"⤛","&lBarr;":"⤎","&lE;":"≦","&lEg;":"⪋","&lHar;":"⥢","&lacute;":"ĺ","&laemptyv;":"⦴","&lagran;":"ℒ","&lambda;":"λ","&lang;":"⟨","&langd;":"⦑","&langle;":"⟨","&lap;":"⪅","&laquo":"«","&laquo;":"«","&larr;":"←","&larrb;":"⇤","&larrbfs;":"⤟","&larrfs;":"⤝","&larrhk;":"↩","&larrlp;":"↫","&larrpl;":"⤹","&larrsim;":"⥳","&larrtl;":"↢","&lat;":"⪫","&latail;":"⤙","&late;":"⪭","&lates;":"⪭︀","&lbarr;":"⤌","&lbbrk;":"❲","&lbrace;":"{","&lbrack;":"[","&lbrke;":"⦋","&lbrksld;":"⦏","&lbrkslu;":"⦍","&lcaron;":"ľ","&lcedil;":"ļ","&lceil;":"⌈","&lcub;":"{","&lcy;":"л","&ldca;":"⤶","&ldquo;":"“","&ldquor;":"„","&ldrdhar;":"⥧","&ldrushar;":"⥋","&ldsh;":"↲","&le;":"≤","&leftarrow;":"←","&leftarrowtail;":"↢","&leftharpoondown;":"↽","&leftharpoonup;":"↼","&leftleftarrows;":"⇇","&leftrightarrow;":"↔","&leftrightarrows;":"⇆","&leftrightharpoons;":"⇋","&leftrightsquigarrow;":"↭","&leftthreetimes;":"⋋","&leg;":"⋚","&leq;":"≤","&leqq;":"≦","&leqslant;":"⩽","&les;":"⩽","&lescc;":"⪨","&lesdot;":"⩿","&lesdoto;":"⪁","&lesdotor;":"⪃","&lesg;":"⋚︀","&lesges;":"⪓","&lessapprox;":"⪅","&lessdot;":"⋖","&lesseqgtr;":"⋚","&lesseqqgtr;":"⪋","&lessgtr;":"≶","&lesssim;":"≲","&lfisht;":"⥼","&lfloor;":"⌊","&lfr;":"𝔩","&lg;":"≶","&lgE;":"⪑","&lhard;":"↽","&lharu;":"↼","&lharul;":"⥪","&lhblk;":"▄","&ljcy;":"љ","&ll;":"≪","&llarr;":"⇇","&llcorner;":"⌞","&llhard;":"⥫","&lltri;":"◺","&lmidot;":"ŀ","&lmoust;":"⎰","&lmoustache;":"⎰","&lnE;":"≨","&lnap;":"⪉","&lnapprox;":"⪉","&lne;":"⪇","&lneq;":"⪇","&lneqq;":"≨","&lnsim;":"⋦","&loang;":"⟬","&loarr;":"⇽","&lobrk;":"⟦","&longleftarrow;":"⟵","&longleftrightarrow;":"⟷","&longmapsto;":"⟼","&longrightarrow;":"⟶","&looparrowleft;":"↫","&looparrowright;":"↬","&lopar;":"⦅","&lopf;":"𝕝","&loplus;":"⨭","&lotimes;":"⨴","&lowast;":"∗","&lowbar;":"_","&loz;":"◊","&lozenge;":"◊","&lozf;":"⧫","&lpar;":"(","&lparlt;":"⦓","&lrarr;":"⇆","&lrcorner;":"⌟","&lrhar;":"⇋","&lrhard;":"⥭","&lrm;":"‎","&lrtri;":"⊿","&lsaquo;":"‹","&lscr;":"𝓁","&lsh;":"↰","&lsim;":"≲","&lsime;":"⪍","&lsimg;":"⪏","&lsqb;":"[","&lsquo;":"‘","&lsquor;":"‚","&lstrok;":"ł","&lt":"<","&lt;":"<","&ltcc;":"⪦","&ltcir;":"⩹","&ltdot;":"⋖","&lthree;":"⋋","&ltimes;":"⋉","&ltlarr;":"⥶","&ltquest;":"⩻","&ltrPar;":"⦖","&ltri;":"◃","&ltrie;":"⊴","&ltrif;":"◂","&lurdshar;":"⥊","&luruhar;":"⥦","&lvertneqq;":"≨︀","&lvnE;":"≨︀","&mDDot;":"∺","&macr":"¯","&macr;":"¯","&male;":"♂","&malt;":"✠","&maltese;":"✠","&map;":"↦","&mapsto;":"↦","&mapstodown;":"↧","&mapstoleft;":"↤","&mapstoup;":"↥","&marker;":"▮","&mcomma;":"⨩","&mcy;":"м","&mdash;":"—","&measuredangle;":"∡","&mfr;":"𝔪","&mho;":"℧","&micro":"µ","&micro;":"µ","&mid;":"∣","&midast;":"*","&midcir;":"⫰","&middot":"·","&middot;":"·","&minus;":"−","&minusb;":"⊟","&minusd;":"∸","&minusdu;":"⨪","&mlcp;":"⫛","&mldr;":"…","&mnplus;":"∓","&models;":"⊧","&mopf;":"𝕞","&mp;":"∓","&mscr;":"𝓂","&mstpos;":"∾","&mu;":"μ","&multimap;":"⊸","&mumap;":"⊸","&nGg;":"⋙̸","&nGt;":"≫⃒","&nGtv;":"≫̸","&nLeftarrow;":"⇍","&nLeftrightarrow;":"⇎","&nLl;":"⋘̸","&nLt;":"≪⃒","&nLtv;":"≪̸","&nRightarrow;":"⇏","&nVDash;":"⊯","&nVdash;":"⊮","&nabla;":"∇","&nacute;":"ń","&nang;":"∠⃒","&nap;":"≉","&napE;":"⩰̸","&napid;":"≋̸","&napos;":"ŉ","&napprox;":"≉","&natur;":"♮","&natural;":"♮","&naturals;":"ℕ","&nbsp":" ","&nbsp;":" ","&nbump;":"≎̸","&nbumpe;":"≏̸","&ncap;":"⩃","&ncaron;":"ň","&ncedil;":"ņ","&ncong;":"≇","&ncongdot;":"⩭̸","&ncup;":"⩂","&ncy;":"н","&ndash;":"–","&ne;":"≠","&neArr;":"⇗","&nearhk;":"⤤","&nearr;":"↗","&nearrow;":"↗","&nedot;":"≐̸","&nequiv;":"≢","&nesear;":"⤨","&nesim;":"≂̸","&nexist;":"∄","&nexists;":"∄","&nfr;":"𝔫","&ngE;":"≧̸","&nge;":"≱","&ngeq;":"≱","&ngeqq;":"≧̸","&ngeqslant;":"⩾̸","&nges;":"⩾̸","&ngsim;":"≵","&ngt;":"≯","&ngtr;":"≯","&nhArr;":"⇎","&nharr;":"↮","&nhpar;":"⫲","&ni;":"∋","&nis;":"⋼","&nisd;":"⋺","&niv;":"∋","&njcy;":"њ","&nlArr;":"⇍","&nlE;":"≦̸","&nlarr;":"↚","&nldr;":"‥","&nle;":"≰","&nleftarrow;":"↚","&nleftrightarrow;":"↮","&nleq;":"≰","&nleqq;":"≦̸","&nleqslant;":"⩽̸","&nles;":"⩽̸","&nless;":"≮","&nlsim;":"≴","&nlt;":"≮","&nltri;":"⋪","&nltrie;":"⋬","&nmid;":"∤","&nopf;":"𝕟","&not":"¬","&not;":"¬","&notin;":"∉","&notinE;":"⋹̸","&notindot;":"⋵̸","&notinva;":"∉","&notinvb;":"⋷","&notinvc;":"⋶","&notni;":"∌","&notniva;":"∌","&notnivb;":"⋾","&notnivc;":"⋽","&npar;":"∦","&nparallel;":"∦","&nparsl;":"⫽⃥","&npart;":"∂̸","&npolint;":"⨔","&npr;":"⊀","&nprcue;":"⋠","&npre;":"⪯̸","&nprec;":"⊀","&npreceq;":"⪯̸","&nrArr;":"⇏","&nrarr;":"↛","&nrarrc;":"⤳̸","&nrarrw;":"↝̸","&nrightarrow;":"↛","&nrtri;":"⋫","&nrtrie;":"⋭","&nsc;":"⊁","&nsccue;":"⋡","&nsce;":"⪰̸","&nscr;":"𝓃","&nshortmid;":"∤","&nshortparallel;":"∦","&nsim;":"≁","&nsime;":"≄","&nsimeq;":"≄","&nsmid;":"∤","&nspar;":"∦","&nsqsube;":"⋢","&nsqsupe;":"⋣","&nsub;":"⊄","&nsubE;":"⫅̸","&nsube;":"⊈","&nsubset;":"⊂⃒","&nsubseteq;":"⊈","&nsubseteqq;":"⫅̸","&nsucc;":"⊁","&nsucceq;":"⪰̸","&nsup;":"⊅","&nsupE;":"⫆̸","&nsupe;":"⊉","&nsupset;":"⊃⃒","&nsupseteq;":"⊉","&nsupseteqq;":"⫆̸","&ntgl;":"≹","&ntilde":"ñ","&ntilde;":"ñ","&ntlg;":"≸","&ntriangleleft;":"⋪","&ntrianglelefteq;":"⋬","&ntriangleright;":"⋫","&ntrianglerighteq;":"⋭","&nu;":"ν","&num;":"#","&numero;":"№","&numsp;":" ","&nvDash;":"⊭","&nvHarr;":"⤄","&nvap;":"≍⃒","&nvdash;":"⊬","&nvge;":"≥⃒","&nvgt;":">⃒","&nvinfin;":"⧞","&nvlArr;":"⤂","&nvle;":"≤⃒","&nvlt;":"<⃒","&nvltrie;":"⊴⃒","&nvrArr;":"⤃","&nvrtrie;":"⊵⃒","&nvsim;":"∼⃒","&nwArr;":"⇖","&nwarhk;":"⤣","&nwarr;":"↖","&nwarrow;":"↖","&nwnear;":"⤧","&oS;":"Ⓢ","&oacute":"ó","&oacute;":"ó","&oast;":"⊛","&ocir;":"⊚","&ocirc":"ô","&ocirc;":"ô","&ocy;":"о","&odash;":"⊝","&odblac;":"ő","&odiv;":"⨸","&odot;":"⊙","&odsold;":"⦼","&oelig;":"œ","&ofcir;":"⦿","&ofr;":"𝔬","&ogon;":"˛","&ograve":"ò","&ograve;":"ò","&ogt;":"⧁","&ohbar;":"⦵","&ohm;":"Ω","&oint;":"∮","&olarr;":"↺","&olcir;":"⦾","&olcross;":"⦻","&oline;":"‾","&olt;":"⧀","&omacr;":"ō","&omega;":"ω","&omicron;":"ο","&omid;":"⦶","&ominus;":"⊖","&oopf;":"𝕠","&opar;":"⦷","&operp;":"⦹","&oplus;":"⊕","&or;":"∨","&orarr;":"↻","&ord;":"⩝","&order;":"ℴ","&orderof;":"ℴ","&ordf":"ª","&ordf;":"ª","&ordm":"º","&ordm;":"º","&origof;":"⊶","&oror;":"⩖","&orslope;":"⩗","&orv;":"⩛","&oscr;":"ℴ","&oslash":"ø","&oslash;":"ø","&osol;":"⊘","&otilde":"õ","&otilde;":"õ","&otimes;":"⊗","&otimesas;":"⨶","&ouml":"ö","&ouml;":"ö","&ovbar;":"⌽","&par;":"∥","&para":"¶","&para;":"¶","&parallel;":"∥","&parsim;":"⫳","&parsl;":"⫽","&part;":"∂","&pcy;":"п","&percnt;":"%","&period;":".","&permil;":"‰","&perp;":"⊥","&pertenk;":"‱","&pfr;":"𝔭","&phi;":"φ","&phiv;":"ϕ","&phmmat;":"ℳ","&phone;":"☎","&pi;":"π","&pitchfork;":"⋔","&piv;":"ϖ","&planck;":"ℏ","&planckh;":"ℎ","&plankv;":"ℏ","&plus;":"+","&plusacir;":"⨣","&plusb;":"⊞","&pluscir;":"⨢","&plusdo;":"∔","&plusdu;":"⨥","&pluse;":"⩲","&plusmn":"±","&plusmn;":"±","&plussim;":"⨦","&plustwo;":"⨧","&pm;":"±","&pointint;":"⨕","&popf;":"𝕡","&pound":"£","&pound;":"£","&pr;":"≺","&prE;":"⪳","&prap;":"⪷","&prcue;":"≼","&pre;":"⪯","&prec;":"≺","&precapprox;":"⪷","&preccurlyeq;":"≼","&preceq;":"⪯","&precnapprox;":"⪹","&precneqq;":"⪵","&precnsim;":"⋨","&precsim;":"≾","&prime;":"′","&primes;":"ℙ","&prnE;":"⪵","&prnap;":"⪹","&prnsim;":"⋨","&prod;":"∏","&profalar;":"⌮","&profline;":"⌒","&profsurf;":"⌓","&prop;":"∝","&propto;":"∝","&prsim;":"≾","&prurel;":"⊰","&pscr;":"𝓅","&psi;":"ψ","&puncsp;":" ","&qfr;":"𝔮","&qint;":"⨌","&qopf;":"𝕢","&qprime;":"⁗","&qscr;":"𝓆","&quaternions;":"ℍ","&quatint;":"⨖","&quest;":"?","&questeq;":"≟","&quot":'"',"&quot;":'"',"&rAarr;":"⇛","&rArr;":"⇒","&rAtail;":"⤜","&rBarr;":"⤏","&rHar;":"⥤","&race;":"∽̱","&racute;":"ŕ","&radic;":"√","&raemptyv;":"⦳","&rang;":"⟩","&rangd;":"⦒","&range;":"⦥","&rangle;":"⟩","&raquo":"»","&raquo;":"»","&rarr;":"→","&rarrap;":"⥵","&rarrb;":"⇥","&rarrbfs;":"⤠","&rarrc;":"⤳","&rarrfs;":"⤞","&rarrhk;":"↪","&rarrlp;":"↬","&rarrpl;":"⥅","&rarrsim;":"⥴","&rarrtl;":"↣","&rarrw;":"↝","&ratail;":"⤚","&ratio;":"∶","&rationals;":"ℚ","&rbarr;":"⤍","&rbbrk;":"❳","&rbrace;":"}","&rbrack;":"]","&rbrke;":"⦌","&rbrksld;":"⦎","&rbrkslu;":"⦐","&rcaron;":"ř","&rcedil;":"ŗ","&rceil;":"⌉","&rcub;":"}","&rcy;":"р","&rdca;":"⤷","&rdldhar;":"⥩","&rdquo;":"”","&rdquor;":"”","&rdsh;":"↳","&real;":"ℜ","&realine;":"ℛ","&realpart;":"ℜ","&reals;":"ℝ","&rect;":"▭","&reg":"®","&reg;":"®","&rfisht;":"⥽","&rfloor;":"⌋","&rfr;":"𝔯","&rhard;":"⇁","&rharu;":"⇀","&rharul;":"⥬","&rho;":"ρ","&rhov;":"ϱ","&rightarrow;":"→","&rightarrowtail;":"↣","&rightharpoondown;":"⇁","&rightharpoonup;":"⇀","&rightleftarrows;":"⇄","&rightleftharpoons;":"⇌","&rightrightarrows;":"⇉","&rightsquigarrow;":"↝","&rightthreetimes;":"⋌","&ring;":"˚","&risingdotseq;":"≓","&rlarr;":"⇄","&rlhar;":"⇌","&rlm;":"‏","&rmoust;":"⎱","&rmoustache;":"⎱","&rnmid;":"⫮","&roang;":"⟭","&roarr;":"⇾","&robrk;":"⟧","&ropar;":"⦆","&ropf;":"𝕣","&roplus;":"⨮","&rotimes;":"⨵","&rpar;":")","&rpargt;":"⦔","&rppolint;":"⨒","&rrarr;":"⇉","&rsaquo;":"›","&rscr;":"𝓇","&rsh;":"↱","&rsqb;":"]","&rsquo;":"’","&rsquor;":"’","&rthree;":"⋌","&rtimes;":"⋊","&rtri;":"▹","&rtrie;":"⊵","&rtrif;":"▸","&rtriltri;":"⧎","&ruluhar;":"⥨","&rx;":"℞","&sacute;":"ś","&sbquo;":"‚","&sc;":"≻","&scE;":"⪴","&scap;":"⪸","&scaron;":"š","&sccue;":"≽","&sce;":"⪰","&scedil;":"ş","&scirc;":"ŝ","&scnE;":"⪶","&scnap;":"⪺","&scnsim;":"⋩","&scpolint;":"⨓","&scsim;":"≿","&scy;":"с","&sdot;":"⋅","&sdotb;":"⊡","&sdote;":"⩦","&seArr;":"⇘","&searhk;":"⤥","&searr;":"↘","&searrow;":"↘","&sect":"§","&sect;":"§","&semi;":";","&seswar;":"⤩","&setminus;":"∖","&setmn;":"∖","&sext;":"✶","&sfr;":"𝔰","&sfrown;":"⌢","&sharp;":"♯","&shchcy;":"щ","&shcy;":"ш","&shortmid;":"∣","&shortparallel;":"∥","&shy":"­","&shy;":"­","&sigma;":"σ","&sigmaf;":"ς","&sigmav;":"ς","&sim;":"∼","&simdot;":"⩪","&sime;":"≃","&simeq;":"≃","&simg;":"⪞","&simgE;":"⪠","&siml;":"⪝","&simlE;":"⪟","&simne;":"≆","&simplus;":"⨤","&simrarr;":"⥲","&slarr;":"←","&smallsetminus;":"∖","&smashp;":"⨳","&smeparsl;":"⧤","&smid;":"∣","&smile;":"⌣","&smt;":"⪪","&smte;":"⪬","&smtes;":"⪬︀","&softcy;":"ь","&sol;":"/","&solb;":"⧄","&solbar;":"⌿","&sopf;":"𝕤","&spades;":"♠","&spadesuit;":"♠","&spar;":"∥","&sqcap;":"⊓","&sqcaps;":"⊓︀","&sqcup;":"⊔","&sqcups;":"⊔︀","&sqsub;":"⊏","&sqsube;":"⊑","&sqsubset;":"⊏","&sqsubseteq;":"⊑","&sqsup;":"⊐","&sqsupe;":"⊒","&sqsupset;":"⊐","&sqsupseteq;":"⊒","&squ;":"□","&square;":"□","&squarf;":"▪","&squf;":"▪","&srarr;":"→","&sscr;":"𝓈","&ssetmn;":"∖","&ssmile;":"⌣","&sstarf;":"⋆","&star;":"☆","&starf;":"★","&straightepsilon;":"ϵ","&straightphi;":"ϕ","&strns;":"¯","&sub;":"⊂","&subE;":"⫅","&subdot;":"⪽","&sube;":"⊆","&subedot;":"⫃","&submult;":"⫁","&subnE;":"⫋","&subne;":"⊊","&subplus;":"⪿","&subrarr;":"⥹","&subset;":"⊂","&subseteq;":"⊆","&subseteqq;":"⫅","&subsetneq;":"⊊","&subsetneqq;":"⫋","&subsim;":"⫇","&subsub;":"⫕","&subsup;":"⫓","&succ;":"≻","&succapprox;":"⪸","&succcurlyeq;":"≽","&succeq;":"⪰","&succnapprox;":"⪺","&succneqq;":"⪶","&succnsim;":"⋩","&succsim;":"≿","&sum;":"∑","&sung;":"♪","&sup1":"¹","&sup1;":"¹","&sup2":"²","&sup2;":"²","&sup3":"³","&sup3;":"³","&sup;":"⊃","&supE;":"⫆","&supdot;":"⪾","&supdsub;":"⫘","&supe;":"⊇","&supedot;":"⫄","&suphsol;":"⟉","&suphsub;":"⫗","&suplarr;":"⥻","&supmult;":"⫂","&supnE;":"⫌","&supne;":"⊋","&supplus;":"⫀","&supset;":"⊃","&supseteq;":"⊇","&supseteqq;":"⫆","&supsetneq;":"⊋","&supsetneqq;":"⫌","&supsim;":"⫈","&supsub;":"⫔","&supsup;":"⫖","&swArr;":"⇙","&swarhk;":"⤦","&swarr;":"↙","&swarrow;":"↙","&swnwar;":"⤪","&szlig":"ß","&szlig;":"ß","&target;":"⌖","&tau;":"τ","&tbrk;":"⎴","&tcaron;":"ť","&tcedil;":"ţ","&tcy;":"т","&tdot;":"⃛","&telrec;":"⌕","&tfr;":"𝔱","&there4;":"∴","&therefore;":"∴","&theta;":"θ","&thetasym;":"ϑ","&thetav;":"ϑ","&thickapprox;":"≈","&thicksim;":"∼","&thinsp;":" ","&thkap;":"≈","&thksim;":"∼","&thorn":"þ","&thorn;":"þ","&tilde;":"˜","&times":"×","&times;":"×","&timesb;":"⊠","&timesbar;":"⨱","&timesd;":"⨰","&tint;":"∭","&toea;":"⤨","&top;":"⊤","&topbot;":"⌶","&topcir;":"⫱","&topf;":"𝕥","&topfork;":"⫚","&tosa;":"⤩","&tprime;":"‴","&trade;":"™","&triangle;":"▵","&triangledown;":"▿","&triangleleft;":"◃","&trianglelefteq;":"⊴","&triangleq;":"≜","&triangleright;":"▹","&trianglerighteq;":"⊵","&tridot;":"◬","&trie;":"≜","&triminus;":"⨺","&triplus;":"⨹","&trisb;":"⧍","&tritime;":"⨻","&trpezium;":"⏢","&tscr;":"𝓉","&tscy;":"ц","&tshcy;":"ћ","&tstrok;":"ŧ","&twixt;":"≬","&twoheadleftarrow;":"↞","&twoheadrightarrow;":"↠","&uArr;":"⇑","&uHar;":"⥣","&uacute":"ú","&uacute;":"ú","&uarr;":"↑","&ubrcy;":"ў","&ubreve;":"ŭ","&ucirc":"û","&ucirc;":"û","&ucy;":"у","&udarr;":"⇅","&udblac;":"ű","&udhar;":"⥮","&ufisht;":"⥾","&ufr;":"𝔲","&ugrave":"ù","&ugrave;":"ù","&uharl;":"↿","&uharr;":"↾","&uhblk;":"▀","&ulcorn;":"⌜","&ulcorner;":"⌜","&ulcrop;":"⌏","&ultri;":"◸","&umacr;":"ū","&uml":"¨","&uml;":"¨","&uogon;":"ų","&uopf;":"𝕦","&uparrow;":"↑","&updownarrow;":"↕","&upharpoonleft;":"↿","&upharpoonright;":"↾","&uplus;":"⊎","&upsi;":"υ","&upsih;":"ϒ","&upsilon;":"υ","&upuparrows;":"⇈","&urcorn;":"⌝","&urcorner;":"⌝","&urcrop;":"⌎","&uring;":"ů","&urtri;":"◹","&uscr;":"𝓊","&utdot;":"⋰","&utilde;":"ũ","&utri;":"▵","&utrif;":"▴","&uuarr;":"⇈","&uuml":"ü","&uuml;":"ü","&uwangle;":"⦧","&vArr;":"⇕","&vBar;":"⫨","&vBarv;":"⫩","&vDash;":"⊨","&vangrt;":"⦜","&varepsilon;":"ϵ","&varkappa;":"ϰ","&varnothing;":"∅","&varphi;":"ϕ","&varpi;":"ϖ","&varpropto;":"∝","&varr;":"↕","&varrho;":"ϱ","&varsigma;":"ς","&varsubsetneq;":"⊊︀","&varsubsetneqq;":"⫋︀","&varsupsetneq;":"⊋︀","&varsupsetneqq;":"⫌︀","&vartheta;":"ϑ","&vartriangleleft;":"⊲","&vartriangleright;":"⊳","&vcy;":"в","&vdash;":"⊢","&vee;":"∨","&veebar;":"⊻","&veeeq;":"≚","&vellip;":"⋮","&verbar;":"|","&vert;":"|","&vfr;":"𝔳","&vltri;":"⊲","&vnsub;":"⊂⃒","&vnsup;":"⊃⃒","&vopf;":"𝕧","&vprop;":"∝","&vrtri;":"⊳","&vscr;":"𝓋","&vsubnE;":"⫋︀","&vsubne;":"⊊︀","&vsupnE;":"⫌︀","&vsupne;":"⊋︀","&vzigzag;":"⦚","&wcirc;":"ŵ","&wedbar;":"⩟","&wedge;":"∧","&wedgeq;":"≙","&weierp;":"℘","&wfr;":"𝔴","&wopf;":"𝕨","&wp;":"℘","&wr;":"≀","&wreath;":"≀","&wscr;":"𝓌","&xcap;":"⋂","&xcirc;":"◯","&xcup;":"⋃","&xdtri;":"▽","&xfr;":"𝔵","&xhArr;":"⟺","&xharr;":"⟷","&xi;":"ξ","&xlArr;":"⟸","&xlarr;":"⟵","&xmap;":"⟼","&xnis;":"⋻","&xodot;":"⨀","&xopf;":"𝕩","&xoplus;":"⨁","&xotime;":"⨂","&xrArr;":"⟹","&xrarr;":"⟶","&xscr;":"𝓍","&xsqcup;":"⨆","&xuplus;":"⨄","&xutri;":"△","&xvee;":"⋁","&xwedge;":"⋀","&yacute":"ý","&yacute;":"ý","&yacy;":"я","&ycirc;":"ŷ","&ycy;":"ы","&yen":"¥","&yen;":"¥","&yfr;":"𝔶","&yicy;":"ї","&yopf;":"𝕪","&yscr;":"𝓎","&yucy;":"ю","&yuml":"ÿ","&yuml;":"ÿ","&zacute;":"ź","&zcaron;":"ž","&zcy;":"з","&zdot;":"ż","&zeetrf;":"ℨ","&zeta;":"ζ","&zfr;":"𝔷","&zhcy;":"ж","&zigrarr;":"⇝","&zopf;":"𝕫","&zscr;":"𝓏","&zwj;":"‍","&zwnj;":"‌"},characters:{"Æ":"&AElig;","&":"&amp;","Á":"&Aacute;","Ă":"&Abreve;","Â":"&Acirc;","А":"&Acy;","𝔄":"&Afr;","À":"&Agrave;","Α":"&Alpha;","Ā":"&Amacr;","⩓":"&And;","Ą":"&Aogon;","𝔸":"&Aopf;","⁡":"&af;","Å":"&angst;","𝒜":"&Ascr;","≔":"&coloneq;","Ã":"&Atilde;","Ä":"&Auml;","∖":"&ssetmn;","⫧":"&Barv;","⌆":"&doublebarwedge;","Б":"&Bcy;","∵":"&because;","ℬ":"&bernou;","Β":"&Beta;","𝔅":"&Bfr;","𝔹":"&Bopf;","˘":"&breve;","≎":"&bump;","Ч":"&CHcy;","©":"&copy;","Ć":"&Cacute;","⋒":"&Cap;","ⅅ":"&DD;","ℭ":"&Cfr;","Č":"&Ccaron;","Ç":"&Ccedil;","Ĉ":"&Ccirc;","∰":"&Cconint;","Ċ":"&Cdot;","¸":"&cedil;","·":"&middot;","Χ":"&Chi;","⊙":"&odot;","⊖":"&ominus;","⊕":"&oplus;","⊗":"&otimes;","∲":"&cwconint;","”":"&rdquor;","’":"&rsquor;","∷":"&Proportion;","⩴":"&Colone;","≡":"&equiv;","∯":"&DoubleContourIntegral;","∮":"&oint;","ℂ":"&complexes;","∐":"&coprod;","∳":"&awconint;","⨯":"&Cross;","𝒞":"&Cscr;","⋓":"&Cup;","≍":"&asympeq;","⤑":"&DDotrahd;","Ђ":"&DJcy;","Ѕ":"&DScy;","Џ":"&DZcy;","‡":"&ddagger;","↡":"&Darr;","⫤":"&DoubleLeftTee;","Ď":"&Dcaron;","Д":"&Dcy;","∇":"&nabla;","Δ":"&Delta;","𝔇":"&Dfr;","´":"&acute;","˙":"&dot;","˝":"&dblac;","`":"&grave;","˜":"&tilde;","⋄":"&diamond;","ⅆ":"&dd;","𝔻":"&Dopf;","¨":"&uml;","⃜":"&DotDot;","≐":"&esdot;","⇓":"&dArr;","⇐":"&lArr;","⇔":"&iff;","⟸":"&xlArr;","⟺":"&xhArr;","⟹":"&xrArr;","⇒":"&rArr;","⊨":"&vDash;","⇑":"&uArr;","⇕":"&vArr;","∥":"&spar;","↓":"&downarrow;","⤓":"&DownArrowBar;","⇵":"&duarr;","̑":"&DownBreve;","⥐":"&DownLeftRightVector;","⥞":"&DownLeftTeeVector;","↽":"&lhard;","⥖":"&DownLeftVectorBar;","⥟":"&DownRightTeeVector;","⇁":"&rightharpoondown;","⥗":"&DownRightVectorBar;","⊤":"&top;","↧":"&mapstodown;","𝒟":"&Dscr;","Đ":"&Dstrok;","Ŋ":"&ENG;","Ð":"&ETH;","É":"&Eacute;","Ě":"&Ecaron;","Ê":"&Ecirc;","Э":"&Ecy;","Ė":"&Edot;","𝔈":"&Efr;","È":"&Egrave;","∈":"&isinv;","Ē":"&Emacr;","◻":"&EmptySmallSquare;","▫":"&EmptyVerySmallSquare;","Ę":"&Eogon;","𝔼":"&Eopf;","Ε":"&Epsilon;","⩵":"&Equal;","≂":"&esim;","⇌":"&rlhar;","ℰ":"&expectation;","⩳":"&Esim;","Η":"&Eta;","Ë":"&Euml;","∃":"&exist;","ⅇ":"&exponentiale;","Ф":"&Fcy;","𝔉":"&Ffr;","◼":"&FilledSmallSquare;","▪":"&squf;","𝔽":"&Fopf;","∀":"&forall;","ℱ":"&Fscr;","Ѓ":"&GJcy;",">":"&gt;","Γ":"&Gamma;","Ϝ":"&Gammad;","Ğ":"&Gbreve;","Ģ":"&Gcedil;","Ĝ":"&Gcirc;","Г":"&Gcy;","Ġ":"&Gdot;","𝔊":"&Gfr;","⋙":"&ggg;","𝔾":"&Gopf;","≥":"&geq;","⋛":"&gtreqless;","≧":"&geqq;","⪢":"&GreaterGreater;","≷":"&gtrless;","⩾":"&ges;","≳":"&gtrsim;","𝒢":"&Gscr;","≫":"&gg;","Ъ":"&HARDcy;","ˇ":"&caron;","^":"&Hat;","Ĥ":"&Hcirc;","ℌ":"&Poincareplane;","ℋ":"&hamilt;","ℍ":"&quaternions;","─":"&boxh;","Ħ":"&Hstrok;","≏":"&bumpeq;","Е":"&IEcy;","Ĳ":"&IJlig;","Ё":"&IOcy;","Í":"&Iacute;","Î":"&Icirc;","И":"&Icy;","İ":"&Idot;","ℑ":"&imagpart;","Ì":"&Igrave;","Ī":"&Imacr;","ⅈ":"&ii;","∬":"&Int;","∫":"&int;","⋂":"&xcap;","⁣":"&ic;","⁢":"&it;","Į":"&Iogon;","𝕀":"&Iopf;","Ι":"&Iota;","ℐ":"&imagline;","Ĩ":"&Itilde;","І":"&Iukcy;","Ï":"&Iuml;","Ĵ":"&Jcirc;","Й":"&Jcy;","𝔍":"&Jfr;","𝕁":"&Jopf;","𝒥":"&Jscr;","Ј":"&Jsercy;","Є":"&Jukcy;","Х":"&KHcy;","Ќ":"&KJcy;","Κ":"&Kappa;","Ķ":"&Kcedil;","К":"&Kcy;","𝔎":"&Kfr;","𝕂":"&Kopf;","𝒦":"&Kscr;","Љ":"&LJcy;","<":"&lt;","Ĺ":"&Lacute;","Λ":"&Lambda;","⟪":"&Lang;","ℒ":"&lagran;","↞":"&twoheadleftarrow;","Ľ":"&Lcaron;","Ļ":"&Lcedil;","Л":"&Lcy;","⟨":"&langle;","←":"&slarr;","⇤":"&larrb;","⇆":"&lrarr;","⌈":"&lceil;","⟦":"&lobrk;","⥡":"&LeftDownTeeVector;","⇃":"&downharpoonleft;","⥙":"&LeftDownVectorBar;","⌊":"&lfloor;","↔":"&leftrightarrow;","⥎":"&LeftRightVector;","⊣":"&dashv;","↤":"&mapstoleft;","⥚":"&LeftTeeVector;","⊲":"&vltri;","⧏":"&LeftTriangleBar;","⊴":"&trianglelefteq;","⥑":"&LeftUpDownVector;","⥠":"&LeftUpTeeVector;","↿":"&upharpoonleft;","⥘":"&LeftUpVectorBar;","↼":"&lharu;","⥒":"&LeftVectorBar;","⋚":"&lesseqgtr;","≦":"&leqq;","≶":"&lg;","⪡":"&LessLess;","⩽":"&les;","≲":"&lsim;","𝔏":"&Lfr;","⋘":"&Ll;","⇚":"&lAarr;","Ŀ":"&Lmidot;","⟵":"&xlarr;","⟷":"&xharr;","⟶":"&xrarr;","𝕃":"&Lopf;","↙":"&swarrow;","↘":"&searrow;","↰":"&lsh;","Ł":"&Lstrok;","≪":"&ll;","⤅":"&Map;","М":"&Mcy;"," ":"&MediumSpace;","ℳ":"&phmmat;","𝔐":"&Mfr;","∓":"&mp;","𝕄":"&Mopf;","Μ":"&Mu;","Њ":"&NJcy;","Ń":"&Nacute;","Ň":"&Ncaron;","Ņ":"&Ncedil;","Н":"&Ncy;","​":"&ZeroWidthSpace;","\n":"&NewLine;","𝔑":"&Nfr;","⁠":"&NoBreak;"," ":"&nbsp;","ℕ":"&naturals;","⫬":"&Not;","≢":"&nequiv;","≭":"&NotCupCap;","∦":"&nspar;","∉":"&notinva;","≠":"&ne;","≂̸":"&nesim;","∄":"&nexists;","≯":"&ngtr;","≱":"&ngeq;","≧̸":"&ngeqq;","≫̸":"&nGtv;","≹":"&ntgl;","⩾̸":"&nges;","≵":"&ngsim;","≎̸":"&nbump;","≏̸":"&nbumpe;","⋪":"&ntriangleleft;","⧏̸":"&NotLeftTriangleBar;","⋬":"&ntrianglelefteq;","≮":"&nlt;","≰":"&nleq;","≸":"&ntlg;","≪̸":"&nLtv;","⩽̸":"&nles;","≴":"&nlsim;","⪢̸":"&NotNestedGreaterGreater;","⪡̸":"&NotNestedLessLess;","⊀":"&nprec;","⪯̸":"&npreceq;","⋠":"&nprcue;","∌":"&notniva;","⋫":"&ntriangleright;","⧐̸":"&NotRightTriangleBar;","⋭":"&ntrianglerighteq;","⊏̸":"&NotSquareSubset;","⋢":"&nsqsube;","⊐̸":"&NotSquareSuperset;","⋣":"&nsqsupe;","⊂⃒":"&vnsub;","⊈":"&nsubseteq;","⊁":"&nsucc;","⪰̸":"&nsucceq;","⋡":"&nsccue;","≿̸":"&NotSucceedsTilde;","⊃⃒":"&vnsup;","⊉":"&nsupseteq;","≁":"&nsim;","≄":"&nsimeq;","≇":"&ncong;","≉":"&napprox;","∤":"&nsmid;","𝒩":"&Nscr;","Ñ":"&Ntilde;","Ν":"&Nu;","Œ":"&OElig;","Ó":"&Oacute;","Ô":"&Ocirc;","О":"&Ocy;","Ő":"&Odblac;","𝔒":"&Ofr;","Ò":"&Ograve;","Ō":"&Omacr;","Ω":"&ohm;","Ο":"&Omicron;","𝕆":"&Oopf;","“":"&ldquo;","‘":"&lsquo;","⩔":"&Or;","𝒪":"&Oscr;","Ø":"&Oslash;","Õ":"&Otilde;","⨷":"&Otimes;","Ö":"&Ouml;","‾":"&oline;","⏞":"&OverBrace;","⎴":"&tbrk;","⏜":"&OverParenthesis;","∂":"&part;","П":"&Pcy;","𝔓":"&Pfr;","Φ":"&Phi;","Π":"&Pi;","±":"&pm;","ℙ":"&primes;","⪻":"&Pr;","≺":"&prec;","⪯":"&preceq;","≼":"&preccurlyeq;","≾":"&prsim;","″":"&Prime;","∏":"&prod;","∝":"&vprop;","𝒫":"&Pscr;","Ψ":"&Psi;",'"':"&quot;","𝔔":"&Qfr;","ℚ":"&rationals;","𝒬":"&Qscr;","⤐":"&drbkarow;","®":"&reg;","Ŕ":"&Racute;","⟫":"&Rang;","↠":"&twoheadrightarrow;","⤖":"&Rarrtl;","Ř":"&Rcaron;","Ŗ":"&Rcedil;","Р":"&Rcy;","ℜ":"&realpart;","∋":"&niv;","⇋":"&lrhar;","⥯":"&duhar;","Ρ":"&Rho;","⟩":"&rangle;","→":"&srarr;","⇥":"&rarrb;","⇄":"&rlarr;","⌉":"&rceil;","⟧":"&robrk;","⥝":"&RightDownTeeVector;","⇂":"&downharpoonright;","⥕":"&RightDownVectorBar;","⌋":"&rfloor;","⊢":"&vdash;","↦":"&mapsto;","⥛":"&RightTeeVector;","⊳":"&vrtri;","⧐":"&RightTriangleBar;","⊵":"&trianglerighteq;","⥏":"&RightUpDownVector;","⥜":"&RightUpTeeVector;","↾":"&upharpoonright;","⥔":"&RightUpVectorBar;","⇀":"&rightharpoonup;","⥓":"&RightVectorBar;","ℝ":"&reals;","⥰":"&RoundImplies;","⇛":"&rAarr;","ℛ":"&realine;","↱":"&rsh;","⧴":"&RuleDelayed;","Щ":"&SHCHcy;","Ш":"&SHcy;","Ь":"&SOFTcy;","Ś":"&Sacute;","⪼":"&Sc;","Š":"&Scaron;","Ş":"&Scedil;","Ŝ":"&Scirc;","С":"&Scy;","𝔖":"&Sfr;","↑":"&uparrow;","Σ":"&Sigma;","∘":"&compfn;","𝕊":"&Sopf;","√":"&radic;","□":"&square;","⊓":"&sqcap;","⊏":"&sqsubset;","⊑":"&sqsubseteq;","⊐":"&sqsupset;","⊒":"&sqsupseteq;","⊔":"&sqcup;","𝒮":"&Sscr;","⋆":"&sstarf;","⋐":"&Subset;","⊆":"&subseteq;","≻":"&succ;","⪰":"&succeq;","≽":"&succcurlyeq;","≿":"&succsim;","∑":"&sum;","⋑":"&Supset;","⊃":"&supset;","⊇":"&supseteq;","Þ":"&THORN;","™":"&trade;","Ћ":"&TSHcy;","Ц":"&TScy;","\t":"&Tab;","Τ":"&Tau;","Ť":"&Tcaron;","Ţ":"&Tcedil;","Т":"&Tcy;","𝔗":"&Tfr;","∴":"&therefore;","Θ":"&Theta;","  ":"&ThickSpace;"," ":"&thinsp;","∼":"&thksim;","≃":"&simeq;","≅":"&cong;","≈":"&thkap;","𝕋":"&Topf;","⃛":"&tdot;","𝒯":"&Tscr;","Ŧ":"&Tstrok;","Ú":"&Uacute;","↟":"&Uarr;","⥉":"&Uarrocir;","Ў":"&Ubrcy;","Ŭ":"&Ubreve;","Û":"&Ucirc;","У":"&Ucy;","Ű":"&Udblac;","𝔘":"&Ufr;","Ù":"&Ugrave;","Ū":"&Umacr;",_:"&lowbar;","⏟":"&UnderBrace;","⎵":"&bbrk;","⏝":"&UnderParenthesis;","⋃":"&xcup;","⊎":"&uplus;","Ų":"&Uogon;","𝕌":"&Uopf;","⤒":"&UpArrowBar;","⇅":"&udarr;","↕":"&varr;","⥮":"&udhar;","⊥":"&perp;","↥":"&mapstoup;","↖":"&nwarrow;","↗":"&nearrow;","ϒ":"&upsih;","Υ":"&Upsilon;","Ů":"&Uring;","𝒰":"&Uscr;","Ũ":"&Utilde;","Ü":"&Uuml;","⊫":"&VDash;","⫫":"&Vbar;","В":"&Vcy;","⊩":"&Vdash;","⫦":"&Vdashl;","⋁":"&xvee;","‖":"&Vert;","∣":"&smid;","|":"&vert;","❘":"&VerticalSeparator;","≀":"&wreath;"," ":"&hairsp;","𝔙":"&Vfr;","𝕍":"&Vopf;","𝒱":"&Vscr;","⊪":"&Vvdash;","Ŵ":"&Wcirc;","⋀":"&xwedge;","𝔚":"&Wfr;","𝕎":"&Wopf;","𝒲":"&Wscr;","𝔛":"&Xfr;","Ξ":"&Xi;","𝕏":"&Xopf;","𝒳":"&Xscr;","Я":"&YAcy;","Ї":"&YIcy;","Ю":"&YUcy;","Ý":"&Yacute;","Ŷ":"&Ycirc;","Ы":"&Ycy;","𝔜":"&Yfr;","𝕐":"&Yopf;","𝒴":"&Yscr;","Ÿ":"&Yuml;","Ж":"&ZHcy;","Ź":"&Zacute;","Ž":"&Zcaron;","З":"&Zcy;","Ż":"&Zdot;","Ζ":"&Zeta;","ℨ":"&zeetrf;","ℤ":"&integers;","𝒵":"&Zscr;","á":"&aacute;","ă":"&abreve;","∾":"&mstpos;","∾̳":"&acE;","∿":"&acd;","â":"&acirc;","а":"&acy;","æ":"&aelig;","𝔞":"&afr;","à":"&agrave;","ℵ":"&aleph;","α":"&alpha;","ā":"&amacr;","⨿":"&amalg;","∧":"&wedge;","⩕":"&andand;","⩜":"&andd;","⩘":"&andslope;","⩚":"&andv;","∠":"&angle;","⦤":"&ange;","∡":"&measuredangle;","⦨":"&angmsdaa;","⦩":"&angmsdab;","⦪":"&angmsdac;","⦫":"&angmsdad;","⦬":"&angmsdae;","⦭":"&angmsdaf;","⦮":"&angmsdag;","⦯":"&angmsdah;","∟":"&angrt;","⊾":"&angrtvb;","⦝":"&angrtvbd;","∢":"&angsph;","⍼":"&angzarr;","ą":"&aogon;","𝕒":"&aopf;","⩰":"&apE;","⩯":"&apacir;","≊":"&approxeq;","≋":"&apid;","'":"&apos;","å":"&aring;","𝒶":"&ascr;","*":"&midast;","ã":"&atilde;","ä":"&auml;","⨑":"&awint;","⫭":"&bNot;","≌":"&bcong;","϶":"&bepsi;","‵":"&bprime;","∽":"&bsim;","⋍":"&bsime;","⊽":"&barvee;","⌅":"&barwedge;","⎶":"&bbrktbrk;","б":"&bcy;","„":"&ldquor;","⦰":"&bemptyv;","β":"&beta;","ℶ":"&beth;","≬":"&twixt;","𝔟":"&bfr;","◯":"&xcirc;","⨀":"&xodot;","⨁":"&xoplus;","⨂":"&xotime;","⨆":"&xsqcup;","★":"&starf;","▽":"&xdtri;","△":"&xutri;","⨄":"&xuplus;","⤍":"&rbarr;","⧫":"&lozf;","▴":"&utrif;","▾":"&dtrif;","◂":"&ltrif;","▸":"&rtrif;","␣":"&blank;","▒":"&blk12;","░":"&blk14;","▓":"&blk34;","█":"&block;","=⃥":"&bne;","≡⃥":"&bnequiv;","⌐":"&bnot;","𝕓":"&bopf;","⋈":"&bowtie;","╗":"&boxDL;","╔":"&boxDR;","╖":"&boxDl;","╓":"&boxDr;","═":"&boxH;","╦":"&boxHD;","╩":"&boxHU;","╤":"&boxHd;","╧":"&boxHu;","╝":"&boxUL;","╚":"&boxUR;","╜":"&boxUl;","╙":"&boxUr;","║":"&boxV;","╬":"&boxVH;","╣":"&boxVL;","╠":"&boxVR;","╫":"&boxVh;","╢":"&boxVl;","╟":"&boxVr;","⧉":"&boxbox;","╕":"&boxdL;","╒":"&boxdR;","┐":"&boxdl;","┌":"&boxdr;","╥":"&boxhD;","╨":"&boxhU;","┬":"&boxhd;","┴":"&boxhu;","⊟":"&minusb;","⊞":"&plusb;","⊠":"&timesb;","╛":"&boxuL;","╘":"&boxuR;","┘":"&boxul;","└":"&boxur;","│":"&boxv;","╪":"&boxvH;","╡":"&boxvL;","╞":"&boxvR;","┼":"&boxvh;","┤":"&boxvl;","├":"&boxvr;","¦":"&brvbar;","𝒷":"&bscr;","⁏":"&bsemi;","\\":"&bsol;","⧅":"&bsolb;","⟈":"&bsolhsub;","•":"&bullet;","⪮":"&bumpE;","ć":"&cacute;","∩":"&cap;","⩄":"&capand;","⩉":"&capbrcup;","⩋":"&capcap;","⩇":"&capcup;","⩀":"&capdot;","∩︀":"&caps;","⁁":"&caret;","⩍":"&ccaps;","č":"&ccaron;","ç":"&ccedil;","ĉ":"&ccirc;","⩌":"&ccups;","⩐":"&ccupssm;","ċ":"&cdot;","⦲":"&cemptyv;","¢":"&cent;","𝔠":"&cfr;","ч":"&chcy;","✓":"&checkmark;","χ":"&chi;","○":"&cir;","⧃":"&cirE;","ˆ":"&circ;","≗":"&cire;","↺":"&olarr;","↻":"&orarr;","Ⓢ":"&oS;","⊛":"&oast;","⊚":"&ocir;","⊝":"&odash;","⨐":"&cirfnint;","⫯":"&cirmid;","⧂":"&cirscir;","♣":"&clubsuit;",":":"&colon;",",":"&comma;","@":"&commat;","∁":"&complement;","⩭":"&congdot;","𝕔":"&copf;","℗":"&copysr;","↵":"&crarr;","✗":"&cross;","𝒸":"&cscr;","⫏":"&csub;","⫑":"&csube;","⫐":"&csup;","⫒":"&csupe;","⋯":"&ctdot;","⤸":"&cudarrl;","⤵":"&cudarrr;","⋞":"&curlyeqprec;","⋟":"&curlyeqsucc;","↶":"&curvearrowleft;","⤽":"&cularrp;","∪":"&cup;","⩈":"&cupbrcap;","⩆":"&cupcap;","⩊":"&cupcup;","⊍":"&cupdot;","⩅":"&cupor;","∪︀":"&cups;","↷":"&curvearrowright;","⤼":"&curarrm;","⋎":"&cuvee;","⋏":"&cuwed;","¤":"&curren;","∱":"&cwint;","⌭":"&cylcty;","⥥":"&dHar;","†":"&dagger;","ℸ":"&daleth;","‐":"&hyphen;","⤏":"&rBarr;","ď":"&dcaron;","д":"&dcy;","⇊":"&downdownarrows;","⩷":"&eDDot;","°":"&deg;","δ":"&delta;","⦱":"&demptyv;","⥿":"&dfisht;","𝔡":"&dfr;","♦":"&diams;","ϝ":"&gammad;","⋲":"&disin;","÷":"&divide;","⋇":"&divonx;","ђ":"&djcy;","⌞":"&llcorner;","⌍":"&dlcrop;",$:"&dollar;","𝕕":"&dopf;","≑":"&eDot;","∸":"&minusd;","∔":"&plusdo;","⊡":"&sdotb;","⌟":"&lrcorner;","⌌":"&drcrop;","𝒹":"&dscr;","ѕ":"&dscy;","⧶":"&dsol;","đ":"&dstrok;","⋱":"&dtdot;","▿":"&triangledown;","⦦":"&dwangle;","џ":"&dzcy;","⟿":"&dzigrarr;","é":"&eacute;","⩮":"&easter;","ě":"&ecaron;","≖":"&eqcirc;","ê":"&ecirc;","≕":"&eqcolon;","э":"&ecy;","ė":"&edot;","≒":"&fallingdotseq;","𝔢":"&efr;","⪚":"&eg;","è":"&egrave;","⪖":"&eqslantgtr;","⪘":"&egsdot;","⪙":"&el;","⏧":"&elinters;","ℓ":"&ell;","⪕":"&eqslantless;","⪗":"&elsdot;","ē":"&emacr;","∅":"&varnothing;"," ":"&emsp13;"," ":"&emsp14;"," ":"&emsp;","ŋ":"&eng;"," ":"&ensp;","ę":"&eogon;","𝕖":"&eopf;","⋕":"&epar;","⧣":"&eparsl;","⩱":"&eplus;","ε":"&epsilon;","ϵ":"&varepsilon;","=":"&equals;","≟":"&questeq;","⩸":"&equivDD;","⧥":"&eqvparsl;","≓":"&risingdotseq;","⥱":"&erarr;","ℯ":"&escr;","η":"&eta;","ð":"&eth;","ë":"&euml;","€":"&euro;","!":"&excl;","ф":"&fcy;","♀":"&female;","ﬃ":"&ffilig;","ﬀ":"&fflig;","ﬄ":"&ffllig;","𝔣":"&ffr;","ﬁ":"&filig;",fj:"&fjlig;","♭":"&flat;","ﬂ":"&fllig;","▱":"&fltns;","ƒ":"&fnof;","𝕗":"&fopf;","⋔":"&pitchfork;","⫙":"&forkv;","⨍":"&fpartint;","½":"&half;","⅓":"&frac13;","¼":"&frac14;","⅕":"&frac15;","⅙":"&frac16;","⅛":"&frac18;","⅔":"&frac23;","⅖":"&frac25;","¾":"&frac34;","⅗":"&frac35;","⅜":"&frac38;","⅘":"&frac45;","⅚":"&frac56;","⅝":"&frac58;","⅞":"&frac78;","⁄":"&frasl;","⌢":"&sfrown;","𝒻":"&fscr;","⪌":"&gtreqqless;","ǵ":"&gacute;","γ":"&gamma;","⪆":"&gtrapprox;","ğ":"&gbreve;","ĝ":"&gcirc;","г":"&gcy;","ġ":"&gdot;","⪩":"&gescc;","⪀":"&gesdot;","⪂":"&gesdoto;","⪄":"&gesdotol;","⋛︀":"&gesl;","⪔":"&gesles;","𝔤":"&gfr;","ℷ":"&gimel;","ѓ":"&gjcy;","⪒":"&glE;","⪥":"&gla;","⪤":"&glj;","≩":"&gneqq;","⪊":"&gnapprox;","⪈":"&gneq;","⋧":"&gnsim;","𝕘":"&gopf;","ℊ":"&gscr;","⪎":"&gsime;","⪐":"&gsiml;","⪧":"&gtcc;","⩺":"&gtcir;","⋗":"&gtrdot;","⦕":"&gtlPar;","⩼":"&gtquest;","⥸":"&gtrarr;","≩︀":"&gvnE;","ъ":"&hardcy;","⥈":"&harrcir;","↭":"&leftrightsquigarrow;","ℏ":"&plankv;","ĥ":"&hcirc;","♥":"&heartsuit;","…":"&mldr;","⊹":"&hercon;","𝔥":"&hfr;","⤥":"&searhk;","⤦":"&swarhk;","⇿":"&hoarr;","∻":"&homtht;","↩":"&larrhk;","↪":"&rarrhk;","𝕙":"&hopf;","―":"&horbar;","𝒽":"&hscr;","ħ":"&hstrok;","⁃":"&hybull;","í":"&iacute;","î":"&icirc;","и":"&icy;","е":"&iecy;","¡":"&iexcl;","𝔦":"&ifr;","ì":"&igrave;","⨌":"&qint;","∭":"&tint;","⧜":"&iinfin;","℩":"&iiota;","ĳ":"&ijlig;","ī":"&imacr;","ı":"&inodot;","⊷":"&imof;","Ƶ":"&imped;","℅":"&incare;","∞":"&infin;","⧝":"&infintie;","⊺":"&intercal;","⨗":"&intlarhk;","⨼":"&iprod;","ё":"&iocy;","į":"&iogon;","𝕚":"&iopf;","ι":"&iota;","¿":"&iquest;","𝒾":"&iscr;","⋹":"&isinE;","⋵":"&isindot;","⋴":"&isins;","⋳":"&isinsv;","ĩ":"&itilde;","і":"&iukcy;","ï":"&iuml;","ĵ":"&jcirc;","й":"&jcy;","𝔧":"&jfr;","ȷ":"&jmath;","𝕛":"&jopf;","𝒿":"&jscr;","ј":"&jsercy;","є":"&jukcy;","κ":"&kappa;","ϰ":"&varkappa;","ķ":"&kcedil;","к":"&kcy;","𝔨":"&kfr;","ĸ":"&kgreen;","х":"&khcy;","ќ":"&kjcy;","𝕜":"&kopf;","𝓀":"&kscr;","⤛":"&lAtail;","⤎":"&lBarr;","⪋":"&lesseqqgtr;","⥢":"&lHar;","ĺ":"&lacute;","⦴":"&laemptyv;","λ":"&lambda;","⦑":"&langd;","⪅":"&lessapprox;","«":"&laquo;","⤟":"&larrbfs;","⤝":"&larrfs;","↫":"&looparrowleft;","⤹":"&larrpl;","⥳":"&larrsim;","↢":"&leftarrowtail;","⪫":"&lat;","⤙":"&latail;","⪭":"&late;","⪭︀":"&lates;","⤌":"&lbarr;","❲":"&lbbrk;","{":"&lcub;","[":"&lsqb;","⦋":"&lbrke;","⦏":"&lbrksld;","⦍":"&lbrkslu;","ľ":"&lcaron;","ļ":"&lcedil;","л":"&lcy;","⤶":"&ldca;","⥧":"&ldrdhar;","⥋":"&ldrushar;","↲":"&ldsh;","≤":"&leq;","⇇":"&llarr;","⋋":"&lthree;","⪨":"&lescc;","⩿":"&lesdot;","⪁":"&lesdoto;","⪃":"&lesdotor;","⋚︀":"&lesg;","⪓":"&lesges;","⋖":"&ltdot;","⥼":"&lfisht;","𝔩":"&lfr;","⪑":"&lgE;","⥪":"&lharul;","▄":"&lhblk;","љ":"&ljcy;","⥫":"&llhard;","◺":"&lltri;","ŀ":"&lmidot;","⎰":"&lmoustache;","≨":"&lneqq;","⪉":"&lnapprox;","⪇":"&lneq;","⋦":"&lnsim;","⟬":"&loang;","⇽":"&loarr;","⟼":"&xmap;","↬":"&rarrlp;","⦅":"&lopar;","𝕝":"&lopf;","⨭":"&loplus;","⨴":"&lotimes;","∗":"&lowast;","◊":"&lozenge;","(":"&lpar;","⦓":"&lparlt;","⥭":"&lrhard;","‎":"&lrm;","⊿":"&lrtri;","‹":"&lsaquo;","𝓁":"&lscr;","⪍":"&lsime;","⪏":"&lsimg;","‚":"&sbquo;","ł":"&lstrok;","⪦":"&ltcc;","⩹":"&ltcir;","⋉":"&ltimes;","⥶":"&ltlarr;","⩻":"&ltquest;","⦖":"&ltrPar;","◃":"&triangleleft;","⥊":"&lurdshar;","⥦":"&luruhar;","≨︀":"&lvnE;","∺":"&mDDot;","¯":"&strns;","♂":"&male;","✠":"&maltese;","▮":"&marker;","⨩":"&mcomma;","м":"&mcy;","—":"&mdash;","𝔪":"&mfr;","℧":"&mho;","µ":"&micro;","⫰":"&midcir;","−":"&minus;","⨪":"&minusdu;","⫛":"&mlcp;","⊧":"&models;","𝕞":"&mopf;","𝓂":"&mscr;","μ":"&mu;","⊸":"&mumap;","⋙̸":"&nGg;","≫⃒":"&nGt;","⇍":"&nlArr;","⇎":"&nhArr;","⋘̸":"&nLl;","≪⃒":"&nLt;","⇏":"&nrArr;","⊯":"&nVDash;","⊮":"&nVdash;","ń":"&nacute;","∠⃒":"&nang;","⩰̸":"&napE;","≋̸":"&napid;","ŉ":"&napos;","♮":"&natural;","⩃":"&ncap;","ň":"&ncaron;","ņ":"&ncedil;","⩭̸":"&ncongdot;","⩂":"&ncup;","н":"&ncy;","–":"&ndash;","⇗":"&neArr;","⤤":"&nearhk;","≐̸":"&nedot;","⤨":"&toea;","𝔫":"&nfr;","↮":"&nleftrightarrow;","⫲":"&nhpar;","⋼":"&nis;","⋺":"&nisd;","њ":"&njcy;","≦̸":"&nleqq;","↚":"&nleftarrow;","‥":"&nldr;","𝕟":"&nopf;","¬":"&not;","⋹̸":"&notinE;","⋵̸":"&notindot;","⋷":"&notinvb;","⋶":"&notinvc;","⋾":"&notnivb;","⋽":"&notnivc;","⫽⃥":"&nparsl;","∂̸":"&npart;","⨔":"&npolint;","↛":"&nrightarrow;","⤳̸":"&nrarrc;","↝̸":"&nrarrw;","𝓃":"&nscr;","⊄":"&nsub;","⫅̸":"&nsubseteqq;","⊅":"&nsup;","⫆̸":"&nsupseteqq;","ñ":"&ntilde;","ν":"&nu;","#":"&num;","№":"&numero;"," ":"&numsp;","⊭":"&nvDash;","⤄":"&nvHarr;","≍⃒":"&nvap;","⊬":"&nvdash;","≥⃒":"&nvge;",">⃒":"&nvgt;","⧞":"&nvinfin;","⤂":"&nvlArr;","≤⃒":"&nvle;","<⃒":"&nvlt;","⊴⃒":"&nvltrie;","⤃":"&nvrArr;","⊵⃒":"&nvrtrie;","∼⃒":"&nvsim;","⇖":"&nwArr;","⤣":"&nwarhk;","⤧":"&nwnear;","ó":"&oacute;","ô":"&ocirc;","о":"&ocy;","ő":"&odblac;","⨸":"&odiv;","⦼":"&odsold;","œ":"&oelig;","⦿":"&ofcir;","𝔬":"&ofr;","˛":"&ogon;","ò":"&ograve;","⧁":"&ogt;","⦵":"&ohbar;","⦾":"&olcir;","⦻":"&olcross;","⧀":"&olt;","ō":"&omacr;","ω":"&omega;","ο":"&omicron;","⦶":"&omid;","𝕠":"&oopf;","⦷":"&opar;","⦹":"&operp;","∨":"&vee;","⩝":"&ord;","ℴ":"&oscr;","ª":"&ordf;","º":"&ordm;","⊶":"&origof;","⩖":"&oror;","⩗":"&orslope;","⩛":"&orv;","ø":"&oslash;","⊘":"&osol;","õ":"&otilde;","⨶":"&otimesas;","ö":"&ouml;","⌽":"&ovbar;","¶":"&para;","⫳":"&parsim;","⫽":"&parsl;","п":"&pcy;","%":"&percnt;",".":"&period;","‰":"&permil;","‱":"&pertenk;","𝔭":"&pfr;","φ":"&phi;","ϕ":"&varphi;","☎":"&phone;","π":"&pi;","ϖ":"&varpi;","ℎ":"&planckh;","+":"&plus;","⨣":"&plusacir;","⨢":"&pluscir;","⨥":"&plusdu;","⩲":"&pluse;","⨦":"&plussim;","⨧":"&plustwo;","⨕":"&pointint;","𝕡":"&popf;","£":"&pound;","⪳":"&prE;","⪷":"&precapprox;","⪹":"&prnap;","⪵":"&prnE;","⋨":"&prnsim;","′":"&prime;","⌮":"&profalar;","⌒":"&profline;","⌓":"&profsurf;","⊰":"&prurel;","𝓅":"&pscr;","ψ":"&psi;"," ":"&puncsp;","𝔮":"&qfr;","𝕢":"&qopf;","⁗":"&qprime;","𝓆":"&qscr;","⨖":"&quatint;","?":"&quest;","⤜":"&rAtail;","⥤":"&rHar;","∽̱":"&race;","ŕ":"&racute;","⦳":"&raemptyv;","⦒":"&rangd;","⦥":"&range;","»":"&raquo;","⥵":"&rarrap;","⤠":"&rarrbfs;","⤳":"&rarrc;","⤞":"&rarrfs;","⥅":"&rarrpl;","⥴":"&rarrsim;","↣":"&rightarrowtail;","↝":"&rightsquigarrow;","⤚":"&ratail;","∶":"&ratio;","❳":"&rbbrk;","}":"&rcub;","]":"&rsqb;","⦌":"&rbrke;","⦎":"&rbrksld;","⦐":"&rbrkslu;","ř":"&rcaron;","ŗ":"&rcedil;","р":"&rcy;","⤷":"&rdca;","⥩":"&rdldhar;","↳":"&rdsh;","▭":"&rect;","⥽":"&rfisht;","𝔯":"&rfr;","⥬":"&rharul;","ρ":"&rho;","ϱ":"&varrho;","⇉":"&rrarr;","⋌":"&rthree;","˚":"&ring;","‏":"&rlm;","⎱":"&rmoustache;","⫮":"&rnmid;","⟭":"&roang;","⇾":"&roarr;","⦆":"&ropar;","𝕣":"&ropf;","⨮":"&roplus;","⨵":"&rotimes;",")":"&rpar;","⦔":"&rpargt;","⨒":"&rppolint;","›":"&rsaquo;","𝓇":"&rscr;","⋊":"&rtimes;","▹":"&triangleright;","⧎":"&rtriltri;","⥨":"&ruluhar;","℞":"&rx;","ś":"&sacute;","⪴":"&scE;","⪸":"&succapprox;","š":"&scaron;","ş":"&scedil;","ŝ":"&scirc;","⪶":"&succneqq;","⪺":"&succnapprox;","⋩":"&succnsim;","⨓":"&scpolint;","с":"&scy;","⋅":"&sdot;","⩦":"&sdote;","⇘":"&seArr;","§":"&sect;",";":"&semi;","⤩":"&tosa;","✶":"&sext;","𝔰":"&sfr;","♯":"&sharp;","щ":"&shchcy;","ш":"&shcy;","­":"&shy;","σ":"&sigma;","ς":"&varsigma;","⩪":"&simdot;","⪞":"&simg;","⪠":"&simgE;","⪝":"&siml;","⪟":"&simlE;","≆":"&simne;","⨤":"&simplus;","⥲":"&simrarr;","⨳":"&smashp;","⧤":"&smeparsl;","⌣":"&ssmile;","⪪":"&smt;","⪬":"&smte;","⪬︀":"&smtes;","ь":"&softcy;","/":"&sol;","⧄":"&solb;","⌿":"&solbar;","𝕤":"&sopf;","♠":"&spadesuit;","⊓︀":"&sqcaps;","⊔︀":"&sqcups;","𝓈":"&sscr;","☆":"&star;","⊂":"&subset;","⫅":"&subseteqq;","⪽":"&subdot;","⫃":"&subedot;","⫁":"&submult;","⫋":"&subsetneqq;","⊊":"&subsetneq;","⪿":"&subplus;","⥹":"&subrarr;","⫇":"&subsim;","⫕":"&subsub;","⫓":"&subsup;","♪":"&sung;","¹":"&sup1;","²":"&sup2;","³":"&sup3;","⫆":"&supseteqq;","⪾":"&supdot;","⫘":"&supdsub;","⫄":"&supedot;","⟉":"&suphsol;","⫗":"&suphsub;","⥻":"&suplarr;","⫂":"&supmult;","⫌":"&supsetneqq;","⊋":"&supsetneq;","⫀":"&supplus;","⫈":"&supsim;","⫔":"&supsub;","⫖":"&supsup;","⇙":"&swArr;","⤪":"&swnwar;","ß":"&szlig;","⌖":"&target;","τ":"&tau;","ť":"&tcaron;","ţ":"&tcedil;","т":"&tcy;","⌕":"&telrec;","𝔱":"&tfr;","θ":"&theta;","ϑ":"&vartheta;","þ":"&thorn;","×":"&times;","⨱":"&timesbar;","⨰":"&timesd;","⌶":"&topbot;","⫱":"&topcir;","𝕥":"&topf;","⫚":"&topfork;","‴":"&tprime;","▵":"&utri;","≜":"&trie;","◬":"&tridot;","⨺":"&triminus;","⨹":"&triplus;","⧍":"&trisb;","⨻":"&tritime;","⏢":"&trpezium;","𝓉":"&tscr;","ц":"&tscy;","ћ":"&tshcy;","ŧ":"&tstrok;","⥣":"&uHar;","ú":"&uacute;","ў":"&ubrcy;","ŭ":"&ubreve;","û":"&ucirc;","у":"&ucy;","ű":"&udblac;","⥾":"&ufisht;","𝔲":"&ufr;","ù":"&ugrave;","▀":"&uhblk;","⌜":"&ulcorner;","⌏":"&ulcrop;","◸":"&ultri;","ū":"&umacr;","ų":"&uogon;","𝕦":"&uopf;","υ":"&upsilon;","⇈":"&uuarr;","⌝":"&urcorner;","⌎":"&urcrop;","ů":"&uring;","◹":"&urtri;","𝓊":"&uscr;","⋰":"&utdot;","ũ":"&utilde;","ü":"&uuml;","⦧":"&uwangle;","⫨":"&vBar;","⫩":"&vBarv;","⦜":"&vangrt;","⊊︀":"&vsubne;","⫋︀":"&vsubnE;","⊋︀":"&vsupne;","⫌︀":"&vsupnE;","в":"&vcy;","⊻":"&veebar;","≚":"&veeeq;","⋮":"&vellip;","𝔳":"&vfr;","𝕧":"&vopf;","𝓋":"&vscr;","⦚":"&vzigzag;","ŵ":"&wcirc;","⩟":"&wedbar;","≙":"&wedgeq;","℘":"&wp;","𝔴":"&wfr;","𝕨":"&wopf;","𝓌":"&wscr;","𝔵":"&xfr;","ξ":"&xi;","⋻":"&xnis;","𝕩":"&xopf;","𝓍":"&xscr;","ý":"&yacute;","я":"&yacy;","ŷ":"&ycirc;","ы":"&ycy;","¥":"&yen;","𝔶":"&yfr;","ї":"&yicy;","𝕪":"&yopf;","𝓎":"&yscr;","ю":"&yucy;","ÿ":"&yuml;","ź":"&zacute;","ž":"&zcaron;","з":"&zcy;","ż":"&zdot;","ζ":"&zeta;","𝔷":"&zfr;","ж":"&zhcy;","⇝":"&zigrarr;","𝕫":"&zopf;","𝓏":"&zscr;","‍":"&zwj;","‌":"&zwnj;"}}};
+
+/***/ }),
+
+/***/ "../../common/temp/node_modules/webpack-hot-middleware/node_modules/html-entities/lib/numeric-unicode-map.js":
+/*!**************************************************************************************!*\
+  !*** (webpack)-hot-middleware/node_modules/html-entities/lib/numeric-unicode-map.js ***!
+  \**************************************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+Object.defineProperty(exports,"__esModule",{value:true});exports.numericUnicodeMap={0:65533,128:8364,130:8218,131:402,132:8222,133:8230,134:8224,135:8225,136:710,137:8240,138:352,139:8249,140:338,142:381,145:8216,146:8217,147:8220,148:8221,149:8226,150:8211,151:8212,152:732,153:8482,154:353,155:8250,156:339,158:382,159:376};
+
+/***/ }),
+
+/***/ "../../common/temp/node_modules/webpack-hot-middleware/node_modules/html-entities/lib/surrogate-pairs.js":
+/*!**********************************************************************************!*\
+  !*** (webpack)-hot-middleware/node_modules/html-entities/lib/surrogate-pairs.js ***!
+  \**********************************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+Object.defineProperty(exports,"__esModule",{value:true});exports.fromCodePoint=String.fromCodePoint||function(astralCodePoint){return String.fromCharCode(Math.floor((astralCodePoint-65536)/1024)+55296,(astralCodePoint-65536)%1024+56320)};exports.getCodePoint=String.prototype.codePointAt?function(input,position){return input.codePointAt(position)}:function(input,position){return(input.charCodeAt(position)-55296)*1024+input.charCodeAt(position+1)-56320+65536};exports.highSurrogateFrom=55296;exports.highSurrogateTo=56319;
 
 /***/ }),
 
